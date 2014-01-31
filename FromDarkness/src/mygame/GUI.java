@@ -32,6 +32,7 @@ public class GUI extends AbstractAppState {
     private AppStateManager   stateManager;
     private BulletAppState    physics;
     private FlyByCamera       flyCam;
+    private Window            win;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -48,7 +49,7 @@ public class GUI extends AbstractAppState {
       public void startMenu(){  
         screen = new Screen(app);
         this.app.getGuiNode().addControl(screen);
-        Window win = new Window(screen, "MainWindow", new Vector2f(15f, 15f));
+        win = new Window(screen, "MainWindow", new Vector2f(15f, 15f));
         win.setWindowTitle("Main Windows");
         win.setMinDimensions(new Vector2f(130, 100));
         win.setWidth(new Float(50));
@@ -86,7 +87,7 @@ public class GUI extends AbstractAppState {
     
   public void gameStart() {
     System.out.println("Game Started " + screen);
-    stateManager.detach(new GUI());
+    win.hideWindow();
     physics = new BulletAppState();
     stateManager.attach(physics);
     stateManager.attach(new Player());
@@ -95,7 +96,6 @@ public class GUI extends AbstractAppState {
     stateManager.attach(new LightingAppState());
     stateManager.attach(new InteractionAppState());
     stateManager.attach(new AnimationAppState());
-    stateManager.attach(new GUI());
     }
    
 }

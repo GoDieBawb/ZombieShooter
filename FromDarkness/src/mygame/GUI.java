@@ -32,7 +32,7 @@ public class GUI extends AbstractAppState {
     private AppStateManager   stateManager;
     private BulletAppState    physics;
     private FlyByCamera       flyCam;
-    private Window            win;
+    private Window            startMenu;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -49,12 +49,12 @@ public class GUI extends AbstractAppState {
       public void startMenu(){  
         screen = new Screen(app);
         this.app.getGuiNode().addControl(screen);
-        win = new Window(screen, "MainWindow", new Vector2f(15f, 15f));
-        win.setWindowTitle("Main Windows");
-        win.setMinDimensions(new Vector2f(130, 100));
-        win.setWidth(new Float(50));
-        win.setIgnoreMouse(true);
-        win.setWindowIsMovable(false);
+        startMenu = new Window(screen, "MainWindow", new Vector2f(15f, 15f));
+        startMenu.setWindowTitle("Main Windows");
+        startMenu.setMinDimensions(new Vector2f(130, 100));
+        startMenu.setWidth(new Float(50));
+        startMenu.setIgnoreMouse(true);
+        startMenu.setWindowIsMovable(false);
         flyCam.setDragToRotate(true);
         
  
@@ -68,10 +68,10 @@ public class GUI extends AbstractAppState {
     makeWindow.setText("Start Game");
  
     // Add it to out initial window
-    win.addChild(makeWindow);
+    startMenu.addChild(makeWindow);
     // Add window to the screen
-   screen.addElement(win);
-   win.setLocalTranslation(350f, 350f, 350f);
+   screen.addElement(startMenu);
+   startMenu.setLocalTranslation(350f, 350f, 350f);
     }
  
  public final void createNewWindow(String someWindowTitle) {
@@ -87,7 +87,7 @@ public class GUI extends AbstractAppState {
     
   public void gameStart() {
     System.out.println("Game Started " + screen);
-    win.hideWindow();
+    startMenu.hideWindow();
     physics = new BulletAppState();
     stateManager.attach(physics);
     stateManager.attach(new Player());

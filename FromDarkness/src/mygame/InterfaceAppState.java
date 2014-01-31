@@ -85,6 +85,7 @@ private FlyByCamera       flyCam;
     stateManager.attach(new LightingAppState());
     stateManager.attach(new InteractionAppState());
     stateManager.attach(new AnimationAppState());
+    stateManager.attach(new GUI());
     }
     
     

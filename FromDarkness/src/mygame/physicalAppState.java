@@ -61,6 +61,7 @@ public Node Model;
         sceneModel = (Node) assetManager.loadModel("Scenes/Bob'sTestCell.j3o");
         sceneModel.setLocalTranslation(5f, 0f, 1f);
         physics.getPhysicsSpace().add(sceneModel);
+        System.out.println("Scene Initialized");
         return sceneModel;
         }
    
@@ -73,6 +74,7 @@ public Node Model;
     Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     mat1.setColor("Color", ColorRGBA.randomColor());
     cube.setMaterial(mat1);
+    System.out.println("Billy Initialized");
     return cube;
   }
     
@@ -89,6 +91,7 @@ public Node Model;
     gunPhys.setMass(1f);
     gunPhys.setKinematic(false);
     physics.getPhysicsSpace().add(gunPhys);
+    System.out.println("Gun Initialized");
     return gun;
     }
 

@@ -30,8 +30,6 @@ public Node model;
   public void initialize(AppStateManager stateManager, Application app) {
     super.initialize(stateManager, app);
     
-    System.out.println("CameraState Attached");
-    
     this.app = (SimpleApplication) app; // can cast Application to something more specific
     this.stateManager = this.app.getStateManager();
     this.inputManager = this.app.getInputManager();
@@ -44,7 +42,7 @@ public Node model;
     chaseCam = new ChaseCamera(cam, model, inputManager);
     chaseCam.setSmoothMotion(false);
     chaseCam.setLookAtOffset(Vector3f.UNIT_Y.mult(5));
-    System.out.println(model.getLocalRotation());
+    System.out.println("Camera State Attached");
     
   
  }

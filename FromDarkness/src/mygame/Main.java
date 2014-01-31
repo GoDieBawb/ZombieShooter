@@ -15,7 +15,8 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp(){
-    stateManager.attach(new InterfaceAppState());
+    stateManager.attach(new GUI());
+    System.out.println("Main State Attached");
     
     }
        

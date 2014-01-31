@@ -14,6 +14,7 @@ import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Matrix3f;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -55,9 +56,7 @@ public  Player                 player;
 
     public void initPlayer() {
       player = new Player();
-      System.out.println("initialized" + heldItem + getItemInHand());
       player.inventory = new ArrayList<String>();
-      System.out.println(heldItem);
       player.heldItem = "bear";
       player.inventory.add("air");
        
@@ -74,7 +73,7 @@ public  Player                 player;
   
        physics.getPhysicsSpace().add(playerControl);
        rootNode.attachChild(player.Model);
-       
+       System.out.println("Player State Attached");
        
     }
     
@@ -158,6 +157,7 @@ public  Player                 player;
           } else {
           System.out.println("Puncharoonie!");
           String armAnim = "Punch";
+          player.Model.getChild(1).setLocalTranslation(0f, 0f, 0f);
           animInteract.animChange(armAnim, legAnim);
           
           }

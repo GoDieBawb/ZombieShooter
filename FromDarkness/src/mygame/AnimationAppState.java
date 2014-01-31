@@ -69,7 +69,7 @@ public AnimControl        animControl;
       mat.getAdditionalRenderState().setDepthTest(false);
       skeletonDebug.setMaterial(mat);
       ((Node) animControl.getSpatial()).attachChild(skeletonDebug);
-         
+      System.out.println("Animations Initialized");
 
  }
 

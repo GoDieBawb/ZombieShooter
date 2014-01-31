@@ -59,7 +59,7 @@ public boolean lightState;
     flashLight = new SpotLight();
     flashLight.setColor(ColorRGBA.White.mult(2.9f));
     flashLight.setSpotRange(50);
-    
+    System.out.println("Light Initialized");
     }
     
     public void flashlightOn(){

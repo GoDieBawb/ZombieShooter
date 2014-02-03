@@ -48,11 +48,11 @@ public  Player                 player;
     this.assetManager = this.app.getAssetManager();
     this.stateManager = this.app.getStateManager();
     this.physics      = this.stateManager.getState(BulletAppState.class);
-    
     initPlayer();
     
    
    }
+  
 
     public void initPlayer() {
       player = new Player();
@@ -126,11 +126,8 @@ public  Player                 player;
     }
    
     
-    public ArrayList getInventory(Player player) {
-      System.out.println("This works");
-      for (int i = 0; i < player.inventory.size(); i++) {
-      System.out.println(player.inventory.get(i));
-      }
+    public ArrayList getInventory(Player player, GUI GUI) {
+      GUI.inventoryWindow(player, GUI);
       return player.inventory;
       }
     

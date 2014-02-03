@@ -24,8 +24,6 @@ import com.jme3.scene.Node;
 public class InteractionAppState extends AbstractAppState implements ActionListener {
     
 private SimpleApplication app;
-private Node              rootNode;
-private AssetManager      assetManager;
 private AppStateManager   stateManager;
 private InputManager      inputManager;
 public  ViewPort          viewPort;
@@ -49,6 +47,7 @@ private AnimationAppState   animInteract;
 private LightingAppState    lightInteract;
 
 public Player               player;
+public  GUI                 GUI;
 
     
   @Override
@@ -56,8 +55,6 @@ public Player               player;
     super.initialize(stateManager, app);
     
     this.app = (SimpleApplication) app; // can cast Application to something more specific
-    this.rootNode      = this.app.getRootNode();
-    this.assetManager  = this.app.getAssetManager();
     this.stateManager  = this.app.getStateManager();
     this.inputManager  = this.app.getInputManager();
     this.viewPort      = this.app.getViewPort();
@@ -67,7 +64,9 @@ public Player               player;
     this.animInteract  = this.stateManager.getState(AnimationAppState.class);
     this.lightInteract = this.stateManager.getState(LightingAppState.class);
     this.player        = this.stateManager.getState(Player.class).player;
+    this.GUI           = this.stateManager.getState(GUI.class).GUI;
     
+    System.out.println("Interat GUI is " + GUI);
     setUpKeys();
     armAnim = "StillArms";
     legAnim = "StillLegs";
@@ -152,7 +151,7 @@ public Player               player;
             lightInteract.flashlightOn();
         
     } else if (binding.equals("Inventory") && !isPressed) {
-            player.getInventory(player);
+            player.getInventory(player, GUI);
 
     }
   }

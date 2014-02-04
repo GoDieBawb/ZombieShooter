@@ -14,6 +14,7 @@ import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
+import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -35,6 +36,7 @@ public class GUI extends AbstractAppState {
     private Screen            screen;
     private Window            startMenu;
     private Window            inventoryMenu;
+    private String            inventoryCount;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -45,7 +47,6 @@ public class GUI extends AbstractAppState {
         this.physics      = this.stateManager.getState(BulletAppState.class);
         this.flyCam       = this.stateManager.getState(FlyCamAppState.class).getCamera();
         this.GUI = new GUI();
-        System.out.println("GUI IS " + GUI);
         startMenu();
     }
         
@@ -86,22 +87,24 @@ public class GUI extends AbstractAppState {
       GUI.inventoryMenu.setMinDimensions(new Vector2f(130, 100));
 
       //Button Adapter for interactions in the inventory
-      ButtonAdapter inventoryLister = new ButtonAdapter(screen, "Btn2", new Vector2f(15, 15)){
+      ButtonAdapter inventoryLister = new ButtonAdapter(screen, inventoryCount, new Vector2f(20, 12)){
       };
-      
+      inventoryLister.setText("Item");
+      inventoryLister.setPosition(5f, 50f);
+ 
       //For each item in the inventory add a button
       for(int i = 0; i < player.inventory.size(); i++){
         System.out.println("Real List " + player.inventory.get(i));
+        inventoryCount = "Button" + i;
+        System.out.println(inventoryCount);
         inventoryMenu.addChild(inventoryLister);
         } 
 
       //Finally add the inventory window to the screen
       GUI.screen.addElement(inventoryMenu);
     }
-
     
   public void gameStart() {
-    System.out.println("Game Started " + GUI.screen + GUI);
     startMenu.hideWindow();
     physics = new BulletAppState();
     stateManager.attach(physics);

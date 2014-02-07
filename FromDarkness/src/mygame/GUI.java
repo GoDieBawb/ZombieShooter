@@ -14,7 +14,6 @@ import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
-import tonegod.gui.controls.buttons.Button;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Screen;
@@ -37,6 +36,8 @@ public class GUI extends AbstractAppState {
     private Window            startMenu;
     private Window            inventoryMenu;
     private String            inventoryCount;
+    
+    private float             measure;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -67,6 +68,7 @@ public class GUI extends AbstractAppState {
     ButtonAdapter makeWindow = new ButtonAdapter( GUI.screen, "Btn1", new Vector2f(15, 15) ) {
         @Override
         public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            GUI.inventoryMenu = new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
             gameStart();
         }  
     };
@@ -82,24 +84,20 @@ public class GUI extends AbstractAppState {
     //Set up a new window to list the inventory
     public void inventoryWindow(Player player, GUI GUI) {
       
-      GUI.inventoryMenu = new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
       GUI.inventoryMenu.setWindowTitle("Inventory Window");
       GUI.inventoryMenu.setMinDimensions(new Vector2f(130, 100));
-
-      //Button Adapter for interactions in the inventory
-      ButtonAdapter inventoryLister = new ButtonAdapter(screen, inventoryCount, new Vector2f(20, 12)){
-      };
-      inventoryLister.setText("Item");
-      inventoryLister.setPosition(5f, 50f);
- 
+      
       //For each item in the inventory add a button
-      for(int i = 0; i < player.inventory.size(); i++){
+      for(int i = 1; i < player.inventory.size(); i++){
+        measure = 50f * i;
+        System.out.println("Measure is " + measure);
         System.out.println("Real List " + player.inventory.get(i));
         inventoryCount = "Button" + i;
+        buttonTeller(player.inventory.get(i).toString(), GUI);
         System.out.println(inventoryCount);
-        inventoryMenu.addChild(inventoryLister);
-        } 
-
+        
+        }
+      
       //Finally add the inventory window to the screen
       GUI.screen.addElement(inventoryMenu);
     }
@@ -115,4 +113,54 @@ public class GUI extends AbstractAppState {
     stateManager.attach(new InteractionAppState());
     stateManager.attach(new AnimationAppState());
     }
+  
+
+/** Inventory Item Button Adapters**/
+
+    public void buttonTeller(String item, GUI GUI){
+        if (item.equals("Gun"))
+         gunButton(GUI);
+
+        if (item.equals("Billy"))
+         billyButton(GUI);
+
+        if (item.equals("air"))
+         airButton(GUI);
+    }
+    
+    
+    
+    public void gunButton(GUI GUI) {
+       ButtonAdapter gunButton 
+              = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
+      };
+      inventoryMenu.addChild(gunButton);
+      gunButton.setText("Gun");
+      gunButton.setPosition(15f, measure);  
+    }
+    
+    
+    public void billyButton(GUI GUI) {
+      try {
+       ButtonAdapter billyButton 
+              = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
+      };
+      inventoryMenu.addChild(billyButton);
+      billyButton.setText("billy");
+      billyButton.setPosition(15f, measure);
+      } catch (NullPointerException e) {
+          System.out.println("Error: " + e + " " + GUI + " " + inventoryCount);
+      }
+    }
+    
+    
+    public void airButton(GUI GUI) {
+       ButtonAdapter airButton 
+              = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
+      };
+      inventoryMenu.addChild(airButton);
+      airButton.setText("air");
+      airButton.setPosition(15f, measure);  
+    }
+    
 }

@@ -84,9 +84,9 @@ public class GUI extends AbstractAppState {
     //Set up a new window to list the inventory
     public void inventoryWindow(Player player, GUI GUI) {
       
-     if (inventoryMenu.getIsVisible()) {
-      inventoryMenu.removeAllChildren();
-      inventoryMenu.setIsVisible(false);
+     if (GUI.inventoryMenu.getIsVisible()) {
+      GUI.inventoryMenu.removeAllChildren();
+      GUI.inventoryMenu.setIsVisible(false);
 
       } else {
       
@@ -99,7 +99,8 @@ public class GUI extends AbstractAppState {
         }
       
       //Finally add the inventory window to the screen
-      inventoryMenu.setIsVisible(true);
+      GUI.inventoryMenu.setWindowTitle("Inventory Window");
+      GUI.inventoryMenu.setIsVisible(true);
       }
     }
     
@@ -117,10 +118,11 @@ public class GUI extends AbstractAppState {
             new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
 
     GUI.screen.addElement(GUI.inventoryMenu);
-    GUI.inventoryMenu.setWindowTitle("Inventory Window");
     GUI.inventoryMenu.setMinDimensions(new Vector2f(130, 100));
     GUI.inventoryMenu.setIsVisible(false);
     }
+  
+
   
 
 /** Inventory Item Button Adapters **/

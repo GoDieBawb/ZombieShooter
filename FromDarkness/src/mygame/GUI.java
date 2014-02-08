@@ -64,42 +64,43 @@ public class GUI extends AbstractAppState {
         startMenu.setWindowIsMovable(false);
         flyCam.setDragToRotate(true);
         
-    // create buttons
-    ButtonAdapter makeWindow = new ButtonAdapter( GUI.screen, "Btn1", new Vector2f(15, 15) ) {
-        @Override
-        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
-            GUI.inventoryMenu = new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
-            gameStart();
-        }  
-    };
-    makeWindow.setText("Start Game");
+         // create buttons
+            ButtonAdapter makeWindow = new ButtonAdapter( GUI.screen, "Btn1", new Vector2f(15, 15) ) {
+            @Override
+             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+               gameStart();
+             }  
+          };
+        makeWindow.setText("Start Game");
  
-      // Add it to out initial window
-      startMenu.addChild(makeWindow);
-      // Add window to the screen
-     GUI.screen.addElement(startMenu);
-     startMenu.setLocalTranslation(350f, 350f, 350f);
+         // Add it to out initial window
+        startMenu.addChild(makeWindow);
+        // Add window to the screen
+        GUI.screen.addElement(startMenu);
+        startMenu.setLocalTranslation(350f, 350f, 350f);
       }
-      
+    
+ 
     //Set up a new window to list the inventory
     public void inventoryWindow(Player player, GUI GUI) {
       
-      GUI.inventoryMenu.setWindowTitle("Inventory Window");
-      GUI.inventoryMenu.setMinDimensions(new Vector2f(130, 100));
+     if (inventoryMenu.getIsVisible()) {
+      inventoryMenu.removeAllChildren();
+      inventoryMenu.setIsVisible(false);
+
+      } else {
       
       //For each item in the inventory add a button
-      for(int i = 1; i < player.inventory.size(); i++){
-        measure = 50f * i;
-        System.out.println("Measure is " + measure);
-        System.out.println("Real List " + player.inventory.get(i));
+      for(int i = 0; i < player.inventory.size(); i++){
+        measure = 50f * i + 30;
         inventoryCount = "Button" + i;
         buttonTeller(player.inventory.get(i).toString(), GUI);
         System.out.println(inventoryCount);
-        
         }
       
       //Finally add the inventory window to the screen
-      GUI.screen.addElement(inventoryMenu);
+      inventoryMenu.setIsVisible(true);
+      }
     }
     
   public void gameStart() {
@@ -112,10 +113,17 @@ public class GUI extends AbstractAppState {
     stateManager.attach(new LightingAppState());
     stateManager.attach(new InteractionAppState());
     stateManager.attach(new AnimationAppState());
+    GUI.inventoryMenu = 
+            new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
+
+    GUI.screen.addElement(GUI.inventoryMenu);
+    GUI.inventoryMenu.setWindowTitle("Inventory Window");
+    GUI.inventoryMenu.setMinDimensions(new Vector2f(130, 100));
+    GUI.inventoryMenu.setIsVisible(false);
     }
   
 
-/** Inventory Item Button Adapters**/
+/** Inventory Item Button Adapters **/
 
     public void buttonTeller(String item, GUI GUI){
         if (item.equals("Gun"))
@@ -129,7 +137,7 @@ public class GUI extends AbstractAppState {
     }
     
     
-    
+
     public void gunButton(GUI GUI) {
        ButtonAdapter gunButton 
               = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
@@ -141,18 +149,15 @@ public class GUI extends AbstractAppState {
     
     
     public void billyButton(GUI GUI) {
-      try {
        ButtonAdapter billyButton 
               = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
       };
       inventoryMenu.addChild(billyButton);
       billyButton.setText("billy");
       billyButton.setPosition(15f, measure);
-      } catch (NullPointerException e) {
-          System.out.println("Error: " + e + " " + GUI + " " + inventoryCount);
-      }
     }
-    
+
+
     
     public void airButton(GUI GUI) {
        ButtonAdapter airButton 

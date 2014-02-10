@@ -92,11 +92,6 @@ public  Player                 player;
        Ray grabRay = new Ray(cam.getLocation(), cam.getDirection());
        shootables.collideWith(grabRay, grabResults);
        String grabbedItem;
-       
-       for (int i = 0; i < grabResults.size(); i++) {
-         String hit = grabResults.getCollision(i).getGeometry().getName();
-         System.out.println(hit);
-         }
 
        if (grabResults.size() > 0) {
          grabbedItem = grabResults.getCollision(0).getGeometry().getName();

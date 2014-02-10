@@ -12,6 +12,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.math.Transform;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.ButtonAdapter;
@@ -35,6 +36,7 @@ public class GUI extends AbstractAppState {
     private Screen            screen;
     private Window            startMenu;
     private Window            inventoryMenu;
+    private Window            handMenu;
     private String            inventoryCount;
     
     private float             measure;
@@ -50,6 +52,8 @@ public class GUI extends AbstractAppState {
         this.GUI = new GUI();
         startMenu();
     }
+    
+        /** Start Meu Stuff **/
         
         
       public void startMenu(){  
@@ -64,21 +68,58 @@ public class GUI extends AbstractAppState {
         startMenu.setWindowIsMovable(false);
         flyCam.setDragToRotate(true);
         
-         // create buttons
-            ButtonAdapter makeWindow = new ButtonAdapter( GUI.screen, "Btn1", new Vector2f(15, 15) ) {
-            @Override
-             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
-               gameStart();
-             }  
+        // create buttons
+        ButtonAdapter makeWindow = new ButtonAdapter( GUI.screen, "Btn1", new Vector2f(15, 15) ) {
+         @Override
+           public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            gameStart();
+            }  
           };
         makeWindow.setText("Start Game");
  
-         // Add it to out initial window
+        // Add it to out initial window
         startMenu.addChild(makeWindow);
         // Add window to the screen
         GUI.screen.addElement(startMenu);
         startMenu.setLocalTranslation(350f, 350f, 350f);
-      }
+     }
+      
+  public void gameStart() {
+    startMenu.hideWindow();
+    physics = new BulletAppState();
+    stateManager.attach(physics);
+    stateManager.attach(new Player());
+    stateManager.attach(new physicalAppState());
+    stateManager.attach(new CameraAppState());
+    stateManager.attach(new LightingAppState());
+    stateManager.attach(new InteractionAppState());
+    stateManager.attach(new AnimationAppState());
+
+    GUI.handMenu = 
+            new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
+    
+      GUI.screen.addElement(GUI.handMenu);
+      GUI.handMenu.setDimensions(new Vector2f(100, 100));
+      GUI.handMenu.setIsResizable(false);
+      GUI.handMenu.setLocalTranslation(5f, 5f, 500f);
+    
+    
+    GUI.inventoryMenu = 
+            new Window(GUI.screen, "HandWindow", new Vector2f(15f, 15f));
+  
+      GUI.screen.addElement(GUI.inventoryMenu);
+      GUI.inventoryMenu.setDimensions(new Vector2f(200, 250));
+      GUI.inventoryMenu.setIsVisible(false);
+    }
+  
+  
+  
+  
+  
+  
+
+  
+    /** Inventory Menu Stuff **/
     
  
     //Set up a new window to list the inventory
@@ -94,7 +135,7 @@ public class GUI extends AbstractAppState {
       for(int i = 0; i < player.inventory.size(); i++){
         measure = 50f * i + 30;
         inventoryCount = "Button" + i;
-        buttonTeller(player.inventory.get(i).toString(), GUI);
+        buttonTeller(player.inventory.get(i).toString(), GUI, player);
         System.out.println(inventoryCount);
         }
       
@@ -103,46 +144,34 @@ public class GUI extends AbstractAppState {
       GUI.inventoryMenu.setIsVisible(true);
       }
     }
-    
-  public void gameStart() {
-    startMenu.hideWindow();
-    physics = new BulletAppState();
-    stateManager.attach(physics);
-    stateManager.attach(new Player());
-    stateManager.attach(new physicalAppState());
-    stateManager.attach(new CameraAppState());
-    stateManager.attach(new LightingAppState());
-    stateManager.attach(new InteractionAppState());
-    stateManager.attach(new AnimationAppState());
-    GUI.inventoryMenu = 
-            new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
-
-    GUI.screen.addElement(GUI.inventoryMenu);
-    GUI.inventoryMenu.setMinDimensions(new Vector2f(130, 100));
-    GUI.inventoryMenu.setIsVisible(false);
-    }
   
 
   
 
 /** Inventory Item Button Adapters **/
 
-    public void buttonTeller(String item, GUI GUI){
+    public void buttonTeller(String item, GUI GUI, Player player){
         if (item.equals("Gun"))
-         gunButton(GUI);
+         gunButton(GUI, player);
 
         if (item.equals("Billy"))
-         billyButton(GUI);
+         billyButton(GUI, player);
 
         if (item.equals("air"))
-         airButton(GUI);
+         airButton(GUI, player);
     }
-    
+   
+   
+   /** Actual Buttoon Adaptars **/
     
 
-    public void gunButton(GUI GUI) {
+    public void gunButton(final GUI GUI, final Player player) {
        ButtonAdapter gunButton 
-              = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
+              = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)) {
+        @Override
+        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            gunEquip(player, GUI);
+        }    
       };
       inventoryMenu.addChild(gunButton);
       gunButton.setText("Gun");
@@ -150,9 +179,13 @@ public class GUI extends AbstractAppState {
     }
     
     
-    public void billyButton(GUI GUI) {
+    public void billyButton(final GUI GUI, final Player player) {
        ButtonAdapter billyButton 
               = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
+        @Override
+        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            billyEquip(player, GUI);
+        }
       };
       inventoryMenu.addChild(billyButton);
       billyButton.setText("billy");
@@ -161,13 +194,43 @@ public class GUI extends AbstractAppState {
 
 
     
-    public void airButton(GUI GUI) {
+    public void airButton(final GUI GUI, final Player player) {
        ButtonAdapter airButton 
               = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
+        @Override
+        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            airEquip(player, GUI);
+        }
       };
       inventoryMenu.addChild(airButton);
       airButton.setText("air");
       airButton.setPosition(15f, measure);  
     }
     
+    
+    
+ 
+ /** Equuipping Methods **/
+  
+    
+  public void gunEquip(Player player, GUI GUI){
+     System.out.println("gunEquip");
+     GUI.handMenu.removeAllChildren();
+     GUI.handMenu.setText("Gun");
+     player.setItemInHand("Gun");
+    }
+    
+  public void billyEquip(Player player, GUI GUI){
+     System.out.println("billyEquip");
+     GUI.handMenu.removeAllChildren();
+     GUI.handMenu.setText("Billy");
+     player.setItemInHand("Billy");
+    }
+  
+  public void airEquip(Player player, GUI GUI){
+     System.out.println("bilyEquip");
+     GUI.handMenu.removeAllChildren();
+     GUI.handMenu.setText("Air");
+     player.setItemInHand("Air");
+    }
 }

@@ -64,8 +64,8 @@ public Node Model;
         RigidBodyControl scenePhys = new RigidBodyControl(sceneShape);
         sceneModel.addControl(scenePhys);
         sceneModel.setLocalTranslation(5f, 0f, 1f);
-        //scenePhys.setMass(0f);
-        physics.getPhysicsSpace().add(sceneModel);
+        scenePhys.setMass(0f);
+        physics.getPhysicsSpace().add(scenePhys);
         System.out.println("Scene Initialized");
         return sceneModel;
         }

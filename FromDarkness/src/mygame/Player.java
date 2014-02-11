@@ -57,8 +57,7 @@ public  Player                 player;
     public void initPlayer() {
       player = new Player();
       player.inventory = new ArrayList<String>();
-      player.heldItem = "bear";
-      player.inventory.add("air");
+      player.setItemInHand("air", player);
        
        playerControl = new BetterCharacterControl(1f, 5f, 1f);
       
@@ -81,7 +80,7 @@ public  Player                 player;
       return heldItem;
     }
     
-    public void setItemInHand(String item) {
+    public void setItemInHand(String item, Player player) {
     inventory.remove(item);
     inventory.add(heldItem);
     heldItem = item;
@@ -131,7 +130,7 @@ public  Player                 player;
       int inventoryLimit = 10;
       if(player.inventory.size() < inventoryLimit){
         player.inventory.add(item);
-         System.out.println("added " + item + player);
+         System.out.println("added " + item + " to " + player);
 
         } else {
         System.out.println("There is no more room in your inventory" + player.inventory.size());

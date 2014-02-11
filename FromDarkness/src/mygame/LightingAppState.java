@@ -43,7 +43,7 @@ public boolean lightState;
     this.stateManager = this.app.getStateManager();
     this.cam          = this.app.getCamera();
     this.player       = this.stateManager.getState(Player.class).playerControl;
-    this.model        = this.stateManager.getState(Player.class).Model;
+    this.model        = this.stateManager.getState(Player.class).player.Model;
     
     lightState = false;
     initLight();
@@ -64,16 +64,17 @@ public boolean lightState;
     
     public void flashlightOn(){
     if(lightState == false){
-    System.out.println("Flashlight Toggled");
-    rootNode.addLight(flashLight);
-    rootNode.removeLight(al);
-    lightState = true;
-    }else{
-    System.out.println("Flashlight Toggled");
-    rootNode.removeLight(flashLight);
-    rootNode.addLight(al);
-    lightState = false;
-     }
+      System.out.println("Flashlight Toggled");
+      rootNode.addLight(flashLight);
+      rootNode.removeLight(al);
+      lightState = true;
+    
+      }else{
+      System.out.println("Flashlight Toggled");
+      rootNode.removeLight(flashLight);
+      rootNode.addLight(al);
+      lightState = false;
+      }
     
     }
     

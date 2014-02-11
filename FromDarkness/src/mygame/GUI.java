@@ -135,8 +135,13 @@ public class GUI extends AbstractAppState {
       for(int i = 0; i < player.inventory.size(); i++){
         measure = 50f * i + 30;
         inventoryCount = "Button" + i;
+        System.out.println(inventoryCount + player.inventory.toString() );
+        
+        try {
         buttonTeller(player.inventory.get(i).toString(), GUI, player);
-        System.out.println(inventoryCount);
+          } catch (NullPointerException e) {
+          System.out.println("Null in the inventory");
+          }
         }
       
       //Finally add the inventory window to the screen
@@ -217,20 +222,20 @@ public class GUI extends AbstractAppState {
      System.out.println("gunEquip");
      GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Gun");
-     player.setItemInHand("Gun");
+     player.setItemInHand("Gun", player);
     }
     
   public void billyEquip(Player player, GUI GUI){
      System.out.println("billyEquip");
      GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Billy");
-     player.setItemInHand("Billy");
+     player.setItemInHand("Billy", player);
     }
   
   public void airEquip(Player player, GUI GUI){
      System.out.println("bilyEquip");
      GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Air");
-     player.setItemInHand("Air");
+     player.setItemInHand("Air", player);
     }
 }

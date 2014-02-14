@@ -13,8 +13,6 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
-import com.jme3.math.Matrix3f;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -57,7 +55,6 @@ public  Player                 player;
     public void initPlayer() {
       player = new Player();
       player.inventory = new ArrayList<String>();
-      player.setItemInHand("air", player);
        
        playerControl = new BetterCharacterControl(1f, 5f, 1f);
       
@@ -81,9 +78,14 @@ public  Player                 player;
     }
     
     public void setItemInHand(String item, Player player) {
-    inventory.remove(item);
-    inventory.add(heldItem);
-    heldItem = item;
+      try {
+      inventory.remove(item);
+      inventory.add(heldItem);
+      heldItem = item;
+
+      } catch (NullPointerException e) {
+      System.out.println("Null in the hand");
+      }
     }
     
     public void grabItem(Node shootables, Camera cam,Player player) {
@@ -91,17 +93,19 @@ public  Player                 player;
        Ray grabRay = new Ray(cam.getLocation(), cam.getDirection());
        shootables.collideWith(grabRay, grabResults);
        String grabbedItem;
-
+       System.out.println(player.Model.getChildren());
+ 
        if (grabResults.size() > 0) {
          grabbedItem = grabResults.getCollision(0).getGeometry().getName();
+
          } else {
          grabbedItem = "air";
-       }
+         }
         
         if(grabbedItem.equals("Billy")){
           player.inventoryAddItem(grabbedItem, player);
-          System.out.println("Youve shot BILLY! WHY!" + player  +  Model);
           player.Model.attachChild(grabResults.getCollision(0).getGeometry());
+          grabResults.getCollision(0).getGeometry().setLocalTranslation(0, -10, 0);
           }
         
         if(grabbedItem.equals("Gun")){
@@ -109,14 +113,9 @@ public  Player                 player;
           System.out.println("That's a gun!");
           CollisionResult grabbed = grabResults.getCollision(0);
           player.Model.attachChild(grabbed.getGeometry());
-          grabbed.getGeometry().setLocalScale(.3f);
-          grabbed.getGeometry().setLocalRotation
-                  (new Matrix3f(1f, 5f, 5f, 1f, 1f, 1f, 1f, 5f, 1f));
-          grabbed.getGeometry().setLocalTranslation(-1f, 5f, 2.5f);
+          grabbed.getGeometry().setLocalTranslation(0, -10, 0);
           
-        }
-        
-    
+          }      
     }
    
     
@@ -140,21 +139,22 @@ public  Player                 player;
     
     public void Attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim){
         
-        if(player != null){
-        if(player.getItemInHand().equals("Gun")){
+        try {
 
+        if(player.getItemInHand().equals("Gun")){
           System.out.println("Shootbang!");
 
           } else {
           System.out.println("Puncharoonie!");
           String armAnim = "Punch";
-          player.Model.getChild(1).setLocalTranslation(0f, 0f, 0f);
           animInteract.animChange(armAnim, legAnim);
-          
           }
-        } else {
-        System.out.println("Not Player because he is " + player);
-        }
+
+       } catch (NullPointerException e) {
+          System.out.println("Puncharoonie!");
+          String armAnim = "Punch";
+          animInteract.animChange(armAnim, legAnim);
+       }
     }
     
     public void Jump(BetterCharacterControl playerControl){

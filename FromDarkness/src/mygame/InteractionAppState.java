@@ -38,6 +38,7 @@ private boolean             left = false, right = false, up = false, down = fals
 
 private boolean             initInteraction = false;
 private boolean             shoot = false;
+private boolean             inventory = false;
 
 public Node                 sceneModel;
 public String               armAnim;
@@ -91,6 +92,7 @@ public  GUI                 GUI;
     inputManager.addListener(this, "Up");
     inputManager.addListener(this, "Down");
     inputManager.addListener(this, "Jump");
+    
   }
   
 
@@ -106,6 +108,7 @@ public  GUI                 GUI;
     } else if (binding.equals("Up")) {
       
       up = isPressed;
+
       if (isPressed){
         armAnim = "UnarmedRun";
         legAnim = "RunAction";
@@ -117,9 +120,8 @@ public  GUI                 GUI;
         animInteract.animChange(armAnim, legAnim);
         }
 
-      
+
     } else if (binding.equals("Down")) {
-        
       down = isPressed;
       
     } else if (binding.equals("Jump")) {
@@ -149,8 +151,15 @@ public  GUI                 GUI;
     } else if (binding.equals("FlashLight") && !isPressed){
             lightInteract.flashlightOn();
         
-    } else if (binding.equals("Inventory") && !isPressed) {
+    } else if (binding.equals("Inventory")) {
+            inventory = isPressed;
             player.getInventory(player, GUI);
+
+            if (isPressed) {
+            inputManager.setCursorVisible(true);
+            } else {
+            inputManager.setCursorVisible(false);
+            }
 
     }
   }
@@ -176,9 +185,9 @@ public  GUI                 GUI;
         }
        if(initInteraction){
        playerControl.setWalkDirection(walkDirection);
-       //cam.setLocation(model.getLocalTranslation().add(-1f, 5f, 0f));
        
        }
+       playerControl.setViewDirection(camDir);
     }
 }
     

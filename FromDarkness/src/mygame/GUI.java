@@ -12,7 +12,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.math.Transform;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.ButtonAdapter;
@@ -53,7 +52,7 @@ public class GUI extends AbstractAppState {
         startMenu();
     }
     
-        /** Start Meu Stuff **/
+        /** Start Menu Stuff **/
         
         
       public void startMenu(){  
@@ -190,6 +189,8 @@ public class GUI extends AbstractAppState {
         @Override
         public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
             billyEquip(player, GUI);
+           AnimationAppState animation = new AnimationAppState();
+            animation.billyEquip(player);
         }
       };
       inventoryMenu.addChild(billyButton);

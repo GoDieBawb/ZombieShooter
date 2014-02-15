@@ -28,6 +28,7 @@ public class Monster extends AbstractAppState {
   public    Node                   rootNode;
   public    ArrayList<Monster>     monsterList;
   public    AnimationAppState      anim;
+  public    Player                 player;
     
   @Override
   public void initialize(AppStateManager stateManager, Application app) {
@@ -39,6 +40,8 @@ public class Monster extends AbstractAppState {
     this.physics      = this.stateManager.getState(BulletAppState.class);
     this.rootNode     = this.app.getRootNode();
     this.anim         = this.stateManager.getState(AnimationAppState.class);
+    this.player        = this.stateManager.getState(Player.class).player;
+    monsterList = new ArrayList<Monster>();
     createMonster();
     }
     
@@ -55,9 +58,8 @@ public class Monster extends AbstractAppState {
             int firstNumber = rand.nextInt(150) + 5; 
             int secondNumber = rand.nextInt(150) + 5;
             monster.Model.setLocalTranslation(firstNumber, 0f, secondNumber);
-            AnimationAppState anim = new AnimationAppState();
+            anim = new AnimationAppState();
             anim.animationInit(monster.Model, mat);
-            monsterList = new ArrayList<Monster>();
             monsterList.add(monster);
             rootNode.attachChild(monster.Model);
         }
@@ -65,9 +67,15 @@ public class Monster extends AbstractAppState {
     
   @Override
     public void update(float tpf){
-      System.out.println(monsterList.size());
       for (int i = 0; i < monsterList.size(); i++) {
-        System.out.println(monsterList.get(i));
+        float distance = monsterList.get(i).Model.getLocalTranslation().distance(player.Model.getLocalTranslation());
+
+        if (distance < 3) {
+         System.out.println(distance);
+         anim.animChange("Punch", "StillLegs", monsterList.get(i).Model);
+         } else {
+         anim.animChange("StillArms", "StillLegs", monsterList.get(i).Model);
+         }
         
         }
       }

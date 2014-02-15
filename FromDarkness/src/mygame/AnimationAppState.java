@@ -36,9 +36,6 @@ public String             armAnim;
 public String             legAnim;
 
 public Player             player;
-//public AnimChannel        armChannel;
-//public AnimChannel        legChannel;
-//public AnimControl        animControl;
 public SkeletonControl    skelControl;
 
     
@@ -67,16 +64,7 @@ public SkeletonControl    skelControl;
     armChannel.addFromRootBone("TopSPine");
     armChannel.setAnim("StillArms");
     legChannel.setAnim("StillLegs");
-    
-      // add a skeleton debugger to make bones visible
-      Skeleton skel = animControl.getSkeleton();
-      SkeletonDebugger skeletonDebug = new SkeletonDebugger("skeleton",skel);
-      //Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-      //mat.setColor("Color", ColorRGBA.Green);
-      //mat.getAdditionalRenderState().setDepthTest(false);
-      skeletonDebug.setMaterial(mat);
-      ((Node) animControl.getSpatial()).attachChild(skeletonDebug);
-      System.out.println("Animations Initialized");
+    System.out.println("Animations Initialized");
 
  }
 
@@ -84,10 +72,16 @@ public SkeletonControl    skelControl;
       AnimControl animControl = findAnimControl(model);
       AnimChannel legChannel = animControl.getChannel(0);
       AnimChannel armChannel = animControl.getChannel(1);
-      armChannel.setAnim(armAnim);
-      armChannel.setLoopMode(LoopMode.Loop);
-      legChannel.setAnim(legAnim);
-      legChannel.setLoopMode(LoopMode.Loop);
+      
+      if (!armChannel.getAnimationName().equals(armAnim)) {
+        armChannel.setAnim(armAnim);
+        armChannel.setLoopMode(LoopMode.Loop);
+        }
+      
+      if (!legChannel.getAnimationName().equals(legAnim)) {
+        legChannel.setAnim(legAnim);
+        legChannel.setLoopMode(LoopMode.Loop);
+        }
      }
     
     

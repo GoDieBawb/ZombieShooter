@@ -12,6 +12,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.material.Material;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -65,6 +66,10 @@ public class Monster extends AbstractAppState {
         }
     }
     
+    public void monsterAttack(Spatial monster) {
+      anim.animChange("Punch", "StillLegs", monster);
+      }
+    
   @Override
     public void update(float tpf){
       for (int i = 0; i < monsterList.size(); i++) {
@@ -72,7 +77,7 @@ public class Monster extends AbstractAppState {
 
         if (distance < 3) {
          System.out.println(distance);
-         anim.animChange("Punch", "StillLegs", monsterList.get(i).Model);
+         monsterAttack(monsterList.get(i).Model);
          } else {
          anim.animChange("StillArms", "StillLegs", monsterList.get(i).Model);
          }

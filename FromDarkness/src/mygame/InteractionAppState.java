@@ -76,7 +76,7 @@ public ChaseCamera          chaseCam;
     initInteraction = true;
   }
   
-    private void setUpKeys() {
+  private void setUpKeys() {
     inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
     inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
@@ -115,12 +115,12 @@ public ChaseCamera          chaseCam;
       if (isPressed){
         armAnim = "UnarmedRun";
         legAnim = "RunAction";
-        animInteract.animChange(armAnim, legAnim);
+        animInteract.animChange(armAnim, legAnim, player.Model);
         
         } else {
         armAnim = "StillArms";
         legAnim = "StillLegs";
-        animInteract.animChange(armAnim, legAnim);
+        animInteract.animChange(armAnim, legAnim, player.Model);
         }
 
 
@@ -139,29 +139,29 @@ public ChaseCamera          chaseCam;
         } else {
         armAnim = "StillArms";
         legAnim = "StillLegs";
-        animInteract.animChange(armAnim, legAnim);
+        animInteract.animChange(armAnim, legAnim, player.Model);
         }
         
     } else if (binding.equals("Grab") && !isPressed) {
-            player.grabItem(shootables, cam, player);
+      player.grabItem(shootables, cam, player);
         
           
     } else if (binding.equals("FlashLight") && !isPressed){
-            lightInteract.flashlightOn();
+      lightInteract.flashlightOn();
         
     } else if (binding.equals("Inventory")) {
-            inventory = isPressed;
-            player.getInventory(player, GUI);
+      inventory = isPressed;
+       player.getInventory(player, GUI);
             
 
-            if (isPressed) {
-            inputManager.setCursorVisible(true);
-            chaseCam.setDragToRotate(true);
+      if (isPressed) {
+        inputManager.setCursorVisible(true);
+        chaseCam.setDragToRotate(true);
             
-            } else {
-            inputManager.setCursorVisible(false);
-            chaseCam.setDragToRotate(false);
-            }
+        } else {
+        inputManager.setCursorVisible(false);
+        chaseCam.setDragToRotate(false);
+        }
 
     }
   }

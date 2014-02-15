@@ -36,9 +36,9 @@ public String             armAnim;
 public String             legAnim;
 
 public Player             player;
-public AnimChannel        armChannel;
-public AnimChannel        legChannel;
-public AnimControl        animControl;
+//public AnimChannel        armChannel;
+//public AnimChannel        legChannel;
+//public AnimControl        animControl;
 public SkeletonControl    skelControl;
 
     
@@ -53,42 +53,48 @@ public SkeletonControl    skelControl;
     this.armAnim      = this.stateManager.getState(InteractionAppState.class).armAnim;
     this.legAnim      = this.stateManager.getState(InteractionAppState.class).legAnim;
     
-    animationInit();
+    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    animationInit(player.Model, mat);
     }
     
-    public void animationInit(){
-          
-    animControl = findAnimControl(player.Model);
-    legChannel  = animControl.createChannel();
+    public void animationInit(Spatial Model, Material mat){
+       
+    System.out.println("Asset Manager " + assetManager);    
+    AnimControl animControl = findAnimControl(Model);
+    AnimChannel legChannel  = animControl.createChannel();
     legChannel.addFromRootBone("BottomSpine") ;
-    armChannel  = animControl.createChannel();
+    AnimChannel armChannel  = animControl.createChannel();
     armChannel.addFromRootBone("TopSPine");
+    armChannel.setAnim("StillArms");
+    legChannel.setAnim("StillLegs");
     
       // add a skeleton debugger to make bones visible
-      final Skeleton skel = animControl.getSkeleton();
-      final SkeletonDebugger skeletonDebug = new SkeletonDebugger("skeleton",skel);
-      final Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-      mat.setColor("Color", ColorRGBA.Green);
-      mat.getAdditionalRenderState().setDepthTest(false);
+      Skeleton skel = animControl.getSkeleton();
+      SkeletonDebugger skeletonDebug = new SkeletonDebugger("skeleton",skel);
+      //Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+      //mat.setColor("Color", ColorRGBA.Green);
+      //mat.getAdditionalRenderState().setDepthTest(false);
       skeletonDebug.setMaterial(mat);
       ((Node) animControl.getSpatial()).attachChild(skeletonDebug);
       System.out.println("Animations Initialized");
 
  }
 
-    public void animChange(String armAnim, String legAnim){
+    public void animChange(String armAnim, String legAnim, Spatial model){
+      AnimControl animControl = findAnimControl(model);
+      AnimChannel legChannel = animControl.getChannel(0);
+      AnimChannel armChannel = animControl.getChannel(1);
       armChannel.setAnim(armAnim);
       armChannel.setLoopMode(LoopMode.Loop);
       legChannel.setAnim(legAnim);
       legChannel.setLoopMode(LoopMode.Loop);
-    
-    }
+     }
     
     
     
     public AnimControl findAnimControl(final Spatial parent){
     
-    animControl = parent.getControl(AnimControl.class);
+    AnimControl animControl = parent.getControl(AnimControl.class);
     if (animControl != null) {
       return animControl;
     }

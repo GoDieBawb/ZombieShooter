@@ -91,6 +91,7 @@ public class GUI extends AbstractAppState {
     stateManager.attach(new LightingAppState());
     stateManager.attach(new InteractionAppState());
     stateManager.attach(new AnimationAppState());
+    stateManager.attach(new Monster());
 
     GUI.handMenu = 
             new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
@@ -126,12 +127,10 @@ public class GUI extends AbstractAppState {
       for(int i = 0; i < player.inventory.size(); i++){
         measure = 50f * i + 30;
         inventoryCount = "Button" + i;
-        System.out.println(inventoryCount + player.inventory.toString() );
         
         try {
         buttonTeller(player.inventory.get(i).toString(), GUI, player);
           } catch (NullPointerException e) {
-          System.out.println("Null in the inventory");
           }
         }
       

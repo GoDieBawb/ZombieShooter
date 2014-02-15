@@ -147,13 +147,13 @@ public  Player                 player;
           } else {
           System.out.println("Puncharoonie!");
           String armAnim = "Punch";
-          animInteract.animChange(armAnim, legAnim);
+          animInteract.animChange(armAnim, legAnim, player.Model);
           }
 
        } catch (NullPointerException e) {
           System.out.println("Puncharoonie!");
           String armAnim = "Punch";
-          animInteract.animChange(armAnim, legAnim);
+          animInteract.animChange(armAnim, legAnim, player.Model);
        }
     }
     

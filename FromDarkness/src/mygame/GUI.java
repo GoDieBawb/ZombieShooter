@@ -76,9 +76,7 @@ public class GUI extends AbstractAppState {
           };
         makeWindow.setText("Start Game");
  
-        // Add it to out initial window
         startMenu.addChild(makeWindow);
-        // Add window to the screen
         GUI.screen.addElement(startMenu);
         startMenu.setLocalTranslation(350f, 350f, 350f);
      }
@@ -105,17 +103,14 @@ public class GUI extends AbstractAppState {
     
     GUI.inventoryMenu = 
             new Window(GUI.screen, "HandWindow", new Vector2f(15f, 15f));
+   
   
       GUI.screen.addElement(GUI.inventoryMenu);
       GUI.inventoryMenu.setDimensions(new Vector2f(200, 250));
       GUI.inventoryMenu.setIsVisible(false);
     }
   
-  
-  
-  
-  
-  
+
 
   
     /** Inventory Menu Stuff **/
@@ -124,11 +119,8 @@ public class GUI extends AbstractAppState {
     //Set up a new window to list the inventory
     public void inventoryWindow(Player player, GUI GUI) {
       
-     if (GUI.inventoryMenu.getIsVisible()) {
+      GUI.inventoryMenu.setLocalTranslation(5f, 340f, 5f);
       GUI.inventoryMenu.removeAllChildren();
-      GUI.inventoryMenu.setIsVisible(false);
-
-      } else {
       
       //For each item in the inventory add a button
       for(int i = 0; i < player.inventory.size(); i++){
@@ -147,9 +139,8 @@ public class GUI extends AbstractAppState {
       GUI.inventoryMenu.setWindowTitle("Inventory Window");
       GUI.inventoryMenu.setIsVisible(true);
       }
-    }
+    
   
-
   
 
 /** Inventory Item Button Adapters **/

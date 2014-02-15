@@ -5,6 +5,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
+import com.jme3.input.ChaseCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -48,6 +49,7 @@ private LightingAppState    lightInteract;
 
 public Player               player;
 public  GUI                 GUI;
+public ChaseCamera          chaseCam;
 
     
   @Override
@@ -65,6 +67,7 @@ public  GUI                 GUI;
     this.lightInteract = this.stateManager.getState(LightingAppState.class);
     this.player        = this.stateManager.getState(Player.class).player;
     this.GUI           = this.stateManager.getState(GUI.class).GUI;
+    this.chaseCam      = this.stateManager.getState(CameraAppState.class).chaseCam;
     
     System.out.println("Interat GUI is " + GUI);
     setUpKeys();
@@ -124,12 +127,8 @@ public  GUI                 GUI;
     } else if (binding.equals("Down")) {
       down = isPressed;
       
-    } else if (binding.equals("Jump")) {
-        
-      if (isPressed) {         
+    } else if (binding.equals("Jump")) {          
       player.Jump(playerControl);
-      System.out.println("Jumping");
-      }
       
     } else if (binding.equals("Shoot")) {
         
@@ -145,7 +144,6 @@ public  GUI                 GUI;
         
     } else if (binding.equals("Grab") && !isPressed) {
             player.grabItem(shootables, cam, player);
-            System.out.println("You've grabbed");
         
           
     } else if (binding.equals("FlashLight") && !isPressed){
@@ -154,11 +152,15 @@ public  GUI                 GUI;
     } else if (binding.equals("Inventory")) {
             inventory = isPressed;
             player.getInventory(player, GUI);
+            
 
             if (isPressed) {
             inputManager.setCursorVisible(true);
+            chaseCam.setDragToRotate(true);
+            
             } else {
             inputManager.setCursorVisible(false);
+            chaseCam.setDragToRotate(false);
             }
 
     }
@@ -167,7 +169,7 @@ public  GUI                 GUI;
     @Override
     public void update(float tpf) {
         
-      
+        GUI.inventoryWindow(player, GUI);
         camDir.set(cam.getDirection()).multLocal(10.0f, 0.0f, 10.0f);
         camLeft.set(cam.getLeft()).multLocal(10.0f);
         walkDirection.set(0, 0, 0);

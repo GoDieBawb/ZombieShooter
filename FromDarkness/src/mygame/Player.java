@@ -36,6 +36,9 @@ public  BetterCharacterControl playerControl;
 public  ArrayList              inventory;
 public  String                 heldItem;
 public  Player                 player;
+public  int                    playerHealth;
+
+
 
   @Override
   public void initialize(AppStateManager stateManager, Application app) {
@@ -52,30 +55,45 @@ public  Player                 player;
    }
   
 
+  
+  
     public void initPlayer() {
       player = new Player();
       player.inventory = new ArrayList<String>();
        
-       playerControl = new BetterCharacterControl(1f, 5f, 1f);
+       player.playerControl = new BetterCharacterControl(1f, 5f, 1f);
       
        player.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
-      
+       player.playerHealth = 20;
        player.Model.setLocalTranslation(0f, 0f, 0f);
        player.Model.setLocalScale(.7f);
-       player.Model.addControl(playerControl);
+       player.Model.addControl(player.playerControl);
 
-       playerControl.setGravity(new Vector3f(0f,-9.81f,0f));
-       playerControl.setJumpForce(new Vector3f(0f,5f,0f));
+       player.playerControl.setGravity(new Vector3f(0f,-9.81f,0f));
+       player.playerControl.setJumpForce(new Vector3f(0f,5f,0f));
   
-       physics.getPhysicsSpace().add(playerControl);
+       physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
        System.out.println("Player State Attached");
        
     }
     
+    
+    public int getHealth(Player player){
+      return player.playerHealth;
+      }
+    
+    public void changeHealth(Player player, int change){
+      int currentHealth = player.getHealth(player);
+      player.playerHealth = currentHealth + change;
+      }
+    
+    
     public String getItemInHand() {
       return heldItem;
     }
+    
+    
     
     public void setItemInHand(String item, Player player) {
       try {
@@ -87,6 +105,8 @@ public  Player                 player;
       System.out.println("Null in the hand");
       }
     }
+    
+    
     
     public void grabItem(Node shootables, Camera cam,Player player) {
        CollisionResults grabResults = new CollisionResults();
@@ -119,10 +139,12 @@ public  Player                 player;
     }
    
     
+    
     public ArrayList getInventory(Player player, GUI GUI) {
       GUI.inventoryWindow(player, GUI);
       return player.inventory;
       }
+    
     
     
     public void inventoryAddItem(String item, Player player) {
@@ -137,25 +159,43 @@ public  Player                 player;
     
     }
     
-    public void Attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim){
+    
+    public void Attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode){
+        
+        int range;
+        int damage;
         
         try {
 
         if(player.getItemInHand().equals("Gun")){
           System.out.println("Shootbang!");
+          range = 20;
+          damage = 5;
 
           } else {
           System.out.println("Puncharoonie!");
           String armAnim = "Punch";
+          range = 4;
+          damage = 1;
           animInteract.animChange(armAnim, legAnim, player.Model);
           }
 
        } catch (NullPointerException e) {
           System.out.println("Puncharoonie!");
           String armAnim = "Punch";
+          range = 4;
+          damage = 1;
           animInteract.animChange(armAnim, legAnim, player.Model);
        }
-    }
+        
+       CollisionResults attackResults = new CollisionResults();
+       Ray attackRay = new Ray(cam.getLocation(), cam.getDirection());
+       monsterNode.collideWith(attackRay, attackResults);
+       
+       for(int i = 0; i < attackResults.size(); i++) {
+         System.out.println(attackResults.getCollision(i).getGeometry().getParent().getClass());
+         }
+       }
     
     public void Jump(BetterCharacterControl playerControl){
         playerControl.jump();

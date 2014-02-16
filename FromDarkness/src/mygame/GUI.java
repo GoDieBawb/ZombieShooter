@@ -86,12 +86,12 @@ public class GUI extends AbstractAppState {
     physics = new BulletAppState();
     stateManager.attach(physics);
     stateManager.attach(new Player());
+    stateManager.attach(new Monster());
     stateManager.attach(new physicalAppState());
     stateManager.attach(new CameraAppState());
     stateManager.attach(new LightingAppState());
     stateManager.attach(new InteractionAppState());
     stateManager.attach(new AnimationAppState());
-    stateManager.attach(new Monster());
 
     GUI.handMenu = 
             new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
@@ -99,6 +99,7 @@ public class GUI extends AbstractAppState {
       GUI.screen.addElement(GUI.handMenu);
       GUI.handMenu.setDimensions(new Vector2f(100, 100));
       GUI.handMenu.setIsResizable(false);
+      GUI.handMenu.setIsMovable(true);
       GUI.handMenu.setLocalTranslation(5f, 5f, 500f);
     
     

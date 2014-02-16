@@ -42,6 +42,7 @@ private boolean             shoot = false;
 private boolean             inventory = false;
 
 public Node                 sceneModel;
+public Node                 monsterNode;
 public String               armAnim;
 public String               legAnim;
 private AnimationAppState   animInteract;
@@ -62,7 +63,8 @@ public ChaseCamera          chaseCam;
     this.viewPort      = this.app.getViewPort();
     this.cam           = this.app.getCamera();
     this.shootables    = this.stateManager.getState(physicalAppState.class).shootables;
-    this.playerControl = this.stateManager.getState(Player.class).playerControl;
+    this.monsterNode   = this.stateManager.getState(Monster.class).monsterNode;
+    //this.playerControl = this.stateManager.getState(Player.class).playerControl;
     this.animInteract  = this.stateManager.getState(AnimationAppState.class);
     this.lightInteract = this.stateManager.getState(LightingAppState.class);
     this.player        = this.stateManager.getState(Player.class).player;
@@ -128,13 +130,13 @@ public ChaseCamera          chaseCam;
       down = isPressed;
       
     } else if (binding.equals("Jump")) {          
-      player.Jump(playerControl);
+      player.Jump(player.playerControl);
       
     } else if (binding.equals("Shoot")) {
         
         shoot = isPressed;
         if (isPressed){
-        player.Attack(cam, player, animInteract, legAnim);
+        player.Attack(cam, player, animInteract, legAnim, monsterNode);
         
         } else {
         armAnim = "StillArms";
@@ -186,10 +188,10 @@ public ChaseCamera          chaseCam;
             walkDirection.addLocal(camDir.negate());
         }
        if(initInteraction){
-       playerControl.setWalkDirection(walkDirection);
+       player.playerControl.setWalkDirection(walkDirection);
        
        }
-       playerControl.setViewDirection(camDir);
+       player.playerControl.setViewDirection(camDir);
     }
 }
     

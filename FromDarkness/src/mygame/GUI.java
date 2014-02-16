@@ -86,7 +86,7 @@ public class GUI extends AbstractAppState {
     physics = new BulletAppState();
     stateManager.attach(physics);
     stateManager.attach(new Player());
-    stateManager.attach(new Monster());
+    stateManager.attach(new MonsterManager());
     stateManager.attach(new physicalAppState());
     stateManager.attach(new CameraAppState());
     stateManager.attach(new LightingAppState());

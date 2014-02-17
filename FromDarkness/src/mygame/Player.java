@@ -193,7 +193,7 @@ public  int                    playerHealth;
        monsterNode.collideWith(attackRay, attackResults);
        
        for(int i = 0; i < attackResults.size(); i++) {
-         System.out.println(attackResults.getCollision(i).getGeometry().getParent().getParent());
+         System.out.println(attackResults.getCollision(i).getGeometry().getParent().getParent().getParent());
          }
        }
     

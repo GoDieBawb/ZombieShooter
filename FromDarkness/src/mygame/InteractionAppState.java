@@ -64,7 +64,6 @@ public ChaseCamera          chaseCam;
     this.cam           = this.app.getCamera();
     this.shootables    = this.stateManager.getState(physicalAppState.class).shootables;
     this.monsterNode   = this.stateManager.getState(MonsterManager.class).monsterNode;
-    //this.playerControl = this.stateManager.getState(Player.class).playerControl;
     this.animInteract  = this.stateManager.getState(AnimationAppState.class);
     this.lightInteract = this.stateManager.getState(LightingAppState.class);
     this.player        = this.stateManager.getState(Player.class).player;

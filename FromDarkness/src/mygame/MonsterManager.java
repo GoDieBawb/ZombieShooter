@@ -56,7 +56,6 @@ public class MonsterManager extends AbstractAppState {
        monster.monsterControl = new BetterCharacterControl(1f, 5f, 1f);
        System.out.println("Asset Manager " + assetManager);
        monster.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
-       monster.attachChild(monster.Model);
        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"); 
        monster.Model.setMaterial(mat);
        monster.Model.setLocalScale(.7f);
@@ -66,9 +65,11 @@ public class MonsterManager extends AbstractAppState {
        monster.anim.animationInit(monster.Model, mat);
        physics.getPhysicsSpace().add(monster.monsterControl);
        rootNode.attachChild(monster.Model);
+       monster.attachChild(monster.Model);
        monsterNode.attachChild(monster);
        monsterList.add(monster);
        monster.monsterSetLocation(monster);
+       System.out.println(monsterNode.getChildren());
     }
   
     @Override

@@ -37,6 +37,7 @@ public  ArrayList              inventory;
 public  String                 heldItem;
 public  Player                 player;
 public  int                    playerHealth;
+public  int                    killCount;
 
 
 
@@ -54,8 +55,6 @@ public  int                    playerHealth;
    
    }
   
-
-  
   
     public void initPlayer() {
       player = new Player();
@@ -71,6 +70,8 @@ public  int                    playerHealth;
 
        player.playerControl.setGravity(new Vector3f(0f,-9.81f,0f));
        player.playerControl.setJumpForce(new Vector3f(0f,5f,0f));
+       
+       player.killCount = 0;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
@@ -85,8 +86,13 @@ public  int                    playerHealth;
     
     public void changeHealth(Player player, int change){
       int currentHealth = player.getHealth(player);
-      player.playerHealth = currentHealth + change;
-      }
+      if (currentHealth > 0) {
+        player.playerHealth = currentHealth + change;
+        //System.out.println(currentHealth);
+        } else {
+        //System.out.println("Player Death");
+        }
+    }
     
     
     public String getItemInHand() {
@@ -122,21 +128,20 @@ public  int                    playerHealth;
          grabbedItem = "air";
          }
         
-        if(grabbedItem.equals("Billy")){
-          player.inventoryAddItem(grabbedItem, player);
-          player.Model.attachChild(grabResults.getCollision(0).getGeometry());
-          grabResults.getCollision(0).getGeometry().setLocalTranslation(0, -10, 0);
-          }
+       if(grabbedItem.equals("Billy")){
+         player.inventoryAddItem(grabbedItem, player);
+         player.Model.attachChild(grabResults.getCollision(0).getGeometry());
+         grabResults.getCollision(0).getGeometry().setLocalTranslation(0, -10, 0);
+         }
         
-        if(grabbedItem.equals("Gun")){
-          player.inventoryAddItem(grabbedItem, player);
-          System.out.println("That's a gun!");
-          CollisionResult grabbed = grabResults.getCollision(0);
-          player.Model.attachChild(grabbed.getGeometry());
-          grabbed.getGeometry().setLocalTranslation(0, -10, 0);
-          
+       if(grabbedItem.equals("Gun")){
+         player.inventoryAddItem(grabbedItem, player);
+         System.out.println("That's a gun!");
+         CollisionResult grabbed = grabResults.getCollision(0);
+         player.Model.attachChild(grabbed.getGeometry());
+         grabbed.getGeometry().setLocalTranslation(0, -10, 0);
           }      
-    }
+        }
    
     
     
@@ -151,51 +156,64 @@ public  int                    playerHealth;
       int inventoryLimit = 10;
       if(player.inventory.size() < inventoryLimit){
         player.inventory.add(item);
-         System.out.println("added " + item + " to " + player);
+        System.out.println("added " + item + " to " + player);
 
         } else {
         System.out.println("There is no more room in your inventory" + player.inventory.size());
         }
-    
-    }
+      }
     
     
     public void Attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode){
+      int range;
+      int damage;
         
-        int range;
-        int damage;
-        
-        try {
-
+      if (player.getItemInHand() != null)
         if(player.getItemInHand().equals("Gun")){
           System.out.println("Shootbang!");
           range = 20;
-          damage = 5;
+          damage = -8;
 
           } else {
-          System.out.println("Puncharoonie!");
           String armAnim = "Punch";
           range = 4;
-          damage = 1;
+          damage = -3;
           animInteract.animChange(armAnim, legAnim, player.Model);
-          }
-
-       } catch (NullPointerException e) {
-          System.out.println("Puncharoonie!");
-          String armAnim = "Punch";
-          range = 4;
-          damage = 1;
-          animInteract.animChange(armAnim, legAnim, player.Model);
-       }
-        
+          
+        } else {
+        String armAnim = "Punch";
+        range = 4;
+        damage = -3;
+        animInteract.animChange(armAnim, legAnim, player.Model);
+        }
+      
        CollisionResults attackResults = new CollisionResults();
        Ray attackRay = new Ray(cam.getLocation(), cam.getDirection());
        monsterNode.collideWith(attackRay, attackResults);
-       
-       for(int i = 0; i < attackResults.size(); i++) {
-         System.out.println(attackResults.getCollision(i).getGeometry().getParent().getParent().getParent());
-         }
+
+        
+       try {
+         Monster monster = (Monster) attackResults.getCollision(0).getGeometry().getParent().getParent().getParent();
+         Vector3f monsterLocation = monster.Model.getLocalTranslation();
+         Vector3f playerLocation  = player.Model.getLocalTranslation();
+         float distance = playerLocation.distance(monsterLocation);
+         System.out.println("hit" + monster + " at " + distance);
+         if (distance <= range) {
+           monster.changeHealth(monster, damage, player);
+           }
+       } catch (IndexOutOfBoundsException i) {
+       System.out.println("Missed attack");
        }
+     }
+    
+    public int getKillCount(Player player){
+      return player.killCount;
+      }
+    
+    public void changeKillCount(Player player, int change) {
+      player.killCount = player.killCount + change;
+      System.out.println("Kill Count: " + player.killCount);
+      }
     
     public void Jump(BetterCharacterControl playerControl){
         playerControl.jump();

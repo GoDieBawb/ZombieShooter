@@ -4,18 +4,10 @@
  */
 package mygame;
 
-import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.BetterCharacterControl;
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -23,24 +15,28 @@ import java.util.Random;
  * @author Bob
  */
 public class Monster extends Node {
-  public    SimpleApplication      app;
-  public    AppStateManager        stateManager;
-  public    AssetManager           assetManager;
-  public    BulletAppState         physics;
   public    Node                   Model;
-  public    Node                   rootNode;
   public    AnimationAppState      anim;
   public    Player                 player;
-  public    int                    monsterHealth;
+  public    int                    health;
   public    BetterCharacterControl monsterControl;
     
     public int getHealth(Monster monster){
-      return monster.monsterHealth;
+      return monster.health;
       }
     
-    public void changeHealth(Monster monster, int change){
+    public void changeHealth(Monster monster, int change, Player player){
+      System.out.println("Target Health: " + monster.getHealth(monster));
       int currentHealth = monster.getHealth(monster);
-      monster.monsterHealth = currentHealth - change;
+      if (currentHealth > 0)
+      monster.health = currentHealth + change;
+      else
+      Die(monster, player);
+      }
+    
+    public void Die(Monster monster, Player player) {
+      player.changeKillCount(player, 1);
+      monster.removeFromParent();
       }
     
     public void monsterSetLocation(Monster monster) {
@@ -56,12 +52,7 @@ public class Monster extends Node {
     
     public void monsterAttack(Spatial monster, Player player) {
       anim.animChange("Punch", "StillLegs", monster);
-      System.out.println(player.getHealth(player));
-      if (player.getHealth(player) > 0) {
-        player.changeHealth(player, -3);
-        } else {
-        System.out.println("Death");
-        }
+      player.changeHealth(player, -3);
       }
     
 }

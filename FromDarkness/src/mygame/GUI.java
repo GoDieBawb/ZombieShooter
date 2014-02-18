@@ -13,9 +13,11 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
+import tonegod.gui.core.Element;
 import tonegod.gui.core.Screen;
 
 /**
@@ -36,7 +38,11 @@ public class GUI extends AbstractAppState {
     private Window            startMenu;
     private Window            inventoryMenu;
     private Window            handMenu;
+    private Window            HUD;
     private String            inventoryCount;
+    private Element           killDisplay;
+    private Element           healthBar;
+    private Element           ammoDisplay;
     
     private float             measure;
 
@@ -101,25 +107,57 @@ public class GUI extends AbstractAppState {
       GUI.handMenu.setIsResizable(false);
       GUI.handMenu.setIsMovable(true);
       GUI.handMenu.setLocalTranslation(5f, 5f, 500f);
+      
+    GUI.HUD =
+          new Window(GUI.screen, "HudWindow", new Vector2f(15f, 15f));
     
+    GUI.screen.addElement(GUI.HUD);
+    GUI.HUD.setDimensions(new Vector2f(200, 275));
+    GUI.HUD.setLocalTranslation(500f, 5f, 500f);
+    initializeHUD();
     
     GUI.inventoryMenu = 
             new Window(GUI.screen, "HandWindow", new Vector2f(15f, 15f));
    
-  
       GUI.screen.addElement(GUI.inventoryMenu);
       GUI.inventoryMenu.setDimensions(new Vector2f(200, 250));
       GUI.inventoryMenu.setIsVisible(false);
     }
   
-
+  /** HUD Menu Stuff **/
+    public void updateHUDWindow(Player player, GUI GUI){
+      String currentHealth = String.valueOf(player.getHealth(player));
+      String currentAmmo = String.valueOf(100);
+      String killCount = String.valueOf(player.getKillCount(player));
+      GUI.healthBar.setText(currentHealth);
+      GUI.ammoDisplay.setText(currentAmmo);
+      GUI.killDisplay.setText(killCount);
+      }
+    
+    public void initializeHUD(){
+    GUI.healthBar 
+     = new Element(GUI.screen,"healthBar",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Face.png"
+    );
+    GUI.ammoDisplay
+     = new Element(GUI.screen,"ammoDisplay",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Coin.png"
+    );
+    GUI.killDisplay
+     = new Element(GUI.screen,"killDisplay",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/splatter.png"
+    );
+    GUI.HUD.addChild(GUI.healthBar);
+    GUI.HUD.addChild(GUI.ammoDisplay);
+    GUI.HUD.addChild(GUI.killDisplay);
+    GUI.killDisplay.setLocalTranslation(50f, 0f, 100f);
+    GUI.ammoDisplay.setLocalTranslation(50f, 90f, 100f);
+    GUI.healthBar.setLocalTranslation(50f, 180f, 100f);
+    }
 
   
     /** Inventory Menu Stuff **/
     
  
     //Set up a new window to list the inventory
-    public void inventoryWindow(Player player, GUI GUI) {
+    public void updateInventoryWindow(Player player, GUI GUI) {
       
       GUI.inventoryMenu.setLocalTranslation(5f, 340f, 5f);
       GUI.inventoryMenu.removeAllChildren();
@@ -230,4 +268,5 @@ public class GUI extends AbstractAppState {
      GUI.handMenu.setText("Air");
      player.setItemInHand("Air", player);
     }
+  
 }

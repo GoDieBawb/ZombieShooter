@@ -75,7 +75,7 @@ public  int                    killCount;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
-       System.out.println("Player State Attached");
+       System.out.println("Player State Attached" + player.getHealth(player));
        
     }
     
@@ -146,7 +146,7 @@ public  int                    killCount;
     
     
     public ArrayList getInventory(Player player, GUI GUI) {
-      GUI.inventoryWindow(player, GUI);
+      GUI.updateInventoryWindow(player, GUI);
       return player.inventory;
       }
     

@@ -170,7 +170,8 @@ public ChaseCamera          chaseCam;
     @Override
     public void update(float tpf) {
         
-        GUI.inventoryWindow(player, GUI);
+         GUI.updateInventoryWindow(player, GUI);
+         GUI.updateHUDWindow(player, GUI);
         camDir.set(cam.getDirection()).multLocal(10.0f, 0.0f, 10.0f);
         camLeft.set(cam.getLeft()).multLocal(10.0f);
         walkDirection.set(0, 0, 0);

@@ -47,9 +47,19 @@ public class MonsterManager extends AbstractAppState {
     
     }
   
+    public void creationChecker(Player player, Node monsterNode){
+      monsterCount = player.getKillCount(player) * 2;
+      if (monsterCount > 100) 
+      monsterCount = 100;
+      int moreMonsters = monsterCount - monsterNode.getChildren().size();
+      for(int i = 0; i < moreMonsters; i++ )
+      createMonster();
+      }
+  
     public void createMonster(){
        Monster monster = new Monster();
        monster.health = 20;
+       monster.attackDelay = 0;
        monster.monsterControl = new BetterCharacterControl(1f, 5f, 1f);
        System.out.println("Asset Manager " + assetManager);
        monster.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
@@ -73,7 +83,12 @@ public class MonsterManager extends AbstractAppState {
         Vector3f playerDirection = playerLocation.subtract(monsterLocation);
         monsterRotater(monster, playerDirection);
         if (distance < 3) {
+          if (monster.attackDelay == 100) {
+          monster.attackDelay = 0;
           monster.monsterAttack(monster.Model, player);
+          } else {
+          monster.attackDelay++;
+          }
           } else {
           monster.anim.animChange("UnarmedRun", "RunAction",monster.Model);
           }
@@ -89,6 +104,7 @@ public class MonsterManager extends AbstractAppState {
       for (int i = 0; i < monsterNode.getChildren().size(); i++) {
         Monster monster = (Monster) monsterNode.getChild(i);
         locationChecker(monster);
+        creationChecker(player, monsterNode);
         }
       }
 }

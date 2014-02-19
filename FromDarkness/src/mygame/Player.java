@@ -36,8 +36,9 @@ public  BetterCharacterControl playerControl;
 public  ArrayList              inventory;
 public  String                 heldItem;
 public  Player                 player;
-public  int                    playerHealth;
+public  int                    health;
 public  int                    killCount;
+public  int                    ammo;
 
 
 
@@ -63,7 +64,7 @@ public  int                    killCount;
        player.playerControl = new BetterCharacterControl(1f, 5f, 1f);
       
        player.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
-       player.playerHealth = 20;
+       player.health = 20;
        player.Model.setLocalTranslation(0f, 0f, 0f);
        player.Model.setLocalScale(.7f);
        player.Model.addControl(player.playerControl);
@@ -72,6 +73,7 @@ public  int                    killCount;
        player.playerControl.setJumpForce(new Vector3f(0f,5f,0f));
        
        player.killCount = 0;
+       player.ammo = 100;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
@@ -79,15 +81,23 @@ public  int                    killCount;
        
     }
     
+    public int getAmmo(Player player){
+     return player.ammo;
+     }
+    
+    public void changeAmmo(Player player,int change){
+      int currentAmmo = player.getAmmo(player);
+      player.ammo = currentAmmo + change;
+      }
     
     public int getHealth(Player player){
-      return player.playerHealth;
+      return player.health;
       }
     
     public void changeHealth(Player player, int change){
       int currentHealth = player.getHealth(player);
       if (currentHealth > 0) {
-        player.playerHealth = currentHealth + change;
+        player.health = currentHealth + change;
         //System.out.println(currentHealth);
         } else {
         //System.out.println("Player Death");
@@ -170,9 +180,16 @@ public  int                    killCount;
         
       if (player.getItemInHand() != null)
         if(player.getItemInHand().equals("Gun")){
+
+          if (getAmmo(player) > 0) {
           System.out.println("Shootbang!");
+          changeAmmo(player, -1);
           range = 20;
           damage = -8;
+          } else {
+          range = 0;
+          damage = 0;
+          }
 
           } else {
           String armAnim = "Punch";

@@ -49,8 +49,9 @@ private AnimationAppState   animInteract;
 private LightingAppState    lightInteract;
 
 public Player               player;
-public  GUI                 GUI;
+public GUI                  GUI;
 public ChaseCamera          chaseCam;
+public int                  attackDelay;
 
     
   @Override
@@ -71,6 +72,7 @@ public ChaseCamera          chaseCam;
     this.chaseCam      = this.stateManager.getState(CameraAppState.class).chaseCam;
     
     System.out.println("Interat GUI is " + GUI);
+    attackDelay = 0;
     setUpKeys();
     armAnim = "StillArms";
     legAnim = "StillLegs";
@@ -135,7 +137,6 @@ public ChaseCamera          chaseCam;
         
         shoot = isPressed;
         if (isPressed){
-        player.Attack(cam, player, animInteract, legAnim, monsterNode);
         
         } else {
         armAnim = "StillArms";
@@ -170,8 +171,15 @@ public ChaseCamera          chaseCam;
     @Override
     public void update(float tpf) {
         
-         GUI.updateInventoryWindow(player, GUI);
-         GUI.updateHUDWindow(player, GUI);
+        if (shoot) {
+        attackDelay++;
+        if (attackDelay == 10){
+        player.Attack(cam, player, animInteract, legAnim, monsterNode);
+        attackDelay = 0;
+        }
+        }
+        GUI.updateInventoryWindow(player, GUI);
+        GUI.updateHUDWindow(player, GUI);
         camDir.set(cam.getDirection()).multLocal(10.0f, 0.0f, 10.0f);
         camLeft.set(cam.getLeft()).multLocal(10.0f);
         walkDirection.set(0, 0, 0);

@@ -20,6 +20,7 @@ public class Monster extends Node {
   public    Player                 player;
   public    int                    health;
   public    BetterCharacterControl monsterControl;
+  public    int                    attackDelay;
     
     public int getHealth(Monster monster){
       return monster.health;
@@ -50,6 +51,7 @@ public class Monster extends Node {
       monster.Model.getLocalTranslation();
       }
     
+
     public void monsterAttack(Spatial monster, Player player) {
       anim.animChange("Punch", "StillLegs", monster);
       player.changeHealth(player, -3);

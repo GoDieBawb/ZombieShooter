@@ -127,11 +127,11 @@ public class GUI extends AbstractAppState {
   /** HUD Menu Stuff **/
     public void updateHUDWindow(Player player, GUI GUI){
       String currentHealth = String.valueOf(player.getHealth(player));
-      String currentAmmo = String.valueOf(100);
+      String currentAmmo = String.valueOf(player.getAmmo(player));
       String killCount = String.valueOf(player.getKillCount(player));
-      GUI.healthBar.setText(currentHealth);
-      GUI.ammoDisplay.setText(currentAmmo);
-      GUI.killDisplay.setText(killCount);
+      GUI.healthBar.setText("Health: " + currentHealth);
+      GUI.ammoDisplay.setText("Ammo: " + currentAmmo);
+      GUI.killDisplay.setText("Kills: " + killCount);
       }
     
     public void initializeHUD(){

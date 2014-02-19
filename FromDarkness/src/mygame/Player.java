@@ -38,6 +38,7 @@ public  Player                 player;
 public  int                    health;
 public  int                    killCount;
 public  int                    ammo;
+public  int                    attackDelay;
 
 
 
@@ -67,6 +68,7 @@ public  int                    ammo;
        player.Model.setLocalTranslation(0f, 0f, 0f);
        player.Model.setLocalScale(.7f);
        player.Model.addControl(player.playerControl);
+       player.attackDelay = 0;
 
        player.playerControl.setGravity(new Vector3f(0f,-9.81f,0f));
        player.playerControl.setJumpForce(new Vector3f(0f,5f,0f));
@@ -116,7 +118,6 @@ public  int                    ammo;
       heldItem = item;
 
       } catch (NullPointerException e) {
-      System.out.println("Null in the hand");
       }
     }
     
@@ -124,11 +125,9 @@ public  int                    ammo;
     
     public void grabItem(physicalAppState item, Camera cam,Player player) {
        CollisionResults grabResults = new CollisionResults();
-       //Ray grabRay = new Ray(cam.getLocation(), cam.getDirection());
        item.grabbable.collideWith(player.Model.getWorldBound(), grabResults);
        
        String grabbedItem;
-       System.out.println(player.Model.getChildren());
  
        if (grabResults.size() > 0) {
          grabbedItem = grabResults.getCollision(0).getGeometry().getName();
@@ -139,19 +138,16 @@ public  int                    ammo;
         
        if(grabbedItem.equals("Ammo")){
          player.changeAmmo(player, 100);
-         System.out.println("That's Ammo");
          grabResults.getCollision(0).getGeometry().removeFromParent();
          }
 
        if(grabbedItem.equals("Health")){
          player.changeHealth(player, 20);
-         System.out.println("More Health!");
          grabResults.getCollision(0).getGeometry().removeFromParent();
          }
         
        if(grabbedItem.equals("Gun")){
          player.inventoryAddItem(grabbedItem, player);
-         System.out.println("That's a gun!");
          grabResults.getCollision(0).getGeometry().removeFromParent();
           }      
         }
@@ -169,18 +165,34 @@ public  int                    ammo;
       int inventoryLimit = 10;
       if(player.inventory.size() < inventoryLimit){
         player.inventory.add(item);
-        System.out.println("added " + item + " to " + player);
 
         } else {
-        System.out.println("There is no more room in your inventory" + player.inventory.size());
         }
       }
+
+    public void attackChecker(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode, physicalAppState item){
+      int weaponRate;
+      try {
+      if (player.getItemInHand().equals("Gun"))
+        weaponRate = 20;
+        else
+        weaponRate = 50;
+        } catch (NullPointerException e) {
+        weaponRate = 50;
+        }
+      if (player.attackDelay == weaponRate){
+        player.attackDelay = 0;
+        attack(cam, player, animInteract, legAnim, monsterNode, item);
+        }
+        else
+        player.attackDelay++;
     
+    }
     
-    public void Attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode, physicalAppState item){
+    public void attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode, physicalAppState item){
       int range;
       int damage;
-        
+      
       if (player.getItemInHand() != null)
         if(player.getItemInHand().equals("Gun")){
 

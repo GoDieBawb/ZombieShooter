@@ -172,13 +172,9 @@ public physicalAppState     item;
     @Override
     public void update(float tpf) {
         
-        if (shoot) {
-        attackDelay++;
-        if (attackDelay == 10){
-        player.Attack(cam, player, animInteract, legAnim, monsterNode, item);
-        attackDelay = 0;
-        }
-        }
+        if (shoot)
+        player.attackChecker(cam, player, animInteract, legAnim, monsterNode, item);
+        
         GUI.updateInventoryWindow(player, GUI);
         GUI.updateHUDWindow(player, GUI);
         camDir.set(cam.getDirection()).multLocal(10.0f, 0.0f, 10.0f);

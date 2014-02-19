@@ -61,11 +61,9 @@ public class Monster extends Node {
        Node n = (Node) monster.getParent().getParent().getChild("Grabbables");
       float dropChance = rand.nextInt(50) + 1; 
       if (dropChance == 1) {
-        System.out.println(dropChance + "Ammo Drop");
         n.attachChild(item.makeAmmo("Ammo", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
         }
       if (dropChance == 2) {
-        System.out.println(dropChance + "Health Drop");
         n.attachChild(item.makeHealth("Health", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
         }
       }

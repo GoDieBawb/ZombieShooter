@@ -63,7 +63,7 @@ public int                  attackDelay;
     this.inputManager  = this.app.getInputManager();
     this.viewPort      = this.app.getViewPort();
     this.cam           = this.app.getCamera();
-    this.shootables    = this.stateManager.getState(physicalAppState.class).shootables;
+    this.shootables    = this.stateManager.getState(physicalAppState.class).grabbable;
     this.monsterNode   = this.stateManager.getState(MonsterManager.class).monsterNode;
     this.animInteract  = this.stateManager.getState(AnimationAppState.class);
     this.lightInteract = this.stateManager.getState(LightingAppState.class);

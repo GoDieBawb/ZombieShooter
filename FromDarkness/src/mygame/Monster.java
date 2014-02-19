@@ -42,8 +42,8 @@ public class Monster extends Node {
     
     public void monsterSetLocation(Monster monster) {
       Random rand = new Random();
-      float firstNumber = rand.nextInt(150) + -150; 
-      float secondNumber = rand.nextInt(150) + -150;
+      float firstNumber = rand.nextInt(150) + 5; 
+      float secondNumber = rand.nextInt(150) + 5;
       monster.monsterControl.warp(new Vector3f(firstNumber, 0f, secondNumber));
       }
     

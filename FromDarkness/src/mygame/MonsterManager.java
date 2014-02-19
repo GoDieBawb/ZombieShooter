@@ -49,8 +49,8 @@ public class MonsterManager extends AbstractAppState {
   
     public void creationChecker(Player player, Node monsterNode){
       monsterCount = player.getKillCount(player) * 2;
-      if (monsterCount > 100) 
-      monsterCount = 100;
+      if (monsterCount > 20) 
+      monsterCount = 20;
       int moreMonsters = monsterCount - monsterNode.getChildren().size();
       for(int i = 0; i < moreMonsters; i++ )
       createMonster();

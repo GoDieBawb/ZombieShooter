@@ -124,10 +124,11 @@ public  int                    ammo;
     
     
     
-    public void grabItem(Node shootables, Camera cam,Player player) {
+    public void grabItem(Node grabbables, Camera cam,Player player) {
        CollisionResults grabResults = new CollisionResults();
-       Ray grabRay = new Ray(cam.getLocation(), cam.getDirection());
-       shootables.collideWith(grabRay, grabResults);
+       //Ray grabRay = new Ray(cam.getLocation(), cam.getDirection());
+       grabbables.collideWith(player.Model.getWorldBound(), grabResults);
+       
        String grabbedItem;
        System.out.println(player.Model.getChildren());
  
@@ -135,21 +136,25 @@ public  int                    ammo;
          grabbedItem = grabResults.getCollision(0).getGeometry().getName();
 
          } else {
-         grabbedItem = "air";
+         grabbedItem = "Nothing";
          }
         
-       if(grabbedItem.equals("Billy")){
-         player.inventoryAddItem(grabbedItem, player);
-         player.Model.attachChild(grabResults.getCollision(0).getGeometry());
-         grabResults.getCollision(0).getGeometry().setLocalTranslation(0, -10, 0);
+       if(grabbedItem.equals("Ammo")){
+         player.changeAmmo(player, 100);
+                  System.out.println("That's Ammo");
+         grabResults.getCollision(0).getGeometry().removeFromParent();
+         }
+
+       if(grabbedItem.equals("Health")){
+         player.changeHealth(player, 20);
+         System.out.println("More Health!");
+         grabResults.getCollision(0).getGeometry().removeFromParent();
          }
         
        if(grabbedItem.equals("Gun")){
          player.inventoryAddItem(grabbedItem, player);
          System.out.println("That's a gun!");
-         CollisionResult grabbed = grabResults.getCollision(0);
-         player.Model.attachChild(grabbed.getGeometry());
-         grabbed.getGeometry().setLocalTranslation(0, -10, 0);
+         grabResults.getCollision(0).getGeometry().removeFromParent();
           }      
         }
    

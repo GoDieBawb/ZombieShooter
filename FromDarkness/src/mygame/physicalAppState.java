@@ -33,7 +33,7 @@ private AppStateManager   stateManager;
 private BulletAppState    physics;
 
 private Spatial           gun;
-public  Node              shootables;
+public  Node              grabbable;
 
 public Node sceneModel;
 public Node Model;
@@ -49,11 +49,12 @@ public Node Model;
     this.stateManager = this.app.getStateManager();
     this.physics      = this.stateManager.getState(BulletAppState.class);
     
-    shootables = new Node("Shootables");
-    rootNode.attachChild(shootables);
-    shootables.attachChild(initScene());
-    shootables.attachChild(initGun());   
-    shootables.attachChild(makeCube("Billy", 5f, 5f, 5f));
+    grabbable = new Node("Shootables");
+    rootNode.attachChild(grabbable);
+    grabbable.attachChild(initScene());
+    grabbable.attachChild(initGun());   
+    grabbable.attachChild(makeAmmo("Ammo", 5f, 5f));
+    grabbable.attachChild(makeHealth("Health", -5f, -5f));
     }
       
     public Spatial initScene(){
@@ -72,16 +73,27 @@ public Node Model;
    
 
   /** A cube object for target practice */
-  protected Geometry makeCube(String name, float x, float y, float z) {
+  protected Geometry makeAmmo(String name, float x, float z) {
     Box box = new Box(1, 1, 1);
     Geometry cube = new Geometry(name, box);
-    cube.setLocalTranslation(x, y, z);
+    cube.setLocalTranslation(x, 1, z);
     Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     mat1.setColor("Color", ColorRGBA.randomColor());
     cube.setMaterial(mat1);
     System.out.println("Billy Initialized");
     return cube;
   }
+
+  protected Geometry makeHealth(String name, float x, float z) {
+    Box box = new Box(1, 1, 1);
+    Geometry cube = new Geometry(name, box);
+    cube.setLocalTranslation(x, 1, z);
+    Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    mat1.setColor("Color", ColorRGBA.randomColor());
+    cube.setMaterial(mat1);
+    System.out.println("Billy Initialized");
+    return cube;
+    }
     
     protected Spatial initGun(){
         

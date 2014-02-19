@@ -7,7 +7,6 @@ package mygame;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.LoopMode;
-import com.jme3.animation.Skeleton;
 import com.jme3.animation.SkeletonControl;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -15,11 +14,9 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.debug.SkeletonDebugger;
 
 /**
  *
@@ -55,8 +52,7 @@ public SkeletonControl    skelControl;
     }
     
     public void animationInit(Spatial Model, Material mat){
-       
-    System.out.println("Asset Manager " + assetManager);    
+        
     AnimControl animControl = findAnimControl(Model);
     AnimChannel legChannel  = animControl.createChannel();
     legChannel.addFromRootBone("BottomSpine") ;
@@ -64,7 +60,7 @@ public SkeletonControl    skelControl;
     armChannel.addFromRootBone("TopSPine");
     armChannel.setAnim("StillArms");
     legChannel.setAnim("StillLegs");
-    System.out.println("Animations Initialized");
+
 
  }
 

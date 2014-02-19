@@ -35,8 +35,10 @@ private BulletAppState    physics;
 private Spatial           gun;
 public  Node              grabbable;
 
-public Node sceneModel;
-public Node Model;
+public Node               sceneModel;
+public Node                Model;
+
+private Material          mat;
 
     
       @Override
@@ -49,12 +51,15 @@ public Node Model;
     this.stateManager = this.app.getStateManager();
     this.physics      = this.stateManager.getState(BulletAppState.class);
     
-    grabbable = new Node("Shootables");
+    mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    mat.setColor("Color", ColorRGBA.randomColor());
+    grabbable = new Node("Grabbables");
     rootNode.attachChild(grabbable);
     grabbable.attachChild(initScene());
     grabbable.attachChild(initGun());   
     grabbable.attachChild(makeAmmo("Ammo", 5f, 5f));
     grabbable.attachChild(makeHealth("Health", -5f, -5f));
+    
     }
       
     public Spatial initScene(){
@@ -73,25 +78,19 @@ public Node Model;
    
 
   /** A cube object for target practice */
-  protected Geometry makeAmmo(String name, float x, float z) {
+  public Geometry makeAmmo(String name, float x, float z) {
     Box box = new Box(1, 1, 1);
     Geometry cube = new Geometry(name, box);
     cube.setLocalTranslation(x, 1, z);
-    Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    mat1.setColor("Color", ColorRGBA.randomColor());
-    cube.setMaterial(mat1);
-    System.out.println("Billy Initialized");
+    cube.setMaterial(mat);
     return cube;
   }
 
-  protected Geometry makeHealth(String name, float x, float z) {
+  public Geometry makeHealth(String name, float x, float z) {
     Box box = new Box(1, 1, 1);
     Geometry cube = new Geometry(name, box);
     cube.setLocalTranslation(x, 1, z);
-    Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    mat1.setColor("Color", ColorRGBA.randomColor());
-    cube.setMaterial(mat1);
-    System.out.println("Billy Initialized");
+    cube.setMaterial(mat);
     return cube;
     }
     

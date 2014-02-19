@@ -52,6 +52,7 @@ public Player               player;
 public GUI                  GUI;
 public ChaseCamera          chaseCam;
 public int                  attackDelay;
+public physicalAppState     item;
 
     
   @Override
@@ -63,7 +64,7 @@ public int                  attackDelay;
     this.inputManager  = this.app.getInputManager();
     this.viewPort      = this.app.getViewPort();
     this.cam           = this.app.getCamera();
-    this.shootables    = this.stateManager.getState(physicalAppState.class).grabbable;
+    this.item          = this.stateManager.getState(physicalAppState.class);
     this.monsterNode   = this.stateManager.getState(MonsterManager.class).monsterNode;
     this.animInteract  = this.stateManager.getState(AnimationAppState.class);
     this.lightInteract = this.stateManager.getState(LightingAppState.class);
@@ -145,7 +146,7 @@ public int                  attackDelay;
         }
         
     } else if (binding.equals("Grab") && !isPressed) {
-      player.grabItem(shootables, cam, player);
+      player.grabItem(item, cam, player);
         
           
     } else if (binding.equals("FlashLight") && !isPressed){
@@ -174,7 +175,7 @@ public int                  attackDelay;
         if (shoot) {
         attackDelay++;
         if (attackDelay == 10){
-        player.Attack(cam, player, animInteract, legAnim, monsterNode);
+        player.Attack(cam, player, animInteract, legAnim, monsterNode, item);
         attackDelay = 0;
         }
         }

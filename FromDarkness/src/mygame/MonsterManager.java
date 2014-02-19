@@ -61,7 +61,6 @@ public class MonsterManager extends AbstractAppState {
        monster.health = 20;
        monster.attackDelay = 0;
        monster.monsterControl = new BetterCharacterControl(1f, 5f, 1f);
-       System.out.println("Asset Manager " + assetManager);
        monster.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"); 
        monster.Model.setMaterial(mat);
@@ -83,9 +82,9 @@ public class MonsterManager extends AbstractAppState {
         Vector3f playerDirection = playerLocation.subtract(monsterLocation);
         monsterRotater(monster, playerDirection);
         if (distance < 3) {
-          if (monster.attackDelay == 100) {
+          if (monster.attackDelay == 10) {
           monster.attackDelay = 0;
-          monster.monsterAttack(monster.Model, player);
+          monster.attack(monster.Model, player);
           } else {
           monster.attackDelay++;
           }

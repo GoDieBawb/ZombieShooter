@@ -27,7 +27,6 @@ public class Monster extends Node {
       }
     
     public void changeHealth(Monster monster, int change, Player player){
-      System.out.println("Target Health: " + monster.getHealth(monster));
       int currentHealth = monster.getHealth(monster);
       if (currentHealth > 0)
       monster.health = currentHealth + change;
@@ -47,14 +46,28 @@ public class Monster extends Node {
       monster.monsterControl.warp(new Vector3f(firstNumber, 0f, secondNumber));
       }
     
-    public void monsterGetLocation(Monster monster){
+    public void GetLocation(Monster monster){
       monster.Model.getLocalTranslation();
       }
     
 
-    public void monsterAttack(Spatial monster, Player player) {
+    public void attack(Spatial monster, Player player) {
       anim.animChange("Punch", "StillLegs", monster);
       player.changeHealth(player, -3);
+      }
+    
+    public void dropItem(physicalAppState item, Monster monster){
+      Random rand = new Random();
+       Node n = (Node) monster.getParent().getParent().getChild("Grabbables");
+      float dropChance = rand.nextInt(50) + 1; 
+      if (dropChance == 1) {
+        System.out.println(dropChance + "Ammo Drop");
+        n.attachChild(item.makeAmmo("Ammo", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
+        }
+      if (dropChance == 2) {
+        System.out.println(dropChance + "Health Drop");
+        n.attachChild(item.makeHealth("Health", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
+        }
       }
     
 }

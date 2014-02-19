@@ -11,7 +11,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.BetterCharacterControl;
-import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
@@ -77,7 +76,6 @@ public  int                    ammo;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
-       System.out.println("Player State Attached" + player.getHealth(player));
        
     }
     
@@ -124,10 +122,10 @@ public  int                    ammo;
     
     
     
-    public void grabItem(Node grabbables, Camera cam,Player player) {
+    public void grabItem(physicalAppState item, Camera cam,Player player) {
        CollisionResults grabResults = new CollisionResults();
        //Ray grabRay = new Ray(cam.getLocation(), cam.getDirection());
-       grabbables.collideWith(player.Model.getWorldBound(), grabResults);
+       item.grabbable.collideWith(player.Model.getWorldBound(), grabResults);
        
        String grabbedItem;
        System.out.println(player.Model.getChildren());
@@ -141,7 +139,7 @@ public  int                    ammo;
         
        if(grabbedItem.equals("Ammo")){
          player.changeAmmo(player, 100);
-                  System.out.println("That's Ammo");
+         System.out.println("That's Ammo");
          grabResults.getCollision(0).getGeometry().removeFromParent();
          }
 
@@ -179,7 +177,7 @@ public  int                    ammo;
       }
     
     
-    public void Attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode){
+    public void Attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode, physicalAppState item){
       int range;
       int damage;
         
@@ -187,7 +185,6 @@ public  int                    ammo;
         if(player.getItemInHand().equals("Gun")){
 
           if (getAmmo(player) > 0) {
-          System.out.println("Shootbang!");
           changeAmmo(player, -1);
           range = 20;
           damage = -8;
@@ -219,12 +216,17 @@ public  int                    ammo;
          Vector3f monsterLocation = monster.Model.getLocalTranslation();
          Vector3f playerLocation  = player.Model.getLocalTranslation();
          float distance = playerLocation.distance(monsterLocation);
-         System.out.println("hit" + monster + " at " + distance);
          if (distance <= range) {
-           monster.changeHealth(monster, damage, player);
-           }
+           
+           if (monster.getHealth(monster) < 0) {
+             monster.changeHealth(monster, damage, player);
+  
+             }else {
+             monster.dropItem(item, monster);
+             monster.Die(monster, player);
+             }
+         }
        } catch (IndexOutOfBoundsException i) {
-       System.out.println("Missed attack");
        }
      }
     
@@ -234,11 +236,11 @@ public  int                    ammo;
     
     public void changeKillCount(Player player, int change) {
       player.killCount = player.killCount + change;
-      System.out.println("Kill Count: " + player.killCount);
       }
     
     public void Jump(BetterCharacterControl playerControl){
         playerControl.jump();
     }
+    
     
 }

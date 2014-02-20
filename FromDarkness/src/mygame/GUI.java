@@ -16,9 +16,9 @@ import com.jme3.font.BitmapText;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
+import org.lwjgl.opengl.Display;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.Window;
 import tonegod.gui.core.Element;
@@ -33,7 +33,7 @@ public class GUI extends AbstractAppState {
     public  Node              rootNode;
     public  SimpleApplication app;
     public  GUI               GUI;
-    public    AssetManager           assetManager;   
+    public    AssetManager    assetManager;   
     
     private AppStateManager   stateManager;
     private BulletAppState    physics;
@@ -99,6 +99,7 @@ public class GUI extends AbstractAppState {
     stateManager.attach(physics);
     stateManager.attach(new Player());
     stateManager.attach(new MonsterManager());
+    stateManager.attach(new SoundManager());
     stateManager.attach(new SceneManager());
     stateManager.attach(new CameraManager());
     stateManager.attach(new LightManager());
@@ -281,8 +282,11 @@ public class GUI extends AbstractAppState {
     BitmapFont guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
     BitmapText ch = new BitmapText(guiFont, false);
     ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
-    ch.setText("+");        // fake crosshairs :)
-    ch.setLocalTranslation(350f, 350f, 350f);
+    ch.setText("+");
+    ch.setLocalTranslation(
+      Display.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+      Display.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+    
     this.app.getGuiNode().attachChild(ch);
   }
   

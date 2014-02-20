@@ -104,8 +104,14 @@ public  int                    attackDelay;
     
     
     public String getItemInHand() {
-      return heldItem;
-    }
+      if (heldItem != null)
+        return heldItem;
+        else{
+        heldItem = "nothing";
+        return heldItem;
+        }
+      
+      }
     
     
     
@@ -128,7 +134,13 @@ public  int                    attackDelay;
        String grabbedItem;
  
        if (grabResults.size() > 0) {
+         try{
+         
          grabbedItem = grabResults.getCollision(0).getGeometry().getName();
+         
+         }catch (NullPointerException e){
+         grabbedItem = "Nothing";
+         }
 
          } else {
          grabbedItem = "Nothing";
@@ -168,7 +180,7 @@ public  int                    attackDelay;
         }
       }
 
-    public void attackChecker(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item){
+    public void attackChecker(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item, SoundManager audio){
       int weaponRate;
       try {
           
@@ -184,6 +196,8 @@ public  int                    attackDelay;
       if (player.attackDelay > weaponRate){
         player.attackDelay = 0;
         attack(cam, player, animInteract, legAnim, monsterNode, item);
+        System.out.println("audio is: " + audio);
+        audio.playSound(player);
         }
         else
         player.attackDelay++;

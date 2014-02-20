@@ -53,6 +53,7 @@ public GUI                  GUI;
 public ChaseCamera          chaseCam;
 public int                  attackDelay;
 public SceneManager     item;
+public SoundManager     audio;
 
     
   @Override
@@ -71,6 +72,7 @@ public SceneManager     item;
     this.player        = this.stateManager.getState(Player.class).player;
     this.GUI           = this.stateManager.getState(GUI.class).GUI;
     this.chaseCam      = this.stateManager.getState(CameraManager.class).chaseCam;
+    this.audio         = this.stateManager.getState(SoundManager.class);
     
     System.out.println("Interat GUI is " + GUI);
     attackDelay = 0;
@@ -173,7 +175,7 @@ public SceneManager     item;
     public void update(float tpf) {
         
         if (shoot)
-        player.attackChecker(cam, player, animInteract, legAnim, monsterNode, item);
+        player.attackChecker(cam, player, animInteract, legAnim, monsterNode, item, audio);
         
         GUI.updateInventoryWindow(player, GUI);
         GUI.updateHUDWindow(player, GUI);

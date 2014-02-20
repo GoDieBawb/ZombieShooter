@@ -43,6 +43,7 @@ public Node model;
     chaseCam.setSmoothMotion(false);
     chaseCam.setLookAtOffset(Vector3f.UNIT_Y.mult(5));
     chaseCam.setDragToRotate(false);
+    chaseCam.setMaxDistance(-1f);
     System.out.println("Camera State Attached");
     
   

@@ -11,7 +11,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.BetterCharacterControl;
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node; 
 
@@ -65,7 +64,7 @@ public class MonsterManager extends AbstractAppState {
        monster.Model.setLocalScale(.8f);
        monster.Model.addControl(monster.monsterControl);
        monster.monsterControl.setGravity(new Vector3f(0f,-9.81f,0f));
-       monster.anim = new AnimationAppState();
+       monster.anim = new AnimationManager();
        monster.anim.animationInit(monster.Model);
        physics.getPhysicsSpace().add(monster.monsterControl);
        monster.attachChild(monster.Model);

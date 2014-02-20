@@ -24,7 +24,7 @@ import com.jme3.scene.shape.Box;
  *
  * @author Bob
  */
-public class physicalAppState extends AbstractAppState {
+public class SceneManager extends AbstractAppState {
     
 private SimpleApplication app;
 private Node              rootNode;

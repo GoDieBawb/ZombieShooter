@@ -12,8 +12,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
-import com.jme3.material.Material;
 import com.jme3.math.Matrix3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -22,16 +20,12 @@ import com.jme3.scene.Spatial;
  *
  * @author Bob
  */
-public class AnimationAppState extends AbstractAppState {
+public class AnimationManager extends AbstractAppState {
     
 private SimpleApplication app;
-private AssetManager      assetManager;
 private AppStateManager   stateManager;
-
-
 public String             armAnim;
 public String             legAnim;
-
 public Player             player;
 public SkeletonControl    skelControl;
 
@@ -40,12 +34,11 @@ public SkeletonControl    skelControl;
   public void initialize(AppStateManager stateManager, Application app) {
     super.initialize(stateManager, app);
     
-    this.app = (SimpleApplication) app; // can cast Application to something more specific
-    this.assetManager = this.app.getAssetManager();
+    this.app          = (SimpleApplication) app; // can cast Application to something more specific
     this.stateManager = this.app.getStateManager();
-    this.player        = this.stateManager.getState(Player.class).player;
-    this.armAnim      = this.stateManager.getState(InteractionAppState.class).armAnim;
-    this.legAnim      = this.stateManager.getState(InteractionAppState.class).legAnim;
+    this.player       = this.stateManager.getState(Player.class).player;
+    this.armAnim      = this.stateManager.getState(InteractionManager.class).armAnim;
+    this.legAnim      = this.stateManager.getState(InteractionManager.class).legAnim;
     
     animationInit(player.Model);
     }
@@ -54,7 +47,6 @@ public SkeletonControl    skelControl;
         
     AnimControl animControl = findAnimControl(Model);
     AnimChannel legChannel  = animControl.createChannel();
-    System.out.println(animControl + " " + legChannel);
     legChannel.addFromRootBone("BottomSpine") ;
     AnimChannel armChannel  = animControl.createChannel();
     armChannel.addFromRootBone("TopSPine");

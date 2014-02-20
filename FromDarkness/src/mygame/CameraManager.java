@@ -13,7 +13,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 
 
-public class CameraAppState extends AbstractAppState{
+public class CameraManager extends AbstractAppState{
 
 private SimpleApplication app;
 private AppStateManager   stateManager;

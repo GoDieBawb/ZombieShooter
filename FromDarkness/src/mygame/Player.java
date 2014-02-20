@@ -98,9 +98,7 @@ public  int                    attackDelay;
       int currentHealth = player.getHealth(player);
       if (currentHealth > 0) {
         player.health = currentHealth + change;
-        //System.out.println(currentHealth);
         } else {
-        //System.out.println("Player Death");
         }
     }
     
@@ -123,7 +121,7 @@ public  int                    attackDelay;
     
     
     
-    public void grabItem(physicalAppState item, Camera cam,Player player) {
+    public void grabItem(SceneManager item, Camera cam,Player player) {
        CollisionResults grabResults = new CollisionResults();
        item.grabbable.collideWith(player.Model.getWorldBound(), grabResults);
        
@@ -170,7 +168,7 @@ public  int                    attackDelay;
         }
       }
 
-    public void attackChecker(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode, physicalAppState item){
+    public void attackChecker(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item){
       int weaponRate;
       try {
           
@@ -183,7 +181,7 @@ public  int                    attackDelay;
       weaponRate = 50;
       }
       
-      if (player.attackDelay == weaponRate){
+      if (player.attackDelay > weaponRate){
         player.attackDelay = 0;
         attack(cam, player, animInteract, legAnim, monsterNode, item);
         }
@@ -192,7 +190,7 @@ public  int                    attackDelay;
     
     }
     
-    public void attack(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode, physicalAppState item){
+    public void attack(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item){
       int range;
       int damage;
       

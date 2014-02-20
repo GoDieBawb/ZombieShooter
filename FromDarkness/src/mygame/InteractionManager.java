@@ -21,7 +21,7 @@ import com.jme3.scene.Node;
  *
  * @author Bob
  */
-public class InteractionAppState extends AbstractAppState implements ActionListener {
+public class InteractionManager extends AbstractAppState implements ActionListener {
     
 private SimpleApplication app;
 private AppStateManager   stateManager;
@@ -45,14 +45,14 @@ public Node                 sceneModel;
 public Node                 monsterNode;
 public String               armAnim;
 public String               legAnim;
-private AnimationAppState   animInteract;
-private LightingAppState    lightInteract;
+private AnimationManager   animInteract;
+private LightManager    lightInteract;
 
 public Player               player;
 public GUI                  GUI;
 public ChaseCamera          chaseCam;
 public int                  attackDelay;
-public physicalAppState     item;
+public SceneManager     item;
 
     
   @Override
@@ -64,13 +64,13 @@ public physicalAppState     item;
     this.inputManager  = this.app.getInputManager();
     this.viewPort      = this.app.getViewPort();
     this.cam           = this.app.getCamera();
-    this.item          = this.stateManager.getState(physicalAppState.class);
+    this.item          = this.stateManager.getState(SceneManager.class);
     this.monsterNode   = this.stateManager.getState(MonsterManager.class).monsterNode;
-    this.animInteract  = this.stateManager.getState(AnimationAppState.class);
-    this.lightInteract = this.stateManager.getState(LightingAppState.class);
+    this.animInteract  = this.stateManager.getState(AnimationManager.class);
+    this.lightInteract = this.stateManager.getState(LightManager.class);
     this.player        = this.stateManager.getState(Player.class).player;
     this.GUI           = this.stateManager.getState(GUI.class).GUI;
-    this.chaseCam      = this.stateManager.getState(CameraAppState.class).chaseCam;
+    this.chaseCam      = this.stateManager.getState(CameraManager.class).chaseCam;
     
     System.out.println("Interat GUI is " + GUI);
     attackDelay = 0;
@@ -150,7 +150,7 @@ public physicalAppState     item;
         
           
     } else if (binding.equals("FlashLight") && !isPressed){
-      lightInteract.flashlightOn();
+      //lightInteract.flashlightOn();
         
     } else if (binding.equals("Inventory")) {
       inventory = isPressed;

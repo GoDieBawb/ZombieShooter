@@ -20,7 +20,7 @@ import com.jme3.scene.Spatial;
  *
  * @author Bob
  */
-public class LightingAppState extends AbstractAppState {
+public class LightManager extends AbstractAppState {
     
 private SimpleApplication app;
 private Node              rootNode;
@@ -53,28 +53,28 @@ public boolean lightState;
   
     public void initLight(){
     al = new AmbientLight();
-    al.setColor(ColorRGBA.White.mult(1.3f));
+    al.setColor(ColorRGBA.White.mult(.1f));
     rootNode.addLight(al);
     
     flashLight = new SpotLight();
     flashLight.setColor(ColorRGBA.White.mult(2.9f));
     flashLight.setSpotRange(50);
     System.out.println("Light Initialized");
+    flashlightOn();
     }
     
     public void flashlightOn(){
-    if(lightState == false){
+    //if(lightState == false){
       System.out.println("Flashlight Toggled");
       rootNode.addLight(flashLight);
-      rootNode.removeLight(al);
       lightState = true;
     
-      }else{
-      System.out.println("Flashlight Toggled");
-      rootNode.removeLight(flashLight);
-      rootNode.addLight(al);
-      lightState = false;
-      }
+     // }else{
+     /// System.out.println("Flashlight Toggled");
+     // rootNode.removeLight(flashLight);
+     //rootNode.addLight(al);
+      //lightState = false;
+      //}
     
     }
     

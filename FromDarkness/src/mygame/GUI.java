@@ -9,10 +9,14 @@ import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import tonegod.gui.controls.buttons.ButtonAdapter;
@@ -29,6 +33,7 @@ public class GUI extends AbstractAppState {
     public  Node              rootNode;
     public  SimpleApplication app;
     public  GUI               GUI;
+    public    AssetManager           assetManager;   
     
     private AppStateManager   stateManager;
     private BulletAppState    physics;
@@ -51,6 +56,7 @@ public class GUI extends AbstractAppState {
         super.initialize(stateManager, app); 
         this.app          = (SimpleApplication) app;
         this.rootNode     = this.app.getRootNode();
+        this.assetManager  = this.app.getAssetManager();
         this.stateManager = this.app.getStateManager();
         this.physics      = this.stateManager.getState(BulletAppState.class);
         this.flyCam       = this.stateManager.getState(FlyCamAppState.class).getCamera();
@@ -93,11 +99,11 @@ public class GUI extends AbstractAppState {
     stateManager.attach(physics);
     stateManager.attach(new Player());
     stateManager.attach(new MonsterManager());
-    stateManager.attach(new physicalAppState());
-    stateManager.attach(new CameraAppState());
-    stateManager.attach(new LightingAppState());
-    stateManager.attach(new InteractionAppState());
-    stateManager.attach(new AnimationAppState());
+    stateManager.attach(new SceneManager());
+    stateManager.attach(new CameraManager());
+    stateManager.attach(new LightManager());
+    stateManager.attach(new InteractionManager());
+    stateManager.attach(new AnimationManager());
 
     GUI.handMenu = 
             new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
@@ -122,6 +128,7 @@ public class GUI extends AbstractAppState {
       GUI.screen.addElement(GUI.inventoryMenu);
       GUI.inventoryMenu.setDimensions(new Vector2f(200, 250));
       GUI.inventoryMenu.setIsVisible(false);
+      initCrossHairs();
     }
   
   /** HUD Menu Stuff **/
@@ -218,7 +225,7 @@ public class GUI extends AbstractAppState {
         @Override
         public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
             billyEquip(player, GUI);
-           AnimationAppState animation = new AnimationAppState();
+           AnimationManager animation = new AnimationManager();
             animation.billyEquip(player);
         }
       };
@@ -268,5 +275,15 @@ public class GUI extends AbstractAppState {
      GUI.handMenu.setText("Air");
      player.setItemInHand("Air", player);
     }
+  
+  
+  protected void initCrossHairs() {
+    BitmapFont guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+    BitmapText ch = new BitmapText(guiFont, false);
+    ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+    ch.setText("+");        // fake crosshairs :)
+    ch.setLocalTranslation(350f, 350f, 350f);
+    this.app.getGuiNode().attachChild(ch);
+  }
   
 }

@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class Monster extends Node {
   public    Node                   Model;
-  public    AnimationAppState      anim;
+  public    AnimationManager      anim;
   public    Player                 player;
   public    int                    health;
   public    BetterCharacterControl monsterControl;
@@ -57,7 +57,7 @@ public class Monster extends Node {
       player.changeHealth(player, -3);
       }
     
-    public void dropItem(physicalAppState item, Monster monster){
+    public void dropItem(SceneManager item, Monster monster){
       Random rand = new Random();
        Node n = (Node) monster.getParent().getParent().getChild("Grabbables");
       float dropChance = rand.nextInt(50) + 1; 

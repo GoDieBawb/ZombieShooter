@@ -47,14 +47,14 @@ public SkeletonControl    skelControl;
     this.armAnim      = this.stateManager.getState(InteractionAppState.class).armAnim;
     this.legAnim      = this.stateManager.getState(InteractionAppState.class).legAnim;
     
-    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    animationInit(player.Model, mat);
+    animationInit(player.Model);
     }
     
-    public void animationInit(Spatial Model, Material mat){
+    public void animationInit(Spatial Model){
         
     AnimControl animControl = findAnimControl(Model);
     AnimChannel legChannel  = animControl.createChannel();
+    System.out.println(animControl + " " + legChannel);
     legChannel.addFromRootBone("BottomSpine") ;
     AnimChannel armChannel  = animControl.createChannel();
     armChannel.addFromRootBone("TopSPine");

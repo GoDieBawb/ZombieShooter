@@ -36,6 +36,7 @@ public class Monster extends Node {
     
     public void Die(Monster monster, Player player) {
       player.changeKillCount(player, 1);
+      monster.monsterControl.getPhysicsSpace().remove(monster.monsterControl);
       monster.removeFromParent();
       }
     

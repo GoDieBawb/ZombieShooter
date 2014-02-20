@@ -173,13 +173,16 @@ public  int                    attackDelay;
     public void attackChecker(Camera cam, Player player, AnimationAppState animInteract, String legAnim, Node monsterNode, physicalAppState item){
       int weaponRate;
       try {
+          
       if (player.getItemInHand().equals("Gun"))
         weaponRate = 20;
         else
         weaponRate = 50;
-        } catch (NullPointerException e) {
-        weaponRate = 50;
-        }
+      
+      } catch (NullPointerException e) {
+      weaponRate = 50;
+      }
+      
       if (player.attackDelay == weaponRate){
         player.attackDelay = 0;
         attack(cam, player, animInteract, legAnim, monsterNode, item);

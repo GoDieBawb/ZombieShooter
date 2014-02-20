@@ -61,14 +61,12 @@ public class MonsterManager extends AbstractAppState {
        monster.health = 20;
        monster.attackDelay = 0;
        monster.monsterControl = new BetterCharacterControl(1f, 5f, 1f);
-       monster.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
-       Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"); 
-       monster.Model.setMaterial(mat);
-       monster.Model.setLocalScale(.7f);
+       monster.Model = (Node) assetManager.loadModel("Models/RealMonster/RealMonster.j3o");
+       monster.Model.setLocalScale(.8f);
        monster.Model.addControl(monster.monsterControl);
        monster.monsterControl.setGravity(new Vector3f(0f,-9.81f,0f));
        monster.anim = new AnimationAppState();
-       monster.anim.animationInit(monster.Model, mat);
+       monster.anim.animationInit(monster.Model);
        physics.getPhysicsSpace().add(monster.monsterControl);
        monster.attachChild(monster.Model);
        monsterNode.attachChild(monster);

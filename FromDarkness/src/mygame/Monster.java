@@ -29,7 +29,6 @@ public class Monster extends Node {
     public void changeHealth(Monster monster, int change, Player player, SoundManager audio){
       Random rand = new Random();
       float soundOdds = rand.nextInt(15) + 1; 
-      System.out.println(soundOdds);
       if(soundOdds == 10)
       audio.zombieSounds(monster);
       int currentHealth = monster.getHealth(monster);

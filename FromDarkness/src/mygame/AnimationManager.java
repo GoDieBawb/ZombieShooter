@@ -37,10 +37,6 @@ public SkeletonControl    skelControl;
     this.app          = (SimpleApplication) app; // can cast Application to something more specific
     this.stateManager = this.app.getStateManager();
     this.player       = this.stateManager.getState(Player.class).player;
-    this.armAnim      = this.stateManager.getState(InteractionManager.class).armAnim;
-    this.legAnim      = this.stateManager.getState(InteractionManager.class).legAnim;
-    
-    animationInit(player.Model);
     }
     
     public void animationInit(Spatial Model){
@@ -61,7 +57,11 @@ public SkeletonControl    skelControl;
       AnimChannel legChannel = animControl.getChannel(0);
       AnimChannel armChannel = animControl.getChannel(1);
       
-      if (!armChannel.getAnimationName().equals(armAnim)) {
+      if (armAnim.equals("PistolHold")){
+        armChannel.setAnim(armAnim);
+        armChannel.setLoopMode(LoopMode.DontLoop);
+        }
+      if (!armChannel.getAnimationName().equals(armAnim) && !armChannel.getAnimationName().equals("PistolHold")) {
         armChannel.setAnim(armAnim);
         armChannel.setLoopMode(LoopMode.Loop);
         }
@@ -99,16 +99,13 @@ public SkeletonControl    skelControl;
      
     }
   
-  public void gunEqip(Player player) {
-    skelControl = findSkelControl(player.Model);
-    Node hand = 
-        skelControl.getAttachmentsNode(skelControl.getSkeleton().getBone(5).getName());
-    hand.attachChild(player.Model.getChild("Gun"));
+  public void gunEquip(Player player) {
     player.Model.getChild("Gun").setLocalTranslation(1, 2, 1);
     player.Model.getChild("Gun").setLocalScale(.3f);
     player.Model.getChild("Gun").setLocalRotation
         (new Matrix3f(1f, 5f, 5f, 1f, 1f, 1f, 1f, 5f, 1f));
     player.Model.getChild("Gun").setLocalTranslation(-1f, 5f, 2.5f);
+    animChange("PistolHold", "RunAction", player.Model);
       
     }
   

@@ -15,6 +15,7 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
@@ -90,7 +91,7 @@ public class GUI extends AbstractAppState {
  
         startMenu.addChild(makeWindow);
         GUI.screen.addElement(startMenu);
-        startMenu.setLocalTranslation(350f, 350f, 350f);
+        startMenu.setLocalTranslation(Display.getWidth() / 2, Display.getHeight() / 2, 0);
      }
       
   public void gameStart() {
@@ -261,6 +262,9 @@ public class GUI extends AbstractAppState {
      GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Gun");
      player.setItemInHand("Gun", player);
+     player.Model.attachChild(player.placeHolder.getChild("Gun"));
+     player.animInteract.gunEquip(player);
+     
     }
     
   public void billyEquip(Player player, GUI GUI){

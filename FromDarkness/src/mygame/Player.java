@@ -31,6 +31,7 @@ public  BulletAppState         physics;
 public  Node                   rootNode;
 public  Node                   Model;
 public  BetterCharacterControl playerControl;
+public  AnimationManager       animInteract;
 
 public  ArrayList              inventory;
 public  String                 heldItem;
@@ -39,6 +40,7 @@ public  int                    health;
 public  int                    killCount;
 public  int                    ammo;
 public  int                    attackDelay;
+public Node                    placeHolder;
 
 
 
@@ -58,13 +60,14 @@ public  int                    attackDelay;
   
   
     public void initPlayer() {
-      player = new Player();
-      player.inventory = new ArrayList<String>();
-       
+       player = new Player();
+       player.inventory = new ArrayList<String>();
+       player.placeHolder = new Node();
        player.playerControl = new BetterCharacterControl(1f, 5f, 1f);
-      
        player.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
        player.health = 20;
+       player.animInteract = new AnimationManager();
+       player.animInteract.animationInit(player.Model);
        player.Model.setLocalTranslation(0f, 0f, 0f);
        player.Model.setLocalScale(.7f);
        player.Model.addControl(player.playerControl);
@@ -161,8 +164,9 @@ public  int                    attackDelay;
         
        if(grabbedItem.equals("Gun")){
          player.inventoryAddItem(grabbedItem, player);
-         grabResults.getCollision(0).getGeometry().removeFromParent();
-          }      
+         grabResults.getCollision(0).getGeometry().setLocalTranslation(0f, -10f, 0f);
+         player.placeHolder.attachChild(grabResults.getCollision(0).getGeometry());
+         }      
         }
    
     
@@ -215,6 +219,7 @@ public  int                    attackDelay;
 
           if (getAmmo(player) > 0) {
           changeAmmo(player, -1);
+          item.setSparksPosition(player);
           range = 20;
           damage = -8;
           } else {
@@ -249,6 +254,7 @@ public  int                    attackDelay;
            
            if (monster.getHealth(monster) > 0) {
              monster.changeHealth(monster, damage, player, audio);
+             item.setBloodPosition(player, attackResults.getCollision(0).getContactPoint());
   
              }else {
              monster.dropItem(item, monster);

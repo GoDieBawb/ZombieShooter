@@ -45,8 +45,7 @@ public Node                 sceneModel;
 public Node                 monsterNode;
 public String               armAnim;
 public String               legAnim;
-private AnimationManager   animInteract;
-private LightManager    lightInteract;
+private LightManager        lightInteract;
 
 public Player               player;
 public GUI                  GUI;
@@ -67,7 +66,6 @@ public SoundManager     audio;
     this.cam           = this.app.getCamera();
     this.item          = this.stateManager.getState(SceneManager.class);
     this.monsterNode   = this.stateManager.getState(MonsterManager.class).monsterNode;
-    this.animInteract  = this.stateManager.getState(AnimationManager.class);
     this.lightInteract = this.stateManager.getState(LightManager.class);
     this.player        = this.stateManager.getState(Player.class).player;
     this.GUI           = this.stateManager.getState(GUI.class).GUI;
@@ -121,12 +119,12 @@ public SoundManager     audio;
       if (isPressed){
         armAnim = "UnarmedRun";
         legAnim = "RunAction";
-        animInteract.animChange(armAnim, legAnim, player.Model);
+        player.animInteract.animChange(armAnim, legAnim, player.Model);
         
         } else {
         armAnim = "StillArms";
         legAnim = "StillLegs";
-        animInteract.animChange(armAnim, legAnim, player.Model);
+        player.animInteract.animChange(armAnim, legAnim, player.Model);
         }
 
 
@@ -144,7 +142,7 @@ public SoundManager     audio;
         } else {
         armAnim = "StillArms";
         legAnim = "StillLegs";
-        animInteract.animChange(armAnim, legAnim, player.Model);
+        player.animInteract.animChange(armAnim, legAnim, player.Model);
         }
         
     } else if (binding.equals("Grab") && !isPressed) {
@@ -176,7 +174,7 @@ public SoundManager     audio;
         
         
         if (shoot)
-        player.attackChecker(cam, player, animInteract, legAnim, monsterNode, item, audio);
+        player.attackChecker(cam, player, player.animInteract, legAnim, monsterNode, item, audio);
         
         GUI.updateInventoryWindow(player, GUI);
         GUI.updateHUDWindow(player, GUI);

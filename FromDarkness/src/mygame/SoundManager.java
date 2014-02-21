@@ -62,14 +62,7 @@ public class SoundManager extends AbstractAppState {
     zombieTalk.setLooping(false);
     zombieTalk.setVolume(2);
     rootNode.attachChild(zombieTalk);
- 
-    /* nature sound - keeps playing in a loop. */
-    AudioNode audio_nature = new AudioNode(assetManager, "Sound/Environment/Ocean Waves.ogg", true);
-    audio_nature.setLooping(true);  // activate continuous playing
-    audio_nature.setPositional(true);   
-    audio_nature.setVolume(3);
-    rootNode.attachChild(audio_nature);
-    audio_nature.play(); // play continuously!
+    
     System.out.println("Audio Initialized");
     }
   

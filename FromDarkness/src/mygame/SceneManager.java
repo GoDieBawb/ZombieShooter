@@ -13,8 +13,11 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -35,9 +38,14 @@ private BulletAppState    physics;
 public  Node              grabbable;
 
 public Node               sceneModel;
-public Node                Model;
+public Node               Model;
+public Player             player;
 
 private Material          mat;
+public  ParticleEmitter   blood;
+public  ParticleEmitter   sparks;
+public  int               bleedDelay;
+public  int               sparkDelay;
 
     
       @Override
@@ -48,8 +56,11 @@ private Material          mat;
     this.rootNode     = this.app.getRootNode();
     this.assetManager = this.app.getAssetManager();
     this.stateManager = this.app.getStateManager();
+    this.player       = this.stateManager.getState(Player.class);
     this.physics      = this.stateManager.getState(BulletAppState.class);
     
+    bleedDelay = 0;
+    sparkDelay = 0;
     mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     mat.setColor("Color", ColorRGBA.randomColor());
     grabbable = new Node("Grabbables");
@@ -58,7 +69,7 @@ private Material          mat;
     grabbable.attachChild(initGun());   
     grabbable.attachChild(makeAmmo("Ammo", 5f, 5f));
     grabbable.attachChild(makeHealth("Health", -5f, -5f));
-    
+    initParticles();
     }
       
     public Spatial initScene(){
@@ -95,12 +106,99 @@ private Material          mat;
     
     protected Spatial initGun(){   
       Spatial gun = assetManager.loadModel("Models/Gun/Gun.j3o");
-      gun.setLocalTranslation(85f, 0f, 15f);
+      gun.setLocalTranslation(15f, 0f, 15f);
       gun.setLocalScale(.3f);
       System.out.println("Gun Initialized");
       return gun;
       }
+    
+   public void initParticles(){
+    blood = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+    Material mat_red = new Material(assetManager, 
+            "Common/MatDefs/Misc/Particle.j3md");
+    mat_red.setTexture("Texture", assetManager.loadTexture(
+            "Effects/Explosion/flame.png"));
+    blood.setMaterial(mat_red);
+    blood.setStartColor(ColorRGBA.Red);
+    blood.setStartSize(1f);
+    blood.setEndSize(1f);
+    blood.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
+    blood.setGravity(0, 0, 0);
+    blood.setLowLife(1f);
+    blood.setHighLife(3f);
+    blood.getParticleInfluencer().setVelocityVariation(0.3f);
 
+    
+    sparks = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+    sparks.setMaterial(mat_red);
+    sparks.setStartColor(ColorRGBA.White);
+    sparks.setStartSize(1f);
+    sparks.setEndSize(1f);
+    sparks.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
+    sparks.setGravity(0, 0, 0);
+    sparks.setLowLife(1f);
+    sparks.setHighLife(3f);
+    sparks.getParticleInfluencer().setVelocityVariation(0.3f);
+    }
+
+   public void setBloodPosition(Player player, Vector3f contactPoint){
+     blood = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+     Material mat_red = new Material(assetManager, 
+            "Common/MatDefs/Misc/Particle.j3md");
+     mat_red.setTexture("Texture", assetManager.loadTexture(
+            "Effects/Explosion/flame.png"));
+     blood.setMaterial(mat_red);
+     blood.setStartColor(ColorRGBA.Red);
+     blood.setStartSize(1f);
+     blood.setEndSize(1f);
+     blood.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
+     blood.setGravity(0, 0, 0);
+     blood.setLowLife(1f);
+     blood.setHighLife(3f);
+     blood.getParticleInfluencer().setVelocityVariation(0.3f);
+    
+    
+     rootNode.attachChild(blood);
+     blood.setLocalTranslation(contactPoint);
+     }
+   
+   
+  public void setSparksPosition(Player player){
+    
+    sparks = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+    Material mat_red = new Material(assetManager, 
+        "Common/MatDefs/Misc/Particle.j3md");
+    mat_red.setTexture("Texture", assetManager.loadTexture(
+           "Effects/Explosion/flame.png"));
+    sparks.setMaterial(mat_red);
+    sparks.setStartColor(ColorRGBA.White);
+    sparks.setStartSize(1f);
+    sparks.setEndSize(1f);
+    sparks.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
+    sparks.setGravity(0, 0, 0);
+    sparks.setLowLife(1f);
+    sparks.setHighLife(3f);
+    sparks.getParticleInfluencer().setVelocityVariation(0.3f);
+    
+    rootNode.attachChild(sparks);
+    sparks.setLocalTranslation(player.Model.getWorldTranslation().add(0, 5.5f, 0f));
+  }
   
+  
+   @Override
+   public void update(float tpf){
+     if(blood.isInWorldSpace())
+       bleedDelay++;
+     if (bleedDelay == 15){
+       blood.removeFromParent();
+       bleedDelay = 0;
+       }
+     if(sparks.isInWorldSpace())
+       sparkDelay++;
+     if (sparkDelay == 10){
+       sparks.removeFromParent();
+       sparkDelay = 0;
+       }
+     }
     
 }

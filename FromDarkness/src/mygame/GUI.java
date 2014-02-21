@@ -271,7 +271,7 @@ public class GUI extends AbstractAppState {
     }
   
   public void airEquip(Player player, GUI GUI){
-     System.out.println("bilyEquip");
+     System.out.println("airEquip");
      GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Air");
      player.setItemInHand("Air", player);

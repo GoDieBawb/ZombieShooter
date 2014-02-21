@@ -41,13 +41,12 @@ public Node model;
     flyCam.setDragToRotate(false);
     chaseCam = new ChaseCamera(cam, model, inputManager);
     chaseCam.setSmoothMotion(false);
-    chaseCam.setLookAtOffset(Vector3f.UNIT_Y.mult(5));
+    chaseCam.setLookAtOffset(new Vector3f(0f, 5f, 0f));
     chaseCam.setDragToRotate(false);
-    chaseCam.setMaxDistance(-1f);
+    chaseCam.setMaxDistance(0f);
     System.out.println("Camera State Attached");
-    
   
- }
+    }
     
     @Override
     public void update(float tpf){

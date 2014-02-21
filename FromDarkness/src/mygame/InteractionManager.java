@@ -174,6 +174,7 @@ public SoundManager     audio;
     @Override
     public void update(float tpf) {
         
+        
         if (shoot)
         player.attackChecker(cam, player, animInteract, legAnim, monsterNode, item, audio);
         

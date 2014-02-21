@@ -117,6 +117,9 @@ public  int                    attackDelay;
     
     public void setItemInHand(String item, Player player) {
       try {
+      if (item.equals("Gun")){
+          
+      }
       inventory.remove(item);
       inventory.add(heldItem);
       heldItem = item;
@@ -195,8 +198,7 @@ public  int                    attackDelay;
       
       if (player.attackDelay > weaponRate){
         player.attackDelay = 0;
-        attack(cam, player, animInteract, legAnim, monsterNode, item);
-        System.out.println("audio is: " + audio);
+        attack(cam, player, animInteract, legAnim, monsterNode, item, audio);
         audio.playSound(player);
         }
         else
@@ -204,7 +206,7 @@ public  int                    attackDelay;
     
     }
     
-    public void attack(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item){
+    public void attack(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item, SoundManager audio){
       int range;
       int damage;
       
@@ -245,8 +247,8 @@ public  int                    attackDelay;
          float distance = playerLocation.distance(monsterLocation);
          if (distance <= range) {
            
-           if (monster.getHealth(monster) < 0) {
-             monster.changeHealth(monster, damage, player);
+           if (monster.getHealth(monster) > 0) {
+             monster.changeHealth(monster, damage, player, audio);
   
              }else {
              monster.dropItem(item, monster);

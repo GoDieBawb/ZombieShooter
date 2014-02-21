@@ -22,7 +22,10 @@ public class SoundManager extends AbstractAppState {
   public    AppStateManager        stateManager;
   public    AssetManager           assetManager;
   public    Node                   rootNode;
-  public    AudioNode              audio_gun;
+  public    AudioNode              gunShot;
+  public    AudioNode              emptyGun;
+  public    AudioNode              missedPunch;
+  public    AudioNode              zombieTalk;
 
 @Override
   public void initialize(AppStateManager stateManager, Application app) {
@@ -36,11 +39,29 @@ public class SoundManager extends AbstractAppState {
     }
 
   public void initAudio(){
-    audio_gun = new AudioNode(assetManager, "Sound/Effects/Gun.wav", false);
-    audio_gun.setPositional(false);
-    audio_gun.setLooping(false);
-    audio_gun.setVolume(2);
-    rootNode.attachChild(audio_gun);
+    gunShot = new AudioNode(assetManager, "Sound/Effects/Gun.wav", false);
+    gunShot.setPositional(false);
+    gunShot.setLooping(false);
+    gunShot.setVolume(2);
+    rootNode.attachChild(gunShot);
+
+    emptyGun = new AudioNode(assetManager, "Sounds/Gun/Empty.wav", false);
+    emptyGun.setPositional(false);
+    emptyGun.setLooping(false);
+    emptyGun.setVolume(2);
+    rootNode.attachChild(emptyGun);
+    
+    missedPunch = new AudioNode(assetManager, "Sounds/Punch/Punch.wav", false);
+    missedPunch.setPositional(false);
+    missedPunch.setLooping(false);
+    missedPunch.setVolume(2);
+    rootNode.attachChild(missedPunch);
+ 
+    zombieTalk = new AudioNode(assetManager, "Sounds/Monster/zombieTalk.wav", false);
+    zombieTalk.setPositional(false);
+    zombieTalk.setLooping(false);
+    zombieTalk.setVolume(2);
+    rootNode.attachChild(zombieTalk);
  
     /* nature sound - keeps playing in a loop. */
     AudioNode audio_nature = new AudioNode(assetManager, "Sound/Environment/Ocean Waves.ogg", true);
@@ -55,7 +76,15 @@ public class SoundManager extends AbstractAppState {
   public void playSound(Player player){
     if (player.getItemInHand().equals("Gun"))
       if (player.getAmmo(player) > 0)
-      audio_gun.playInstance();
+      gunShot.playInstance();
+      else
+      emptyGun.playInstance();
+    else
+    missedPunch.playInstance();
+    }
+  
+  public void zombieSounds(Monster monster){
+    zombieTalk.playInstance();
     }
     
 }

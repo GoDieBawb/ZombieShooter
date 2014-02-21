@@ -32,7 +32,6 @@ private AssetManager      assetManager;
 private AppStateManager   stateManager;
 private BulletAppState    physics;
 
-private Spatial           gun;
 public  Node              grabbable;
 
 public Node               sceneModel;
@@ -65,6 +64,7 @@ private Material          mat;
     public Spatial initScene(){
           
         sceneModel = (Node) assetManager.loadModel("Scenes/Bob'sTestCell.j3o");
+        sceneModel.setLocalScale(2);
         CollisionShape sceneShape =
         CollisionShapeFactory.createDynamicMeshShape(sceneModel);
         RigidBodyControl scenePhys = new RigidBodyControl(sceneShape);
@@ -76,7 +76,6 @@ private Material          mat;
         return sceneModel;
         }
    
-
   /** A cube object for target practice */
   public Geometry makeAmmo(String name, float x, float z) {
     Box box = new Box(1, 1, 1);
@@ -84,7 +83,7 @@ private Material          mat;
     cube.setLocalTranslation(x, 1, z);
     cube.setMaterial(mat);
     return cube;
-  }
+    }
 
   public Geometry makeHealth(String name, float x, float z) {
     Box box = new Box(1, 1, 1);
@@ -94,22 +93,13 @@ private Material          mat;
     return cube;
     }
     
-    protected Spatial initGun(){
-        
-    gun = assetManager.loadModel("Models/Gun/Gun.j3o");
-    gun.setLocalTranslation(85f, 0f, 15f);
-    gun.setLocalScale(.3f);
-    
-    CollisionShape gunShape =
-    CollisionShapeFactory.createDynamicMeshShape(gun);
-    RigidBodyControl gunPhys = new RigidBodyControl(gunShape);
-    gun.addControl(gunPhys);
-    gunPhys.setMass(1f);
-    gunPhys.setKinematic(false);
-    physics.getPhysicsSpace().add(gunPhys);
-    System.out.println("Gun Initialized");
-    return gun;
-    }
+    protected Spatial initGun(){   
+      Spatial gun = assetManager.loadModel("Models/Gun/Gun.j3o");
+      gun.setLocalTranslation(85f, 0f, 15f);
+      gun.setLocalScale(.3f);
+      System.out.println("Gun Initialized");
+      return gun;
+      }
 
   
     

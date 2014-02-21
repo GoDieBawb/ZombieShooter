@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class Monster extends Node {
   public    Node                   Model;
-  public    AnimationManager      anim;
+  public    AnimationManager       anim;
   public    Player                 player;
   public    int                    health;
   public    BetterCharacterControl monsterControl;
@@ -26,18 +26,25 @@ public class Monster extends Node {
       return monster.health;
       }
     
-    public void changeHealth(Monster monster, int change, Player player){
+    public void changeHealth(Monster monster, int change, Player player, SoundManager audio){
+      Random rand = new Random();
+      float soundOdds = rand.nextInt(15) + 1; 
+      System.out.println(soundOdds);
+      if(soundOdds == 10)
+      audio.zombieSounds(monster);
       int currentHealth = monster.getHealth(monster);
       if (currentHealth > 0)
       monster.health = currentHealth + change;
       else
       Die(monster, player);
+      
       }
     
     public void Die(Monster monster, Player player) {
       player.changeKillCount(player, 1);
       monster.monsterControl.getPhysicsSpace().remove(monster.monsterControl);
       monster.removeFromParent();
+      
       }
     
     public void monsterSetLocation(Monster monster) {
@@ -47,8 +54,8 @@ public class Monster extends Node {
       monster.monsterControl.warp(new Vector3f(firstNumber, 0f, secondNumber));
       }
     
-    public void GetLocation(Monster monster){
-      monster.Model.getLocalTranslation();
+    public Vector3f GetLocation(Monster monster){
+      return monster.Model.getLocalTranslation();
       }
     
 
@@ -59,7 +66,7 @@ public class Monster extends Node {
     
     public void dropItem(SceneManager item, Monster monster){
       Random rand = new Random();
-       Node n = (Node) monster.getParent().getParent().getChild("Grabbables");
+      Node n = (Node) monster.getParent().getParent().getChild("Grabbables");
       float dropChance = rand.nextInt(50) + 1; 
       if (dropChance == 1) {
         n.attachChild(item.makeAmmo("Ammo", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));

@@ -53,11 +53,13 @@ public boolean lightState;
   
     public void initLight(){
     al = new AmbientLight();
-    al.setColor(ColorRGBA.White.mult(.1f));
+    al.setColor(ColorRGBA.White.mult(.3f));
     rootNode.addLight(al);
     
     flashLight = new SpotLight();
     flashLight.setColor(ColorRGBA.White.mult(2.9f));
+    flashLight.setSpotInnerAngle(1);
+    flashLight.setSpotOuterAngle(1);
     flashLight.setSpotRange(50);
     System.out.println("Light Initialized");
     flashlightOn();

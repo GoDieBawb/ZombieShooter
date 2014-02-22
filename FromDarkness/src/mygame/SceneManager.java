@@ -21,7 +21,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 
 /**
  *
@@ -67,8 +66,8 @@ public  int               sparkDelay;
     rootNode.attachChild(grabbable);
     grabbable.attachChild(initScene());
     grabbable.attachChild(initGun());   
-    grabbable.attachChild(makeAmmo("Ammo", 5f, 5f));
-    grabbable.attachChild(makeHealth("Health", -5f, -5f));
+    grabbable.attachChild(makeAmmo("Ammo", 15f, 15f));
+    grabbable.attachChild(makeHealth("Health", -15f, -15f));
     initParticles();
     }
       
@@ -89,19 +88,19 @@ public  int               sparkDelay;
    
   /** A cube object for target practice */
   public Geometry makeAmmo(String name, float x, float z) {
-    Box box = new Box(1, 1, 1);
-    Geometry cube = new Geometry(name, box);
-    cube.setLocalTranslation(x, 1, z);
-    cube.setMaterial(mat);
-    return cube;
+    Node ammoBox = (Node) assetManager.loadModel("Models/Items/AmmoBox.j3o");
+    Node boxNode = (Node) ammoBox.getChild(0);
+    Geometry geom = (Geometry) boxNode.getChild(0);
+    geom.setLocalTranslation(new Vector3f(x, 1, z));
+    return geom;
     }
 
   public Geometry makeHealth(String name, float x, float z) {
-    Box box = new Box(1, 1, 1);
-    Geometry cube = new Geometry(name, box);
-    cube.setLocalTranslation(x, 1, z);
-    cube.setMaterial(mat);
-    return cube;
+    Node healthBox = (Node) assetManager.loadModel("Models/Items/healthBox.j3o");
+    Node boxNode = (Node) healthBox.getChild(0);
+    Geometry geom = (Geometry) boxNode.getChild(0);
+    geom.setLocalTranslation(new Vector3f(x, 1, z));
+    return geom;
     }
     
     protected Spatial initGun(){   

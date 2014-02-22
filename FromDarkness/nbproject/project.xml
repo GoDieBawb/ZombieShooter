@@ -6,6 +6,12 @@
             <extension file="assets-impl.xml" id="assets">
                 <dependency dependsOn="-init-assets" target="-do-init"/>
             </extension>
+            <extension file="macapp-impl.xml" id="macapp">
+                <dependency dependsOn="-mac-app" target="jar"/>
+            </extension>
+            <extension file="lwjglapplet-impl.xml" id="lwjglapplet">
+                <dependency dependsOn="-lwjgl-applet" target="jar"/>
+            </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>FromDarkness</name>

@@ -152,12 +152,12 @@ public Node                    placeHolder;
          grabbedItem = "Nothing";
          }
         
-       if(grabbedItem.equals("Ammo")){
+       if(grabbedItem.equals("AmmoBox")){
          player.changeAmmo(player, 100);
          grabResults.getCollision(0).getGeometry().removeFromParent();
          }
 
-       if(grabbedItem.equals("Health")){
+       if(grabbedItem.equals("HealthBox")){
          player.changeHealth(player, 20);
          grabResults.getCollision(0).getGeometry().removeFromParent();
          }
@@ -166,7 +166,9 @@ public Node                    placeHolder;
          player.inventoryAddItem(grabbedItem, player);
          grabResults.getCollision(0).getGeometry().setLocalTranslation(0f, -10f, 0f);
          player.placeHolder.attachChild(grabResults.getCollision(0).getGeometry());
-         }      
+         }
+       
+       System.out.println(grabbedItem + " <-- Grabbed Grabbablese--> " + item.grabbable);
         }
    
     

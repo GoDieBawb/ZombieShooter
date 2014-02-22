@@ -61,8 +61,7 @@ public class SoundManager extends AbstractAppState {
     zombieTalk.setPositional(false);
     zombieTalk.setLooping(false);
     zombieTalk.setVolume(2);
-    rootNode.attachChild(zombieTalk);
-    
+    rootNode.attachChild(zombieTalk);  
     System.out.println("Audio Initialized");
     }
   

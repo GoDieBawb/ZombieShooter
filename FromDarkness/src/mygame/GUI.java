@@ -250,8 +250,19 @@ public class GUI extends AbstractAppState {
       airButton.setPosition(15f, measure);  
     }
     
-    
-    
+    public void unequipButton(final GUI GUI, final Player player) {
+       ButtonAdapter unequipButton 
+              = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
+        @Override
+        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            handUnequip(player, GUI);
+        }
+      };
+      handMenu.addChild(unequipButton);
+      unequipButton.setText("air");
+      unequipButton.setPosition(15f, measure); 
+      }
+           
  
  /** Equuipping Methods **/
   
@@ -280,7 +291,11 @@ public class GUI extends AbstractAppState {
      player.setItemInHand("Air", player);
     }
   
+  public void handUnequip(Player player, GUI GUI){
+    }
   
+  
+  //Here is the crosshairs
   protected void initCrossHairs() {
     BitmapFont guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
     BitmapText ch = new BitmapText(guiFont, false);

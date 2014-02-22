@@ -104,7 +104,7 @@ public SkeletonControl    skelControl;
     player.Model.getChild("Gun").setLocalScale(.3f);
     player.Model.getChild("Gun").setLocalRotation
         (new Matrix3f(1f, 5f, 5f, 1f, 1f, 1f, 1f, 5f, 1f));
-    player.Model.getChild("Gun").setLocalTranslation(-1f, 5f, 2.5f);
+    player.Model.getChild("Gun").setLocalTranslation(-.5f, 5f, 2.3f);
     animChange("PistolHold", "RunAction", player.Model);
       
     }

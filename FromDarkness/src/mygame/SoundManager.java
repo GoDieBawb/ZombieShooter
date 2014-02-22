@@ -42,25 +42,25 @@ public class SoundManager extends AbstractAppState {
     gunShot = new AudioNode(assetManager, "Sound/Effects/Gun.wav", false);
     gunShot.setPositional(false);
     gunShot.setLooping(false);
-    gunShot.setVolume(2);
+    gunShot.setVolume(.3f);
     rootNode.attachChild(gunShot);
 
     emptyGun = new AudioNode(assetManager, "Sounds/Gun/Empty.wav", false);
     emptyGun.setPositional(false);
     emptyGun.setLooping(false);
-    emptyGun.setVolume(2);
+    emptyGun.setVolume(.3f);
     rootNode.attachChild(emptyGun);
     
     missedPunch = new AudioNode(assetManager, "Sounds/Punch/Punch.wav", false);
     missedPunch.setPositional(false);
     missedPunch.setLooping(false);
-    missedPunch.setVolume(2);
+    missedPunch.setVolume(.3f);
     rootNode.attachChild(missedPunch);
  
     zombieTalk = new AudioNode(assetManager, "Sounds/Monster/zombieTalk.wav", false);
     zombieTalk.setPositional(false);
     zombieTalk.setLooping(false);
-    zombieTalk.setVolume(2);
+    zombieTalk.setVolume(.3f);
     rootNode.attachChild(zombieTalk);  
     System.out.println("Audio Initialized");
     }

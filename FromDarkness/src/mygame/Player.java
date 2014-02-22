@@ -167,8 +167,6 @@ public Node                    placeHolder;
          grabResults.getCollision(0).getGeometry().setLocalTranslation(0f, -10f, 0f);
          player.placeHolder.attachChild(grabResults.getCollision(0).getGeometry());
          }
-       
-       System.out.println(grabbedItem + " <-- Grabbed Grabbablese--> " + item.grabbable);
         }
    
     

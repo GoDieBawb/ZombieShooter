@@ -38,6 +38,8 @@ public class SoundManager extends AbstractAppState {
     System.out.println("AudioManager Attached");
     }
 
+  //Initialize the Sound Nodes
+
   public void initAudio(){
     gunShot = new AudioNode(assetManager, "Sound/Effects/Gun.wav", false);
     gunShot.setPositional(false);
@@ -65,6 +67,8 @@ public class SoundManager extends AbstractAppState {
     System.out.println("Audio Initialized");
     }
   
+   //Play an instance of the sound
+  
   public void playSound(Player player){
     if (player.getItemInHand().equals("Gun"))
       if (player.getAmmo(player) > 0)
@@ -74,6 +78,8 @@ public class SoundManager extends AbstractAppState {
     else
     missedPunch.playInstance();
     }
+  
+  //Zombie sound making methods
   
   public void zombieSounds(Monster monster){
     zombieTalk.playInstance();

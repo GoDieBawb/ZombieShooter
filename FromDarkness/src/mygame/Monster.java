@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.bullet.control.BetterCharacterControl;
@@ -22,6 +18,8 @@ public class Monster extends Node {
   public    BetterCharacterControl monsterControl;
   public    int                    attackDelay;
     
+   //Monster Health Methods  
+  
     public int getHealth(Monster monster){
       return monster.health;
       }
@@ -46,6 +44,8 @@ public class Monster extends Node {
       
       }
     
+   //Monster Location Methods  
+    
     public void monsterSetLocation(Monster monster) {
       Random rand = new Random();
       float firstNumber = rand.nextInt(150) + 5; 
@@ -58,10 +58,14 @@ public class Monster extends Node {
       }
     
 
+     //Monster Attack Methods  
+    
     public void attack(Spatial monster, Player player) {
       anim.animChange("Punch", "StillLegs", monster);
       player.changeHealth(player, -3);
       }
+    
+    //Monster dropItem Methods 
     
     public void dropItem(SceneManager item, Monster monster){
       Random rand = new Random();

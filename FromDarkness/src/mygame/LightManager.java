@@ -50,6 +50,7 @@ public boolean lightState;
     
   }
   
+    //Initiates the light
   
     public void initLight(){
     al = new AmbientLight();
@@ -65,6 +66,8 @@ public boolean lightState;
     flashlightOn();
     }
     
+    //Turns the Flashlight on
+    
     public void flashlightOn(){
     //if(lightState == false){
       System.out.println("Flashlight Toggled");
@@ -79,6 +82,8 @@ public boolean lightState;
       //}
     
     }
+    
+    //Loop keeps the flashlight attached to the player and checks if it should be on
     
     @Override
     public void update(float tpf) {

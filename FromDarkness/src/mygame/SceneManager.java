@@ -47,7 +47,7 @@ public  int               bleedDelay;
 public  int               sparkDelay;
 
     
-      @Override
+  @Override
   public void initialize(AppStateManager stateManager, Application app) {
     super.initialize(stateManager, app);
     
@@ -68,9 +68,12 @@ public  int               sparkDelay;
     grabbable.attachChild(initGun());   
     grabbable.attachChild(makeAmmo("Ammo", 15f, 15f));
     grabbable.attachChild(makeHealth("Health", -15f, -15f));
+    grabbable.attachChild(makeRateBonus("RateBonus", 15f, -15f));
     initParticles();
     }
       
+    //Initialize the Scene
+  
     public Spatial initScene(){
           
         sceneModel = (Node) assetManager.loadModel("Scenes/Bob'sTestCell.j3o");
@@ -86,7 +89,8 @@ public  int               sparkDelay;
         return sceneModel;
         }
    
-  /** A cube object for target practice */
+  // Making the ammo box 
+    
   public Geometry makeAmmo(String name, float x, float z) {
     Node ammoBox = (Node) assetManager.loadModel("Models/Items/AmmoBox.j3o");
     Node boxNode = (Node) ammoBox.getChild(0);
@@ -95,6 +99,8 @@ public  int               sparkDelay;
     return geom;
     }
 
+   //Making the Health box 
+  
   public Geometry makeHealth(String name, float x, float z) {
     Node healthBox = (Node) assetManager.loadModel("Models/Items/healthBox.j3o");
     Node boxNode = (Node) healthBox.getChild(0);
@@ -102,14 +108,28 @@ public  int               sparkDelay;
     geom.setLocalTranslation(new Vector3f(x, 1, z));
     return geom;
     }
+  
+  public Geometry makeRateBonus(String name, float x, float z) {
+    Node rateBonus = (Node) assetManager.loadModel("Models/hourglass/hourglass.j3o");
+    Node boxNode = (Node) rateBonus.getChild(1);
+    Geometry geom = (Geometry) boxNode.getChild(0);
+    geom.setLocalTranslation(new Vector3f(x, 1, z));
+    System.out.println("The RateBonus Geom: " + geom);
+    geom.setLocalScale(.01f);
+    return geom;
+    }
     
-    protected Spatial initGun(){   
+    //Making the Health box 
+
+    protected Spatial initGun() {   
       Spatial gun = assetManager.loadModel("Models/Gun/Gun.j3o");
       gun.setLocalTranslation(15f, 0f, 15f);
       gun.setLocalScale(.3f);
       System.out.println("Gun Initialized");
       return gun;
       }
+    
+    //Initiate the Particle Emitters
     
    public void initParticles(){
     blood = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
@@ -140,6 +160,8 @@ public  int               sparkDelay;
     sparks.getParticleInfluencer().setVelocityVariation(0.3f);
     }
 
+   //Moving the blood particle emitter around
+   
    public void setBloodPosition(Player player, Vector3f contactPoint){
      blood = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
      Material mat_red = new Material(assetManager, 
@@ -161,6 +183,7 @@ public  int               sparkDelay;
      blood.setLocalTranslation(contactPoint);
      }
    
+   //Moving the Sparks Emitter Around
    
   public void setSparksPosition(Player player){
     

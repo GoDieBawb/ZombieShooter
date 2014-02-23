@@ -6,7 +6,7 @@ import com.jme3.renderer.RenderManager;
 
 public class Main extends SimpleApplication {
   
-
+    //Main Application Method
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -14,6 +14,8 @@ public class Main extends SimpleApplication {
         app.setDisplayStatView(false);
         app.start();
     }
+    
+    //When the aplication starts simply attach the GUI
 
     @Override
     public void simpleInitApp(){

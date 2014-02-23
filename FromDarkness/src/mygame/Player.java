@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.app.Application;
@@ -12,6 +8,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.collision.CollisionResults;
+import com.jme3.math.Matrix3f;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -41,7 +38,13 @@ public  int                    killCount;
 public  int                    ammo;
 public  int                    attackDelay;
 public Node                    placeHolder;
-
+public InteractionManager      interaction;
+public SceneManager            item;
+public  int                    damageBonus;
+private int                    damageTimer;
+private int                    rateBonus;
+private int                    rateTimer;
+ 
 
 
   @Override
@@ -66,6 +69,10 @@ public Node                    placeHolder;
        player.playerControl = new BetterCharacterControl(1f, 5f, 1f);
        player.Model = (Node) assetManager.loadModel("Models/Newman2/Newman2.j3o");
        player.health = 20;
+       player.setRateBonus(player, 1);
+       player.damageBonus = 0;
+       player.rateBonus = 1;
+       player.interaction = stateManager.getState(InteractionManager.class);
        player.animInteract = new AnimationManager();
        player.animInteract.animationInit(player.Model);
        player.Model.setLocalTranslation(0f, 0f, 0f);
@@ -78,11 +85,14 @@ public Node                    placeHolder;
        
        player.killCount = 0;
        player.ammo = 100;
+       player.damageTimer = 0;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
        
     }
+    
+    //Ammo Methods For Getting and Changing Ammo
     
     public int getAmmo(Player player){
      return player.ammo;
@@ -93,17 +103,32 @@ public Node                    placeHolder;
       player.ammo = currentAmmo + change;
       }
     
+    
+    //Health Methods For Getting and Changing Health and Dying
+    
     public int getHealth(Player player){
       return player.health;
       }
+    
     
     public void changeHealth(Player player, int change){
       int currentHealth = player.getHealth(player);
       if (currentHealth > 0) {
         player.health = currentHealth + change;
         } else {
+        Die(player);
         }
-    }
+      }
+    
+    
+    public void Die(Player player){
+      player.setItemInHand("", player);
+      player.interaction.isDead = true;
+      player.Model.setLocalRotation(new Matrix3f(9f, 1f, 1f, 9f, 1f, 9f, 1f, 9f, 1f));
+
+      }
+    
+    //Player Equipped Item Methods for Getting and Setting the Item in Hand
     
     
     public String getItemInHand() {
@@ -131,6 +156,8 @@ public Node                    placeHolder;
       }
     }
     
+    
+    //Grabbing Method
     
     
     public void grabItem(SceneManager item, Camera cam,Player player) {
@@ -167,8 +194,22 @@ public Node                    placeHolder;
          grabResults.getCollision(0).getGeometry().setLocalTranslation(0f, -10f, 0f);
          player.placeHolder.attachChild(grabResults.getCollision(0).getGeometry());
          }
+
+       if(grabbedItem.equals("DamageBonus")){
+         grabResults.getCollision(0).getGeometry().getParent().removeFromParent();
+         player.setDamageBonus(player, 5);
+         }
+       
+       if(grabbedItem.equals("RateBonus")){
+         grabResults.getCollision(0).getGeometry().removeFromParent();
+         player.rateBonus = 2;
+         }
+       
+       System.out.println("GrabbedItem: " + grabbedItem);
         }
    
+    
+    //Methods for getting and changing player inventory
     
     
     public ArrayList getInventory(Player player, GUI GUI) {
@@ -186,7 +227,9 @@ public Node                    placeHolder;
         } else {
         }
       }
-
+    
+    //Check the players weapon delay and whether enough time has passed
+    
     public void attackChecker(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item, SoundManager audio){
       int weaponRate;
       try {
@@ -200,7 +243,7 @@ public Node                    placeHolder;
       weaponRate = 50;
       }
       
-      if (player.attackDelay > weaponRate){
+      if (player.attackDelay > weaponRate/player.rateBonus){
         player.attackDelay = 0;
         attack(cam, player, animInteract, legAnim, monsterNode, item, audio);
         audio.playSound(player);
@@ -210,9 +253,14 @@ public Node                    placeHolder;
     
     }
     
+    //If the avove requirement is met allow the player to attack
+    
     public void attack(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item, SoundManager audio){
       int range;
       int damage;
+      
+      
+      //Get the Item in Hand and Set Damage
       
       if (player.getItemInHand() != null)
         if(player.getItemInHand().equals("Gun")){
@@ -244,7 +292,8 @@ public Node                    placeHolder;
        Ray attackRay = new Ray(cam.getLocation(), cam.getDirection());
        monsterNode.collideWith(attackRay, attackResults);
 
-        
+        //If there is a collision result change the monsters health or kill him
+       
        try {
          Monster monster = (Monster) attackResults.getCollision(0).getGeometry().getParent().getParent().getParent();
          Vector3f monsterLocation = monster.Model.getLocalTranslation();
@@ -253,10 +302,10 @@ public Node                    placeHolder;
          if (distance <= range) {
            
            if (monster.getHealth(monster) > 0) {
-             monster.changeHealth(monster, damage, player, audio);
+             monster.changeHealth(monster, damage + player.damageBonus, player, audio);
              item.setBloodPosition(player, attackResults.getCollision(0).getContactPoint());
   
-             }else {
+             } else {
              monster.dropItem(item, monster);
              monster.Die(monster, player);
              }
@@ -264,6 +313,8 @@ public Node                    placeHolder;
        } catch (IndexOutOfBoundsException i) {
        }
      }
+    
+    //Kill Count Methods for Getting and Changing Kill Count
     
     public int getKillCount(Player player){
       return player.killCount;
@@ -273,9 +324,50 @@ public Node                    placeHolder;
       player.killCount = player.killCount + change;
       }
     
+    //Method for Jumping
+    
     public void Jump(BetterCharacterControl playerControl){
         playerControl.jump();
     }
     
+    //Methods For Getting and Setting Player Damage Bonus
     
+    public int getDamageBonus(Player player){
+      return player.damageBonus;
+      }
+
+    public void setDamageBonus(Player player, int newDamage){
+      player.damageBonus = newDamage;
+      }
+    
+    //Methods for getting and setting player rate bonus
+    
+    public int getRateBonus(Player player){
+      return player.damageBonus;
+      }
+    
+    public void setRateBonus(Player player, int newRate){
+      player.rateBonus = newRate;
+      }
+    
+    
+    //Update Loop
+    
+    @Override
+      public void update(float tpf){
+      if (player.damageBonus > 0)
+        damageTimer++;
+      if (damageTimer > 300) {
+        player.damageBonus = 0;
+        damageTimer = 0;
+        }
+
+      if (player.rateBonus > 1)
+        player.rateTimer++;
+      if (player.rateTimer > 3000) {
+        player.rateBonus = 1;
+        player.rateTimer = 0;
+        }
+      System.out.println("RateBonus: " + player.rateBonus + " RateTime: " + player.rateTimer);
+      }
 }

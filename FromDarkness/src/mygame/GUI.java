@@ -33,7 +33,7 @@ public class GUI extends AbstractAppState {
     public  Node              rootNode;
     public  SimpleApplication app;
     public  GUI               GUI;
-    public    AssetManager    assetManager;   
+    public  AssetManager      assetManager;   
     
     private AppStateManager   stateManager;
     private BulletAppState    physics;
@@ -48,6 +48,7 @@ public class GUI extends AbstractAppState {
     private Element           killDisplay;
     private Element           healthBar;
     private Element           ammoDisplay;
+    
     
     private float             measure;
 
@@ -65,7 +66,6 @@ public class GUI extends AbstractAppState {
     }
     
         /** Start Menu Stuff **/
-        
         
       public void startMenu(){  
         GUI.screen = new Screen(app);
@@ -90,8 +90,10 @@ public class GUI extends AbstractAppState {
  
         startMenu.addChild(makeWindow);
         GUI.screen.addElement(startMenu);
-        startMenu.setLocalTranslation(Display.getWidth() / 2, Display.getHeight() / 2, 0);
+        startMenu.setLocalTranslation(Display.getWidth() / 2 - startMenu.getWidth()/2, Display.getHeight() / 2 + startMenu.getHeight()/2, 0);
      }
+      
+  //Method to Start the Game and attach Game Application States    
       
   public void gameStart() {
     startMenu.hideWindow();
@@ -110,7 +112,7 @@ public class GUI extends AbstractAppState {
             new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
     
       GUI.screen.addElement(GUI.handMenu);
-      GUI.handMenu.setDimensions(new Vector2f(100, 100));
+      GUI.handMenu.setDimensions(new Vector2f(200,100));
       GUI.handMenu.setIsResizable(false);
       GUI.handMenu.setIsMovable(true);
       GUI.handMenu.setLocalTranslation(5f, 5f, 500f);
@@ -205,6 +207,20 @@ public class GUI extends AbstractAppState {
    
    /** Actual Buttoon Adaptars **/
     
+    public void unequipButton(final GUI GUI, final Player player) {
+       ButtonAdapter unequipButton 
+              = new ButtonAdapter(GUI.screen, "UnequipButton", new Vector2f(20, 12)){
+        @Override
+        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            handUnequip(player, GUI);
+        }
+      };
+       
+      System.out.println(player);
+      GUI.handMenu.addChild(unequipButton);
+      unequipButton.setText("Unequip");
+      unequipButton.setPosition(15f, 15f); 
+      }
 
     public void gunButton(final GUI GUI, final Player player) {
        ButtonAdapter gunButton 
@@ -212,6 +228,7 @@ public class GUI extends AbstractAppState {
         @Override
         public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
             gunEquip(player, GUI);
+            unequipButton(GUI, player);
         }    
       };
       inventoryMenu.addChild(gunButton);
@@ -250,18 +267,6 @@ public class GUI extends AbstractAppState {
       airButton.setPosition(15f, measure);  
     }
     
-    public void unequipButton(final GUI GUI, final Player player) {
-       ButtonAdapter unequipButton 
-              = new ButtonAdapter(GUI.screen, inventoryCount, new Vector2f(20, 12)){
-        @Override
-        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
-            handUnequip(player, GUI);
-        }
-      };
-      handMenu.addChild(unequipButton);
-      unequipButton.setText("air");
-      unequipButton.setPosition(15f, measure); 
-      }
            
  
  /** Equuipping Methods **/
@@ -269,7 +274,6 @@ public class GUI extends AbstractAppState {
     
   public void gunEquip(Player player, GUI GUI){
      System.out.println("gunEquip");
-     GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Gun");
      player.setItemInHand("Gun", player);
      player.Model.attachChild(player.placeHolder.getChild("Gun"));
@@ -279,20 +283,22 @@ public class GUI extends AbstractAppState {
     
   public void billyEquip(Player player, GUI GUI){
      System.out.println("billyEquip");
-     GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Billy");
      player.setItemInHand("Billy", player);
     }
   
   public void airEquip(Player player, GUI GUI){
      System.out.println("airEquip");
-     GUI.handMenu.removeAllChildren();
      GUI.handMenu.setText("Air");
      player.setItemInHand("Air", player);
     }
   
   public void handUnequip(Player player, GUI GUI){
-    }
+     GUI.handMenu.removeAllChildren();
+     GUI.handMenu.setText("");
+     player.placeHolder.attachChild(player.Model.getChild(player.getItemInHand()));
+     player.setItemInHand("Nothing", player);
+     }
   
   
   //Here is the crosshairs

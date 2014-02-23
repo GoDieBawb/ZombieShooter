@@ -46,6 +46,8 @@ public class MonsterManager extends AbstractAppState {
     
     }
   
+    //This is checked on a loop to see if more monsters are necessary
+  
     public void creationChecker(Player player, Node monsterNode){
       monsterCount = player.getKillCount(player) * 2;
       if (monsterCount > 5) 
@@ -55,6 +57,8 @@ public class MonsterManager extends AbstractAppState {
       createMonster();
       }
   
+    //Creates a new instance of monster
+    
     public void createMonster(){
        Monster monster = new Monster();
        monster.health = 20;
@@ -71,6 +75,8 @@ public class MonsterManager extends AbstractAppState {
        monsterNode.attachChild(monster);
        monster.monsterSetLocation(monster);
        }
+    
+    //Checked on a loop to see if the monster is close enough to attack
     
     public void locationChecker(Monster monster){
         Vector3f playerLocation = player.Model.getLocalTranslation();
@@ -90,10 +96,14 @@ public class MonsterManager extends AbstractAppState {
           }
       }
     
+    //Method to make sure the monsters always face the player.
+    
     public void monsterRotater(Monster monster, Vector3f playerDirection){
       monster.Model.getControl(BetterCharacterControl.class).setWalkDirection(playerDirection);
       monster.Model.getControl(BetterCharacterControl.class).setViewDirection(playerDirection);
       }
+    
+    //Update method to check above specified methods on the loop
   
     @Override
     public void update(float tpf){

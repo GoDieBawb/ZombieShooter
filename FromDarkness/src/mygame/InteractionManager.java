@@ -51,8 +51,9 @@ public Player               player;
 public GUI                  GUI;
 public ChaseCamera          chaseCam;
 public int                  attackDelay;
-public SceneManager     item;
-public SoundManager     audio;
+public SceneManager         item;
+public SoundManager         audio;
+public boolean              isDead;
 
     
   @Override
@@ -75,10 +76,13 @@ public SoundManager     audio;
     System.out.println("Interat GUI is " + GUI);
     attackDelay = 0;
     setUpKeys();
+    isDead = false;
     armAnim = "StillArms";
     legAnim = "StillLegs";
     initInteraction = true;
   }
+  
+  //Set up the KeyBindings for Awesomeness
   
   private void setUpKeys() {
     inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
@@ -102,8 +106,10 @@ public SoundManager     audio;
     
   }
   
-
+  //Action listener for listening when keys are pressed and released
+  
   public void onAction(String binding, boolean isPressed, float tpf) {
+  if(!isDead){
     if (binding.equals("Left")) {
         
       left = isPressed;
@@ -117,11 +123,18 @@ public SoundManager     audio;
       up = isPressed;
 
       if (isPressed){
+        if (player.getItemInHand().equals("Gun"))
+        armAnim = "PistolHold";
+        else
         armAnim = "UnarmedRun";
+        
         legAnim = "RunAction";
         player.animInteract.animChange(armAnim, legAnim, player.Model);
         
         } else {
+        if (player.getItemInHand().equals("Gun"))
+        armAnim = "PistolHold";
+        else
         armAnim = "StillArms";
         legAnim = "StillLegs";
         player.animInteract.animChange(armAnim, legAnim, player.Model);
@@ -165,7 +178,7 @@ public SoundManager     audio;
         inputManager.setCursorVisible(false);
         chaseCam.setDragToRotate(false);
         }
-
+      }
     }
   }
   

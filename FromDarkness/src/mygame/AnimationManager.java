@@ -56,12 +56,11 @@ public SkeletonControl    skelControl;
       AnimControl animControl = findAnimControl(model);
       AnimChannel legChannel = animControl.getChannel(0);
       AnimChannel armChannel = animControl.getChannel(1);
-      
-      if (armAnim.equals("PistolHold")){
+      if (armAnim.equals("PistolHold") && !armChannel.getAnimationName().equals(armAnim)){
         armChannel.setAnim(armAnim);
         armChannel.setLoopMode(LoopMode.DontLoop);
         }
-      if (!armChannel.getAnimationName().equals(armAnim) && !armChannel.getAnimationName().equals("PistolHold")) {
+        else if (!armChannel.getAnimationName().equals(armAnim)) {
         armChannel.setAnim(armAnim);
         armChannel.setLoopMode(LoopMode.Loop);
         }

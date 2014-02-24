@@ -44,6 +44,8 @@ public  int                    damageBonus;
 private int                    damageTimer;
 private int                    rateBonus;
 private int                    rateTimer;
+public  int                    speedBonus;
+public  int                    speedTimer;
  
 
 
@@ -72,6 +74,7 @@ private int                    rateTimer;
        player.setRateBonus(player, 1);
        player.damageBonus = 0;
        player.rateBonus = 1;
+       player.speedBonus = 1;
        player.interaction = stateManager.getState(InteractionManager.class);
        player.animInteract = new AnimationManager();
        player.animInteract.animationInit(player.Model);
@@ -196,7 +199,7 @@ private int                    rateTimer;
          }
 
        if(grabbedItem.equals("DamageBonus")){
-         grabResults.getCollision(0).getGeometry().getParent().removeFromParent();
+         grabResults.getCollision(0).getGeometry().removeFromParent();
          player.setDamageBonus(player, 5);
          }
        
@@ -204,8 +207,11 @@ private int                    rateTimer;
          grabResults.getCollision(0).getGeometry().removeFromParent();
          player.rateBonus = 2;
          }
-       
-       System.out.println("GrabbedItem: " + grabbedItem);
+
+       if(grabbedItem.equals("SpeedBonus")){
+         grabResults.getCollision(0).getGeometry().removeFromParent();
+         player.speedBonus = 2;
+         }
         }
    
     
@@ -355,9 +361,10 @@ private int                    rateTimer;
     
     @Override
       public void update(float tpf){
+
       if (player.damageBonus > 0)
         damageTimer++;
-      if (damageTimer > 300) {
+      if (damageTimer > 3000) {
         player.damageBonus = 0;
         damageTimer = 0;
         }
@@ -368,6 +375,12 @@ private int                    rateTimer;
         player.rateBonus = 1;
         player.rateTimer = 0;
         }
-      System.out.println("RateBonus: " + player.rateBonus + " RateTime: " + player.rateTimer);
+
+      if (player.speedBonus > 1)
+        player.speedTimer++;
+      if (player.speedTimer > 3000) {
+        player.speedBonus = 1;
+        player.speedTimer = 0;
+        }
       }
 }

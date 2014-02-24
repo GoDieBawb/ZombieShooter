@@ -61,7 +61,7 @@ public  int               sparkDelay;
     bleedDelay = 0;
     sparkDelay = 0;
     mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    mat.setColor("Color", ColorRGBA.randomColor());
+    mat.setColor("Color", ColorRGBA.Yellow);
     grabbable = new Node("Grabbables");
     rootNode.attachChild(grabbable);
     grabbable.attachChild(initScene());
@@ -69,6 +69,8 @@ public  int               sparkDelay;
     grabbable.attachChild(makeAmmo("Ammo", 15f, 15f));
     grabbable.attachChild(makeHealth("Health", -15f, -15f));
     grabbable.attachChild(makeRateBonus("RateBonus", 15f, -15f));
+    grabbable.attachChild(makeDamageBonus("DamageBonus", -15f, 15f));
+    grabbable.attachChild(makeSpeedBonus("SpeedBonus", -20f, 25f));
     initParticles();
     }
       
@@ -109,17 +111,38 @@ public  int               sparkDelay;
     return geom;
     }
   
+    //Make the Rate Bonus
+  
   public Geometry makeRateBonus(String name, float x, float z) {
     Node rateBonus = (Node) assetManager.loadModel("Models/hourglass/hourglass.j3o");
     Node boxNode = (Node) rateBonus.getChild(1);
     Geometry geom = (Geometry) boxNode.getChild(0);
     geom.setLocalTranslation(new Vector3f(x, 1, z));
-    System.out.println("The RateBonus Geom: " + geom);
     geom.setLocalScale(.01f);
     return geom;
     }
+  
+  //Making the Damage Bonus
+  
+  public Geometry makeDamageBonus(String name, float x, float z) {
+    Node damageBonus = (Node) assetManager.loadModel("Models/DamageBonus/DamageBonus.j3o");
+    Node childNode = (Node) damageBonus.getChild(0);
+    Geometry geom = (Geometry) childNode.getChild(0);
+    geom.setLocalTranslation(new Vector3f(x, 1, z));
+    return geom;
+    }
+
+  //Making the Speed Bonus
+  
+  public Geometry makeSpeedBonus(String name, float x, float z) {
+    Geometry speedBonus = (Geometry) assetManager.loadModel("Models/Boot/Boot.j3o");
+    speedBonus.setLocalScale(.03f);
+    speedBonus.setMaterial(mat);
+    speedBonus.setLocalTranslation(new Vector3f(x, 1, z));
+    return speedBonus;
+    }
     
-    //Making the Health box 
+    //Making the Gun
 
     protected Spatial initGun() {   
       Spatial gun = assetManager.loadModel("Models/Gun/Gun.j3o");

@@ -167,7 +167,7 @@ public boolean              isDead;
         
     } else if (binding.equals("Inventory")) {
       inventory = isPressed;
-       player.getInventory(player, GUI);
+      player.getInventory(player, GUI);
             
 
       if (isPressed) {
@@ -207,8 +207,7 @@ public boolean              isDead;
             walkDirection.addLocal(camDir.negate());
         }
        if(initInteraction){
-       player.playerControl.setWalkDirection(walkDirection);
-       
+       player.playerControl.setWalkDirection(walkDirection.multLocal(player.speedBonus,0,player.speedBonus));
        }
        player.playerControl.setViewDirection(camDir);
     }

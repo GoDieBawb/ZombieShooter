@@ -70,13 +70,21 @@ public class Monster extends Node {
     public void dropItem(SceneManager item, Monster monster){
       Random rand = new Random();
       Node n = (Node) monster.getParent().getParent().getChild("Grabbables");
-      float dropChance = rand.nextInt(50) + 1; 
+      float dropChance = rand.nextInt(30) + 1; 
       if (dropChance == 2) {
         n.attachChild(item.makeAmmo("Ammo", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
         }
       if (dropChance == 3) {
         n.attachChild(item.makeHealth("Health", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
         }
-      }
-    
+      if (dropChance == 4) {
+        n.attachChild(item.makeRateBonus("rateBonus", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
+        }
+      if (dropChance == 5) {
+        n.attachChild(item.makeDamageBonus("damageBonus", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
+        }
+      if (dropChance == 6) {
+        n.attachChild(item.makeSpeedBonus("speedBonus", monster.Model.getLocalTranslation().x, monster.Model.getLocalTranslation().z));
+        } 
+    }
 }

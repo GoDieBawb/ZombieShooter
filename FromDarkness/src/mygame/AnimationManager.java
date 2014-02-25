@@ -15,6 +15,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Matrix3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.Spatial.CullHint;
 
 /**
  *
@@ -104,6 +105,7 @@ public SkeletonControl    skelControl;
     player.Model.getChild("Gun").setLocalRotation
         (new Matrix3f(1f, 5f, 5f, 1f, 1f, 1f, 1f, 5f, 1f));
     player.Model.getChild("Gun").setLocalTranslation(-.5f, 5f, 2.3f);
+    player.Model.setCullHint(CullHint.Never);
     animChange("PistolHold", "RunAction", player.Model);
       
     }

@@ -78,7 +78,6 @@ public  int                    speedTimer;
        player.interaction = stateManager.getState(InteractionManager.class);
        player.animInteract = new AnimationManager();
        player.animInteract.animationInit(player.Model);
-       player.Model.setLocalTranslation(0f, 0f, 0f);
        player.Model.setLocalScale(.7f);
        player.Model.addControl(player.playerControl);
        player.attackDelay = 0;
@@ -92,6 +91,7 @@ public  int                    speedTimer;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
+       player.Model.setLocalTranslation(0f, 50f, 0f);
        
     }
     
@@ -128,7 +128,6 @@ public  int                    speedTimer;
       player.setItemInHand("", player);
       player.interaction.isDead = true;
       player.Model.setLocalRotation(new Matrix3f(9f, 1f, 1f, 9f, 1f, 9f, 1f, 9f, 1f));
-
       }
     
     //Player Equipped Item Methods for Getting and Setting the Item in Hand
@@ -361,7 +360,6 @@ public  int                    speedTimer;
     
     @Override
       public void update(float tpf){
-
       if (player.damageBonus > 0)
         damageTimer++;
       if (damageTimer > 3000) {

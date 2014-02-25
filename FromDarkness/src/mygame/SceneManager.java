@@ -84,7 +84,7 @@ public  int               sparkDelay;
         CollisionShapeFactory.createDynamicMeshShape(sceneModel);
         RigidBodyControl scenePhys = new RigidBodyControl(sceneShape);
         sceneModel.addControl(scenePhys);
-        sceneModel.setLocalTranslation(5f, 0f, 1f);
+        sceneModel.setLocalTranslation(25f, 0f, 100f);
         scenePhys.setMass(0f);
         physics.getPhysicsSpace().add(scenePhys);
         System.out.println("Scene Initialized");
@@ -101,7 +101,7 @@ public  int               sparkDelay;
     return geom;
     }
 
-   //Making the Health box 
+  //Making the Health box 
   
   public Geometry makeHealth(String name, float x, float z) {
     Node healthBox = (Node) assetManager.loadModel("Models/Items/healthBox.j3o");
@@ -111,7 +111,7 @@ public  int               sparkDelay;
     return geom;
     }
   
-    //Make the Rate Bonus
+  //Make the Rate Bonus
   
   public Geometry makeRateBonus(String name, float x, float z) {
     Node rateBonus = (Node) assetManager.loadModel("Models/hourglass/hourglass.j3o");

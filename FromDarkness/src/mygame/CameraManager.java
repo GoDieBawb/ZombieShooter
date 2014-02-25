@@ -42,8 +42,8 @@ public Player player;
     chaseCam = new ChaseCamera(cam, model, inputManager);
     chaseCam.setSmoothMotion(false);
     chaseCam.setDragToRotate(false);
+    chaseCam.setMaxDistance(0f);
     System.out.println("Camera State Attached");
-  
     }
     
     @Override

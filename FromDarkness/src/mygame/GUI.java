@@ -114,22 +114,23 @@ public class GUI extends AbstractAppState {
       GUI.screen.addElement(GUI.handMenu);
       GUI.handMenu.setDimensions(new Vector2f(200,100));
       GUI.handMenu.setIsResizable(false);
-      GUI.handMenu.setIsMovable(true);
-      GUI.handMenu.setLocalTranslation(5f, 5f, 500f);
+      GUI.handMenu.setIsMovable(false);
+      GUI.handMenu.setLocalTranslation(0, 0, 0);
       
     GUI.HUD =
           new Window(GUI.screen, "HudWindow", new Vector2f(15f, 15f));
     
     GUI.screen.addElement(GUI.HUD);
-    GUI.HUD.setDimensions(new Vector2f(200, 275));
-    GUI.HUD.setLocalTranslation(500f, 5f, 500f);
+    GUI.HUD.setDimensions(new Vector2f(125, 100));
+    GUI.HUD.setLocalTranslation(Display.getWidth()- GUI.HUD.getWidth(), 0, 0);
     initializeHUD();
+    
     
     GUI.inventoryMenu = 
             new Window(GUI.screen, "HandWindow", new Vector2f(15f, 15f));
    
       GUI.screen.addElement(GUI.inventoryMenu);
-      GUI.inventoryMenu.setDimensions(new Vector2f(200, 250));
+      GUI.inventoryMenu.setDimensions(new Vector2f(200, 100));
       GUI.inventoryMenu.setIsVisible(false);
       initCrossHairs();
     }
@@ -146,20 +147,20 @@ public class GUI extends AbstractAppState {
     
     public void initializeHUD(){
     GUI.healthBar 
-     = new Element(GUI.screen,"healthBar",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Face.png"
+     = new Element(GUI.screen,"healthBar",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Empty.png"
     );
     GUI.ammoDisplay
-     = new Element(GUI.screen,"ammoDisplay",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Coin.png"
+     = new Element(GUI.screen,"ammoDisplay",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Empty.png"
     );
     GUI.killDisplay
-     = new Element(GUI.screen,"killDisplay",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/splatter.png"
+     = new Element(GUI.screen,"killDisplay",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Empty.png"
     );
     GUI.HUD.addChild(GUI.healthBar);
     GUI.HUD.addChild(GUI.ammoDisplay);
     GUI.HUD.addChild(GUI.killDisplay);
-    GUI.killDisplay.setLocalTranslation(50f, 0f, 100f);
-    GUI.ammoDisplay.setLocalTranslation(50f, 90f, 100f);
-    GUI.healthBar.setLocalTranslation(50f, 180f, 100f);
+    GUI.killDisplay.setLocalTranslation(30f, -5f, 50f);
+    GUI.ammoDisplay.setLocalTranslation(30f, -30f, 50f);
+    GUI.healthBar.setLocalTranslation(30f, -55f, 50f);
     }
 
   
@@ -169,12 +170,12 @@ public class GUI extends AbstractAppState {
     //Set up a new window to list the inventory
     public void updateInventoryWindow(Player player, GUI GUI) {
       
-      GUI.inventoryMenu.setLocalTranslation(5f, 340f, 5f);
+      GUI.inventoryMenu.setLocalTranslation(0, Display.getHeight() - GUI.inventoryMenu.getHeight(), 0);
       GUI.inventoryMenu.removeAllChildren();
       
       //For each item in the inventory add a button
       for(int i = 0; i < player.inventory.size(); i++){
-        measure = 50f * i + 30;
+        measure = 30f * i + 30;
         inventoryCount = "Button" + i;
         
         try {
@@ -216,9 +217,8 @@ public class GUI extends AbstractAppState {
         }
       };
        
-      System.out.println(player);
       GUI.handMenu.addChild(unequipButton);
-      unequipButton.setText("Unequip");
+      unequipButton.setText("Unequip " + player.getItemInHand());
       unequipButton.setPosition(15f, 15f); 
       }
 
@@ -234,7 +234,7 @@ public class GUI extends AbstractAppState {
       inventoryMenu.addChild(gunButton);
       gunButton.setText("Gun");
       gunButton.setPosition(15f, measure);  
-    }
+      }
     
     
     public void billyButton(final GUI GUI, final Player player) {
@@ -274,7 +274,6 @@ public class GUI extends AbstractAppState {
     
   public void gunEquip(Player player, GUI GUI){
      System.out.println("gunEquip");
-     GUI.handMenu.setText("Gun");
      player.setItemInHand("Gun", player);
      player.Model.attachChild(player.placeHolder.getChild("Gun"));
      player.animInteract.gunEquip(player);

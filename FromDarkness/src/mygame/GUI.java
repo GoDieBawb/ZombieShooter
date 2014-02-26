@@ -16,6 +16,7 @@ import com.jme3.font.BitmapText;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import org.lwjgl.opengl.Display;
@@ -39,11 +40,12 @@ public class GUI extends AbstractAppState {
     private BulletAppState    physics;
     private FlyByCamera       flyCam;
     
-    private Screen            screen;
-    private Window            startMenu;
-    private Window            inventoryMenu;
-    private Window            handMenu;
-    private Window            HUD;
+    public  Screen            screen;
+    public  Window            startMenu;
+    public  Window            inventoryMenu;
+    public  Window            handMenu;
+    public  Window            HUD;
+    public  Window            EndMenu;
     private String            inventoryCount;
     private Element           killDisplay;
     private Element           healthBar;
@@ -108,8 +110,8 @@ public class GUI extends AbstractAppState {
     stateManager.attach(new InteractionManager());
     stateManager.attach(new AnimationManager());
 
-    GUI.handMenu = 
-            new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
+      GUI.handMenu = 
+            new Window(GUI.screen, "HandWindow", new Vector2f(15f, 15f));
     
       GUI.screen.addElement(GUI.handMenu);
       GUI.handMenu.setDimensions(new Vector2f(200,100));
@@ -127,12 +129,14 @@ public class GUI extends AbstractAppState {
     
     
     GUI.inventoryMenu = 
-            new Window(GUI.screen, "HandWindow", new Vector2f(15f, 15f));
+            new Window(GUI.screen, "InventoryWindow", new Vector2f(15f, 15f));
    
       GUI.screen.addElement(GUI.inventoryMenu);
       GUI.inventoryMenu.setDimensions(new Vector2f(200, 100));
       GUI.inventoryMenu.setIsVisible(false);
       initCrossHairs();
+      
+      
     }
   
   /** HUD Menu Stuff **/
@@ -189,7 +193,36 @@ public class GUI extends AbstractAppState {
       GUI.inventoryMenu.setIsVisible(true);
       }
     
+    
+    //Ending Menu Stuff
+    public void createEndMenu(){
+      GUI.EndMenu =
+        new Window(GUI.screen, "EndWindow", new Vector2f(15f, 15f));
+      this.app.getGuiNode().detachChild(this.app.getGuiNode().getChild(5));
+      GUI.screen.addElement(GUI.EndMenu);
+      GUI.EndMenu.setDimensions(new Vector2f(130, 100));
+      GUI.EndMenu.setLocalTranslation
+              (Display.getWidth() / 2 - GUI.EndMenu.getWidth()/2, Display.getHeight() / 2 + GUI.EndMenu.getHeight()/2, 0);
+      quitButton(GUI);
+      restartButton(GUI);
+      }
   
+    public void quitGame(){
+      app.stop();
+      }
+    
+    public void restartGame(){
+      stateManager.detach(stateManager.getState(InteractionManager.class));
+      stateManager.detach(stateManager.getState(CameraManager.class));
+      stateManager.detach(stateManager.getState(LightManager.class));
+      stateManager.detach(stateManager.getState(AnimationManager.class));
+      stateManager.detach(stateManager.getState(SceneManager.class));
+      stateManager.detach(stateManager.getState(SoundManager.class));
+      stateManager.detach(stateManager.getState(Player.class));
+      GUI.EndMenu.hideWindow();
+      startMenu.showWindow();
+      
+      }
   
 
 /** Inventory Item Button Adapters **/
@@ -207,6 +240,32 @@ public class GUI extends AbstractAppState {
    
    
    /** Actual Buttoon Adaptars **/
+    
+    public void quitButton(final GUI GUI) {
+      ButtonAdapter quitButton
+             = new ButtonAdapter(GUI.screen, "QuitButton", new Vector2f(20, 12)){
+        @Override
+        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+            quitGame();
+        }
+      };
+      GUI.EndMenu.addChild(quitButton);
+      quitButton.setLocalTranslation(15f, 15f, 1f);
+      quitButton.setText("Quit Game");
+    }
+    
+    public void restartButton(final GUI GUI) {
+      ButtonAdapter restartButton =
+              new ButtonAdapter(GUI.screen, "RestartButton", new Vector2f(20,12)){
+        @Override
+        public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled){
+          restartGame();
+        }
+      };
+      GUI.EndMenu.addChild(restartButton);
+      restartButton.setText("Play Again");
+      
+    }
     
     public void unequipButton(final GUI GUI, final Player player) {
        ButtonAdapter unequipButton 

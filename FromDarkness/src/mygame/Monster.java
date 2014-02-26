@@ -1,5 +1,6 @@
 package mygame;
 
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -60,9 +61,9 @@ public class Monster extends Node {
 
      //Monster Attack Methods  
     
-    public void attack(Spatial monster, Player player) {
+    public void attack(Spatial monster, Player player, AppStateManager stateManager) {
       anim.animChange("Punch", "StillLegs", monster);
-      player.changeHealth(player, -3);
+      player.changeHealth(player, -3, stateManager);
       }
     
     //Monster dropItem Methods 

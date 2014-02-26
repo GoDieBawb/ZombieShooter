@@ -114,20 +114,34 @@ public  int                    speedTimer;
       }
     
     
-    public void changeHealth(Player player, int change){
+    public void changeHealth(Player player, int change, AppStateManager stateManager){
       int currentHealth = player.getHealth(player);
       if (currentHealth > 0) {
         player.health = currentHealth + change;
         } else {
-        Die(player);
+        Die(player, stateManager);
         }
       }
     
     
-    public void Die(Player player){
+    public void Die(Player player, AppStateManager stateManager){
       player.setItemInHand("", player);
       player.interaction.isDead = true;
       player.Model.setLocalRotation(new Matrix3f(9f, 1f, 1f, 9f, 1f, 9f, 1f, 9f, 1f));
+      stateManager.detach(stateManager.getState(MonsterManager.class));
+      GUI GUIState = stateManager.getState(GUI.class);
+      GUI GUI = GUIState.GUI;
+      System.out.println(GUI.screen);
+      GUI.screen.removeElement(GUI.handMenu);
+      GUI.screen.removeElement(GUI.inventoryMenu);
+      GUI.screen.removeElement(GUI.HUD);
+      if (GUI.EndMenu == null)
+      GUIState.createEndMenu();
+      else
+      GUI.EndMenu.showWindow();
+      InteractionManager interaction = stateManager.getState(InteractionManager.class);
+      interaction.inputManager.setCursorVisible(true);
+      player.Model.getParent().detachAllChildren();
       }
     
     //Player Equipped Item Methods for Getting and Setting the Item in Hand
@@ -187,7 +201,7 @@ public  int                    speedTimer;
          }
 
        if(grabbedItem.equals("HealthBox")){
-         player.changeHealth(player, 20);
+         player.changeHealth(player, 20, stateManager);
          grabResults.getCollision(0).getGeometry().removeFromParent();
          }
         

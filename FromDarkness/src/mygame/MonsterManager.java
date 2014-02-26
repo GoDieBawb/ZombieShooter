@@ -84,13 +84,14 @@ public class MonsterManager extends AbstractAppState {
         float distance = playerLocation.distance(monsterLocation);
         Vector3f playerDirection = playerLocation.subtract(monsterLocation);
         monsterRotater(monster, playerDirection);
+        
         if (distance < 3) {
           if (monster.attackDelay == 10) {
-          monster.attackDelay = 0;
-          monster.attack(monster.Model, player);
-          } else {
-          monster.attackDelay++;
-          }
+            monster.attackDelay = 0;
+            monster.attack(monster.Model, player, stateManager);
+            } else {
+            monster.attackDelay++;
+            }
           } else {
           monster.anim.animChange("UnarmedRun", "RunAction",monster.Model);
           }
@@ -107,6 +108,7 @@ public class MonsterManager extends AbstractAppState {
   
     @Override
     public void update(float tpf){
+      
       for (int i = 0; i < monsterNode.getChildren().size(); i++) {
         Monster monster = (Monster) monsterNode.getChild(i);
         locationChecker(monster);

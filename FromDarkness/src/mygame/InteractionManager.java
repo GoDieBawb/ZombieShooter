@@ -25,7 +25,7 @@ public class InteractionManager extends AbstractAppState implements ActionListen
     
 private SimpleApplication app;
 private AppStateManager   stateManager;
-private InputManager      inputManager;
+public InputManager      inputManager;
 public  ViewPort          viewPort;
 private Camera            cam;
 

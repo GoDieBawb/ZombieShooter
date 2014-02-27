@@ -139,7 +139,7 @@ public  int                    speedTimer;
       GUIState.createEndMenu();
       else
       GUI.EndMenu.showWindow();
-      InteractionManager interaction = stateManager.getState(InteractionManager.class);
+      interaction = stateManager.getState(InteractionManager.class);
       interaction.inputManager.setCursorVisible(true);
       player.Model.getParent().detachAllChildren();
       }

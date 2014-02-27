@@ -25,7 +25,7 @@ public class InteractionManager extends AbstractAppState implements ActionListen
     
 private SimpleApplication app;
 private AppStateManager   stateManager;
-public InputManager      inputManager;
+public InputManager       inputManager;
 public  ViewPort          viewPort;
 private Camera            cam;
 
@@ -140,7 +140,6 @@ public boolean              isDead;
         player.animInteract.animChange(armAnim, legAnim, player.Model);
         }
 
-
     } else if (binding.equals("Down")) {
       down = isPressed;
       
@@ -184,7 +183,6 @@ public boolean              isDead;
   
     @Override
     public void update(float tpf) {
-        
         
         if (shoot)
         player.attackChecker(cam, player, player.animInteract, legAnim, monsterNode, item, audio);

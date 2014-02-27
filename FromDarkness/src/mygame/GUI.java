@@ -16,7 +16,6 @@ import com.jme3.font.BitmapText;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import org.lwjgl.opengl.Display;
@@ -53,6 +52,7 @@ public class GUI extends AbstractAppState {
     
     
     private float             measure;
+    private boolean           firstTime;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -63,6 +63,8 @@ public class GUI extends AbstractAppState {
         this.stateManager = this.app.getStateManager();
         this.physics      = this.stateManager.getState(BulletAppState.class);
         this.flyCam       = this.stateManager.getState(FlyCamAppState.class).getCamera();
+        
+        firstTime = true;
         this.GUI = new GUI();
         startMenu();
     }
@@ -109,6 +111,7 @@ public class GUI extends AbstractAppState {
     stateManager.attach(new LightManager());
     stateManager.attach(new InteractionManager());
     stateManager.attach(new AnimationManager());
+    
 
       GUI.handMenu = 
             new Window(GUI.screen, "HandWindow", new Vector2f(15f, 15f));
@@ -214,11 +217,16 @@ public class GUI extends AbstractAppState {
     public void restartGame(){
       stateManager.detach(stateManager.getState(InteractionManager.class));
       stateManager.detach(stateManager.getState(CameraManager.class));
-      stateManager.detach(stateManager.getState(LightManager.class));
       stateManager.detach(stateManager.getState(AnimationManager.class));
       stateManager.detach(stateManager.getState(SceneManager.class));
       stateManager.detach(stateManager.getState(SoundManager.class));
       stateManager.detach(stateManager.getState(Player.class));
+      LightManager light = stateManager.getState(LightManager.class);
+      rootNode.removeLight(light.flashLight);
+      rootNode.removeLight(light.al);
+      stateManager.detach(stateManager.getState(LightManager.class));
+      stateManager.detach(physics);
+      firstTime = false;
       GUI.EndMenu.hideWindow();
       startMenu.showWindow();
       

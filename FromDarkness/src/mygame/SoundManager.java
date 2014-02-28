@@ -26,6 +26,7 @@ public class SoundManager extends AbstractAppState {
   public    AudioNode              emptyGun;
   public    AudioNode              missedPunch;
   public    AudioNode              zombieTalk;
+  public    AudioNode              laugh;
 
 @Override
   public void initialize(AppStateManager stateManager, Application app) {
@@ -64,6 +65,13 @@ public class SoundManager extends AbstractAppState {
     zombieTalk.setLooping(false);
     zombieTalk.setVolume(.3f);
     rootNode.attachChild(zombieTalk);  
+    
+    
+    laugh = new AudioNode(assetManager, "Sounds/Laugh/laugh.wav", false);
+    laugh.setPositional(false);
+    laugh.setLooping(false);
+    laugh.setVolume(.3f);
+    rootNode.attachChild(laugh);  
     System.out.println("Audio Initialized");
     }
   
@@ -83,6 +91,10 @@ public class SoundManager extends AbstractAppState {
   
   public void zombieSounds(Monster monster){
     zombieTalk.playInstance();
+    }
+  
+  public void laughSound(){
+    laugh.playInstance();
     }
     
 }

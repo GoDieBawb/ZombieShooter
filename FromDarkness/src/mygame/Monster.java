@@ -47,11 +47,11 @@ public class Monster extends Node {
     
    //Monster Location Methods  
     
-    public void monsterSetLocation(Monster monster) {
+    public void SetLocation(Monster monster) {
       Random rand = new Random();
-      float firstNumber = rand.nextInt(150) + 5; 
-      float secondNumber = rand.nextInt(150) + 5;
-      monster.monsterControl.warp(new Vector3f(firstNumber, 0f, secondNumber));
+      float firstNumber = rand.nextInt(400) - 200; 
+      float secondNumber = rand.nextInt(400) - 200;
+      monster.monsterControl.warp(new Vector3f(firstNumber, 5f, secondNumber));
       }
     
     public Vector3f GetLocation(Monster monster){

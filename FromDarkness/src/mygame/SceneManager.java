@@ -186,6 +186,8 @@ public  int               sparkDelay;
    //Moving the blood particle emitter around
    
    public void setBloodPosition(Player player, Vector3f contactPoint){
+     if (blood.isInWorldSpace())
+     blood.removeFromParent();
      blood = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
      Material mat_red = new Material(assetManager, 
             "Common/MatDefs/Misc/Particle.j3md");
@@ -210,6 +212,8 @@ public  int               sparkDelay;
    
   public void setSparksPosition(Player player){
     
+    if (sparks.isInWorldSpace())
+    sparks.removeFromParent();
     sparks = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
     Material mat_red = new Material(assetManager, 
         "Common/MatDefs/Misc/Particle.j3md");

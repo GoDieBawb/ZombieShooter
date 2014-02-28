@@ -50,6 +50,9 @@ public class GUI extends AbstractAppState {
     private Element           healthBar;
     private Element           ammoDisplay;
     
+    private Element           finalKills;
+    private Element           finalAccuracy;
+    
     
     private float             measure;
     private boolean           firstTime;
@@ -198,16 +201,35 @@ public class GUI extends AbstractAppState {
     
     
     //Ending Menu Stuff
-    public void createEndMenu(){
+    public void createEndMenu(Player player){
       GUI.EndMenu =
         new Window(GUI.screen, "EndWindow", new Vector2f(15f, 15f));
       this.app.getGuiNode().detachChild(this.app.getGuiNode().getChild(5));
       GUI.screen.addElement(GUI.EndMenu);
-      GUI.EndMenu.setDimensions(new Vector2f(130, 100));
+      GUI.EndMenu.setDimensions(new Vector2f(130, 200));
       GUI.EndMenu.setLocalTranslation
-              (Display.getWidth() / 2 - GUI.EndMenu.getWidth()/2, Display.getHeight() / 2 + GUI.EndMenu.getHeight()/2, 0);
+              (Display.getWidth() / 2 - GUI.EndMenu.getWidth()/2, Display.getHeight() / 2 - GUI.EndMenu.getHeight()/2, 0);
       quitButton(GUI);
       restartButton(GUI);
+      
+      GUI.finalKills
+       = new Element(GUI.screen,"finalKills",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Empty.png"
+      );
+      GUI.finalAccuracy
+       = new Element(GUI.screen,"finalAccuracy",new Vector2f(5,5),new Vector2f(100,100),new Vector4f(5,5,5,5),"Textures/Empty.png"
+      );
+      
+      String kills = String.valueOf(player.killCount);
+      float accuracyRaw = player.shotsHit / player.shotsFired;
+      float calcFloat = accuracyRaw * 100;
+      int accuracy = (int) calcFloat;
+      GUI.finalKills.setText("Final Kills: " + kills);
+      GUI.finalAccuracy.setText("Accuracy: " + accuracy + "%");
+      
+      GUI.finalAccuracy.setPosition(20f, 15f);
+      GUI.finalKills.setPosition(20f, 30f);
+      GUI.EndMenu.addChild(GUI.finalKills);
+      GUI.EndMenu.addChild(GUI.finalAccuracy);
       }
   
     public void quitGame(){
@@ -258,7 +280,7 @@ public class GUI extends AbstractAppState {
         }
       };
       GUI.EndMenu.addChild(quitButton);
-      quitButton.setLocalTranslation(15f, 15f, 1f);
+      quitButton.setPosition(15f, 20f);
       quitButton.setText("Quit Game");
     }
     
@@ -272,6 +294,7 @@ public class GUI extends AbstractAppState {
       };
       GUI.EndMenu.addChild(restartButton);
       restartButton.setText("Play Again");
+      restartButton.setPosition(15f, 50f);
       
     }
     

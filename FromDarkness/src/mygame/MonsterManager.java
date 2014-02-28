@@ -73,7 +73,7 @@ public class MonsterManager extends AbstractAppState {
        physics.getPhysicsSpace().add(monster.monsterControl);
        monster.attachChild(monster.Model);
        monsterNode.attachChild(monster);
-       monster.monsterSetLocation(monster);
+       monster.SetLocation(monster);
        }
     
     //Checked on a loop to see if the monster is close enough to attack

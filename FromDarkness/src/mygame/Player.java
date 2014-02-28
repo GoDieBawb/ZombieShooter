@@ -46,6 +46,8 @@ private int                    rateBonus;
 private int                    rateTimer;
 public  int                    speedBonus;
 public  int                    speedTimer;
+public  float                    shotsFired;
+public  float                    shotsHit;
  
 
 
@@ -88,6 +90,9 @@ public  int                    speedTimer;
        player.killCount = 0;
        player.ammo = 100;
        player.damageTimer = 0;
+       
+       player.shotsFired = 1;
+       player.shotsHit   = 1;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
@@ -136,11 +141,13 @@ public  int                    speedTimer;
       GUI.screen.removeElement(GUI.inventoryMenu);
       GUI.screen.removeElement(GUI.HUD);
       if (GUI.EndMenu == null)
-      GUIState.createEndMenu();
+      GUIState.createEndMenu(player);
       else
       GUI.EndMenu.showWindow();
       interaction = stateManager.getState(InteractionManager.class);
       interaction.inputManager.setCursorVisible(true);
+      SoundManager sound = stateManager.getState(SoundManager.class);
+      sound.laughSound();
       player.Model.getParent().detachAllChildren();
       }
     
@@ -277,7 +284,7 @@ public  int                    speedTimer;
     public void attack(Camera cam, Player player, AnimationManager animInteract, String legAnim, Node monsterNode, SceneManager item, SoundManager audio){
       int range;
       int damage;
-      
+      player.shotsFired++;
       
       //Get the Item in Hand and Set Damage
       
@@ -321,10 +328,12 @@ public  int                    speedTimer;
          if (distance <= range) {
            
            if (monster.getHealth(monster) > 0) {
+             player.shotsHit++;
              monster.changeHealth(monster, damage + player.damageBonus, player, audio);
              item.setBloodPosition(player, attackResults.getCollision(0).getContactPoint());
   
              } else {
+             player.shotsHit++;
              monster.dropItem(item, monster);
              monster.Die(monster, player);
              }

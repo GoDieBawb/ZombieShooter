@@ -54,6 +54,7 @@ public int                  attackDelay;
 public SceneManager         item;
 public SoundManager         audio;
 public boolean              isDead;
+public boolean              isInverted;
 
     
   @Override
@@ -73,14 +74,14 @@ public boolean              isDead;
     this.chaseCam      = this.stateManager.getState(CameraManager.class).chaseCam;
     this.audio         = this.stateManager.getState(SoundManager.class);
     
-    System.out.println("Interat GUI is " + GUI);
     attackDelay = 0;
     setUpKeys();
     isDead = false;
     armAnim = "StillArms";
     legAnim = "StillLegs";
     initInteraction = true;
-  }
+    isInverted = true;
+    }
   
   //Set up the KeyBindings for Awesomeness
   
@@ -94,7 +95,9 @@ public boolean              isDead;
     inputManager.addMapping("Grab", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
     inputManager.addMapping("FlashLight", new KeyTrigger(KeyInput.KEY_F));
     inputManager.addMapping("Inventory", new KeyTrigger(KeyInput.KEY_E));
+    inputManager.addMapping("Inversion", new KeyTrigger(KeyInput.KEY_Y));
     inputManager.addListener(this, "Inventory");
+    inputManager.addListener(this, "Inversion");
     inputManager.addListener(this, "FlashLight");
     inputManager.addListener(this, "Grab");
     inputManager.addListener(this, "Shoot");
@@ -152,6 +155,9 @@ public boolean              isDead;
         if (isPressed){
         
         } else {
+        if(player.heldItem.equals("Gun"))
+        armAnim = "PistolHold";
+        else
         armAnim = "StillArms";
         legAnim = "StillLegs";
         player.animInteract.animChange(armAnim, legAnim, player.Model);
@@ -163,6 +169,15 @@ public boolean              isDead;
           
     } else if (binding.equals("FlashLight") && !isPressed){
       //lightInteract.flashlightOn();
+
+    } else if (binding.equals("Inversion") && !isPressed){
+      if(isInverted){
+        chaseCam.setInvertVerticalAxis(false);
+        isInverted = false;
+        } else{
+        chaseCam.setInvertVerticalAxis(true);
+        isInverted = true;
+        }
         
     } else if (binding.equals("Inventory")) {
       inventory = isPressed;
@@ -183,7 +198,7 @@ public boolean              isDead;
   
     @Override
     public void update(float tpf) {
-        
+      if(!isDead)  {
         if (shoot)
         player.attackChecker(cam, player, player.animInteract, legAnim, monsterNode, item, audio);
         
@@ -209,6 +224,7 @@ public boolean              isDead;
        }
        player.playerControl.setViewDirection(camDir);
     }
+   }
 }
     
 

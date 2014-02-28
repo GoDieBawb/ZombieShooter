@@ -92,7 +92,7 @@ public  float                    shotsHit;
        player.damageTimer = 0;
        
        player.shotsFired = 1;
-       player.shotsHit   = 1;
+       player.shotsHit   = 0;
   
        physics.getPhysicsSpace().add(player.playerControl);
        rootNode.attachChild(player.Model);
@@ -134,6 +134,7 @@ public  float                    shotsHit;
       player.interaction.isDead = true;
       player.Model.setLocalRotation(new Matrix3f(9f, 1f, 1f, 9f, 1f, 9f, 1f, 9f, 1f));
       stateManager.detach(stateManager.getState(MonsterManager.class));
+      stateManager.detach(stateManager.getState(Player.class));
       GUI GUIState = stateManager.getState(GUI.class);
       GUI GUI = GUIState.GUI;
       System.out.println(GUI.screen);
@@ -292,6 +293,8 @@ public  float                    shotsHit;
         if(player.getItemInHand().equals("Gun")){
 
           if (getAmmo(player) > 0) {
+          String armAnim = "PistolHold";
+          animInteract.animChange(armAnim, legAnim, player.Model);
           changeAmmo(player, -1);
           item.setSparksPosition(player);
           range = 20;

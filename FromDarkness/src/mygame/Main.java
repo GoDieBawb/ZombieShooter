@@ -13,15 +13,13 @@ public class Main extends SimpleApplication {
         app.setShowSettings(false);
         app.setDisplayStatView(false);
         app.start();
-    }
+        }
     
     //When the aplication starts simply attach the GUI
 
     @Override
     public void simpleInitApp(){
     stateManager.attach(new GUI());
-    System.out.println("Main State Attached");
-    
     }
        
 

@@ -62,7 +62,6 @@ public boolean lightState;
     flashLight.setSpotInnerAngle(1);
     flashLight.setSpotOuterAngle(1);
     flashLight.setSpotRange(50);
-    System.out.println("Light Initialized");
     flashlightOn();
     }
     
@@ -70,7 +69,6 @@ public boolean lightState;
     
     public void flashlightOn(){
     //if(lightState == false){
-      System.out.println("Flashlight Toggled");
       rootNode.addLight(flashLight);
       lightState = true;
     
@@ -87,10 +85,10 @@ public boolean lightState;
     
     @Override
     public void update(float tpf) {
-    if(lightState){
-    flashLight.setDirection(cam.getDirection());
-    flashLight.setPosition(model.getLocalTranslation().add(0f,5f,0f));
-       } 
+      if(lightState){
+      flashLight.setDirection(cam.getDirection());
+      flashLight.setPosition(model.getLocalTranslation().add(0f,5f,0f));
+      } 
         
   }
 

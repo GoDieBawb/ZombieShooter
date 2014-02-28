@@ -148,7 +148,6 @@ public  int               sparkDelay;
       Spatial gun = assetManager.loadModel("Models/Gun/Gun.j3o");
       gun.setLocalTranslation(15f, 0f, 15f);
       gun.setLocalScale(.3f);
-      System.out.println("Gun Initialized");
       return gun;
       }
     

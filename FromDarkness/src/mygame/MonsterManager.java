@@ -86,7 +86,7 @@ public class MonsterManager extends AbstractAppState {
         monsterRotater(monster, playerDirection);
         
         if (distance < 3) {
-          if (monster.attackDelay == 10) {
+          if (monster.attackDelay == 50) {
             monster.attackDelay = 0;
             monster.attack(monster.Model, player, stateManager);
             } else {

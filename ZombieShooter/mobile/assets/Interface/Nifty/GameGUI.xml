@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <!-- start screen -->
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+ <screen id="start" controller="mygame.InterfaceAppState">
+   <layer id="topLayer" childLayout="center">
+     <panel id="mainLayer" childLayout="center" backgroundColor="#0010FC" align="center">
+         <image filename="Interface/Images/ZombieBack.jpg" align="center" valign="center" height="99%" width="99%">
+         </image>
+      </panel>
+    </layer>
+    
+ <layer id="bottomLayer" childLayout="center">
+     <panel id="Top Button" valign="top" visibleToMouse="true" childLayout="center" height="15%" width="25%" backgroundColor="#C63939">
+         <text text="Start" font="Interface/Fonts/Default.fnt" width="100%" height="100%" />
+         <interact onClick="leaveMenu()"/>
+         </panel>
+      </layer>
+ <layer id="buttonLayer" childLayout="center">
+      <panel id="Bottom Button" childLayout="center" visibleToMouse="true" backgroundColor="#C63939" height="15%" width="25%" valign="bottom" >  
+         <interact onClick="quitGame()"/>
+        </panel>
+    </layer>
+   </screen>
+   
+ <screen id="loading" controller="mygame.InterfaceAppState">
+       <layer id="loadingLayer" childLayout="center" >
+           <panel id="loadingPanel" childLayout="center" backgroundColor="#C63939" height="15%" width="25%">
+               <text text="Loading" font="Interface/Fonts/Default.fnt" width="100%" height="100%" />
+           </panel>
+       </layer>
+   </screen>
+   
+   <screen id="hud" controller="mygame.InterfaceAppState">
+       <layer id="hudLayer" childLayout="center">
+           <panel id="" childLayout="absolute">
+               <image filename="Interface/Images/HudFrame.png" align="center" valign="center" height="100%"
+                width="100%">
+               </image>
+           </panel>  
+       </layer>
+       <layer id="updateLayer" childLayout="horizontal" height="100%" width="100%">
+           <panel id="toolBar" childLayout="horizontal" align="center" valign="bottom"
+           height="12%"  width="100%">
+               <panel id="toolSpaceLeft" height="100%" width="20%"/>
+               <panel id="toolOne" height="100%" width="15%" backgroundColor="#43c4ef"/>
+               <panel id="toolTwo" height="100%" width="15%" backgroundColor="#df6925"/>
+               <panel id="toolThree" height="100%" width="15%" backgroundColor="#00ff00"/>                    
+               <panel id="toolFour" height="100%" width="15%" backgroundColor="##ee73b8"/>
+               <panel id="toolSpaceRight" height="100%" width="20%"/>
+           </panel>
+       </layer>
+   </screen>
+  </nifty>

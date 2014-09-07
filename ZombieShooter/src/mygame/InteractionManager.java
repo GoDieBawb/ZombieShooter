@@ -201,7 +201,6 @@ public boolean              isInverted;
       if(!isDead)  {
         if (shoot)
         player.attackChecker(cam, player, player.animInteract, legAnim, monsterNode, item, audio);
-        
         GUI.updateInventoryWindow(player, GUI);
         GUI.updateHUDWindow(player, GUI);
         camDir.set(cam.getDirection()).multLocal(10.0f, 0.0f, 10.0f);

@@ -42,7 +42,7 @@ public class SoundManager extends AbstractAppState {
   //Initialize the Sound Nodes
 
   public void initAudio(){
-    gunShot = new AudioNode(assetManager, "Sound/Effects/Gun.wav", false);
+    gunShot = new AudioNode(assetManager, "Sounds/Gun/gunshot.wav", false);
     gunShot.setPositional(false);
     gunShot.setLooping(false);
     gunShot.setVolume(.3f);

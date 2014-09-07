@@ -87,6 +87,8 @@ public  int               sparkDelay;
         sceneModel.setLocalTranslation(25f, 0f, 100f);
         scenePhys.setMass(0f);
         physics.getPhysicsSpace().add(scenePhys);
+        scenePhys.setMass(0f);
+        physics.getPhysicsSpace().add(scenePhys);
         System.out.println("Scene Initialized");
         return sceneModel;
         }
@@ -157,8 +159,7 @@ public  int               sparkDelay;
     blood = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
     Material mat_red = new Material(assetManager, 
             "Common/MatDefs/Misc/Particle.j3md");
-    mat_red.setTexture("Texture", assetManager.loadTexture(
-            "Effects/Explosion/flame.png"));
+    mat_red.setTexture("Texture", assetManager.loadTexture("Textures/Fire.png"));
     blood.setMaterial(mat_red);
     blood.setStartColor(ColorRGBA.Red);
     blood.setStartSize(1f);
@@ -191,7 +192,7 @@ public  int               sparkDelay;
      Material mat_red = new Material(assetManager, 
             "Common/MatDefs/Misc/Particle.j3md");
      mat_red.setTexture("Texture", assetManager.loadTexture(
-            "Effects/Explosion/flame.png"));
+            "Textures/Fire.png"));
      blood.setMaterial(mat_red);
      blood.setStartColor(ColorRGBA.Red);
      blood.setStartSize(1f);
@@ -217,7 +218,7 @@ public  int               sparkDelay;
     Material mat_red = new Material(assetManager, 
         "Common/MatDefs/Misc/Particle.j3md");
     mat_red.setTexture("Texture", assetManager.loadTexture(
-           "Effects/Explosion/flame.png"));
+           "Textures/Fire.png"));
     sparks.setMaterial(mat_red);
     sparks.setStartColor(ColorRGBA.White);
     sparks.setStartSize(1f);

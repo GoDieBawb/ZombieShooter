@@ -29,11 +29,11 @@ public Player player;
   public void initialize(AppStateManager stateManager, Application app) {
     super.initialize(stateManager, app);
     
-    this.app = (SimpleApplication) app; // can cast Application to something more specific
+    this.app          = (SimpleApplication) app; // can cast Application to something more specific
     this.stateManager = this.app.getStateManager();
     this.inputManager = this.app.getInputManager();
     this.cam          = this.app.getCamera();
-    this.flyCam        = this.stateManager.getState(FlyCamAppState.class).getCamera();
+    this.flyCam       = this.stateManager.getState(FlyCamAppState.class).getCamera();
     
     flyCam.setEnabled(false);
     flyCam.setDragToRotate(false);
